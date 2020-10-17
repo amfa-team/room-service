@@ -1,0 +1,46 @@
+service:
+  name: template-service-api
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-webpack
+  - serverless-plugin-monorepo
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-3
+  profile: picnic
+  environment:
+    SENTRY_ENVIRONMENT: "${self:provider.stage}"
+    SENTRY_DNS: "${env:SENTRY_DNS}"
+
+package:
+  individually: true
+
+functions:
+  hello:
+    handler: src/handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+  helloYou:
+    handler: src/handler.helloYou
+    events:
+      - http:
+          path: hello
+          method: post
+
+custom:
+  serverless-offline:
+    useChildProcesses: true
+    httpPort: 4000
+
+  webpack:
+    webpackConfig: "webpack.config.js"
+    keepOutputDirectory: true
+    includeModules: true
+    packager: "yarn"
+    excludeFiles: src/**/*.test.js
