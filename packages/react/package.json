@@ -1,6 +1,6 @@
 {
-  "name": "@amfa-team/react-service-template",
-  "repository": "https://github.com/amfa-team/sbs-service-template.git",
+  "name": "@amfa-team/room-service",
+  "repository": "https://github.com/amfa-team/room-service.git",
   "version": "0.1.0",
   "description": "React component library",
   "license": "SEE LICENSE IN LICENSE.md",

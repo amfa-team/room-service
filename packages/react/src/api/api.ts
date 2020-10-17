@@ -1,5 +1,5 @@
-import { fetch as fetchPolyfill } from "whatwg-fetch";
 import type { GetRoutes, PostRoutes, Response } from "@amfa-team/types";
+import { fetch as fetchPolyfill } from "whatwg-fetch";
 
 export type ApiSettings = {
   endpoint: string;

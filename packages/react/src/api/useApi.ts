@@ -1,6 +1,6 @@
+import type { HelloPayload } from "@amfa-team/types";
 import { createContext, useContext } from "react";
 import { atom, selectorFamily, useRecoilValue } from "recoil";
-import type { HelloPayload } from "@amfa-team/types";
 import type { ApiSettings } from "./api";
 import { apiGet, apiPost } from "./api";
 

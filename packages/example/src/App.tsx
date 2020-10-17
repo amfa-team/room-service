@@ -1,6 +1,6 @@
+import { Hello } from "@amfa-team/room-service";
 import type { ReactElement } from "react";
 import React from "react";
-import { Hello } from "@amfa-team/react-service-template";
 
 const endpoint = process.env.API_ENDPOINT ?? "";
 

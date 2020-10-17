@@ -1,8 +1,8 @@
 {
-  "name": "sbs-service-template",
-  "repository": "https://github.com/amfa-team/sbs-service-template.git",
+  "name": "room-service",
+  "repository": "https://github.com/amfa-team/room-service.git",
   "version": "0.1.0",
-  "description": "Side By Side Service template",
+  "description": "Side By Side Room Service",
   "main": "index.js",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,

@@ -1,7 +1,7 @@
+import type { GetRoutes, PostRoutes } from "@amfa-team/types";
 import { captureException, flush, init } from "@sentry/node";
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import type { JsonDecoder } from "ts.data.json";
-import type { GetRoutes, PostRoutes } from "@amfa-team/types";
 import { InvalidRequestError } from "./exceptions";
 import type { GetHandler, PostHandler, PublicRequest } from "./types";
 

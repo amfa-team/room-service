@@ -1,5 +1,5 @@
-import React from "react";
 import { helloWorld } from "@amfa-team/shared";
+import React from "react";
 import styles from "../HelloFromShared/helloFromShared.module.css";
 // @ts-ignore
 import { name } from "./name";

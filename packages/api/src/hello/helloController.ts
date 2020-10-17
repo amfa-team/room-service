@@ -1,6 +1,6 @@
-import { JsonDecoder } from "ts.data.json";
 import { helloWorld } from "@amfa-team/shared";
 import type { HelloData, HelloPayload } from "@amfa-team/types";
+import { JsonDecoder } from "ts.data.json";
 import { InvalidRequestError } from "../io/exceptions";
 // @ts-ignore
 import { messages } from "./message";

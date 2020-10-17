@@ -1,4 +1,4 @@
-service: example-template
+service: room-service
 
 provider:
   name: aws
@@ -13,7 +13,7 @@ plugins:
 
 custom:
   client:
-    bucketName: "example-template-${opt:stage}"
+    bucketName: "room-service-${opt:stage}"
     distributionFolder: build/
     indexDocument: index.html
     errorDocument: index.html

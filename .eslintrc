@@ -10,10 +10,10 @@
         "sources": {
           "@amfa-team/shared": ["./packages/shared/src"],
           "@amfa-team/types": ["./packages/types/src"],
-          "@amfa-team/react-service-template/dist/index.css": [
+          "@amfa-team/room-service/dist/index.css": [
             "./packages/react/src/index.css"
           ],
-          "@amfa-team/react-service-template": ["./packages/react/src"]
+          "@amfa-team/room-service": ["./packages/react/src"]
         }
       }
     }
