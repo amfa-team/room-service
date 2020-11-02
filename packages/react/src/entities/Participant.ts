@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import type { ITrackPublication, IVideoTrackPublication } from "./Publication";
 
 export type NetworkQualityLevelChangedListener = (level: number | null) => void;
@@ -5,6 +6,8 @@ export type NetworkQualityLevelChangedListener = (level: number | null) => void;
 export type TrackPublishedListener = (publication: ITrackPublication) => void;
 
 export interface IParticipant {
+  readonly sid: string;
+
   readonly networkQualityLevel: number | null;
 
   readonly identity: string;
@@ -36,6 +39,8 @@ export interface IParticipant {
 
 export class RawParticipant implements IParticipant {
   #networkQualityLevel: number | null = null;
+
+  readonly sid: string = uuid();
 
   readonly identity: string;
 
