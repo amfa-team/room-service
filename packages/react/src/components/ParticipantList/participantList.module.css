@@ -1,0 +1,29 @@
+@value m-sm: (max-width: 576px);
+
+.container {
+  padding: 2em;
+  overflow-y: auto;
+  background: rgb(79, 83, 85);
+  grid-area: 1 / 2 / 1 / 3;
+  z-index: 5;
+}
+
+.transparentBackground {
+  background: transparent;
+}
+
+@media m-sm {
+  .container {
+    grid-area: 2 / 1 / 3 / 3;
+    overflow-y: initial;
+    overflow-x: auto;
+    display: flex;
+    padding: 8px;
+  }
+}
+
+@media m-sm {
+  .scrollContainer {
+    display: flex;
+  }
+}

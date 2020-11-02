@@ -5,7 +5,8 @@ const commonPaths = require("./common-paths");
 const config = {
   target: "web",
   entry: {
-    bundle: "./src/index.tsx",
+    polyfills: "./src/polyfills.ts",
+    index: "./src/index.tsx",
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
@@ -18,7 +19,7 @@ const config = {
     chunkFilename: "static/js/[name].chunk.js",
 
     // This is the URL that app is served from. We use "/" in development.
-    publicPath: "./",
+    publicPath: "/",
   },
   optimization: {
     splitChunks: {
