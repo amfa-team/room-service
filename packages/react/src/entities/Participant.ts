@@ -35,7 +35,7 @@ export interface IParticipant {
 }
 
 export class RawParticipant implements IParticipant {
-  readonly networkQualityLevel: number = 0;
+  #networkQualityLevel: number | null = null;
 
   readonly identity: string;
 
@@ -47,11 +47,43 @@ export class RawParticipant implements IParticipant {
     this.identity = identity;
   }
 
+  get networkQualityLevel() {
+    return this.#networkQualityLevel;
+  }
+
+  setNetworkQualityLevel(level: number | null) {
+    this.#networkQualityLevel = level;
+
+    this.#networkQualityLevelChangedListeners.forEach((listener) => {
+      try {
+        listener(level);
+      } catch (e) {
+        console.error(
+          "Participant.networkQualityLevelChangedListeners: listener failed",
+          e,
+        );
+      }
+    });
+  }
+
   addVideoTrack(trackPublication: IVideoTrackPublication): void {
     this.videoTracks.set(trackPublication.track.id, trackPublication);
     this.tracks.set(trackPublication.track.id, trackPublication);
 
     this.#trackPublishedListeners.forEach((listener) => {
+      try {
+        listener(trackPublication);
+      } catch (e) {
+        console.error("Participant.addVideoTrack: listener failed", e);
+      }
+    });
+  }
+
+  removeVideoTrack(trackPublication: IVideoTrackPublication): void {
+    this.videoTracks.delete(trackPublication.track.id);
+    this.tracks.delete(trackPublication.track.id);
+
+    this.#trackUnpublishedListeners.forEach((listener) => {
       try {
         listener(trackPublication);
       } catch (e) {

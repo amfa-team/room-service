@@ -1,0 +1,128 @@
+@value m-sm: (max-width: 576px);
+@value vSidebarMobileHeight: 90px;
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 0;
+  overflow: hidden;
+  margin-bottom: 2em;
+  border-radius: 4px;
+  border: 2px solid rgb(245, 248, 255);
+  padding-top: calc(9 / 16 * 100% - 2px);
+  background: black;
+}
+
+/* .container video {
+  filter: none;
+  object-fit: contain !important;
+} */
+
+@media m-sm {
+  .container {
+    height: vSidebarMobileHeight;
+    width: calc(vSidebarMobileHeight * 16 / 9);
+    margin-right: 8px;
+    margin-bottom: 0;
+    font-size: 10px;
+    padding-top: calc(vSidebarMobileHeight - 2px);
+  }
+}
+
+.innerContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.infoContainer {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  top: 0;
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+@media m-sm {
+  .avatarContainer svg {
+    transform: scale(0.7);
+  }
+}
+
+.reconnectingContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(40, 42, 43, 0.75);
+  z-index: 1;
+}
+
+.screenShareIconContainer {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.18em 0.3em;
+  margin-right: 0.3em;
+  display: flex;
+}
+
+.screenShareIconContainer path {
+  fill: white;
+}
+
+.identity {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 0.18em 0.3em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.infoRowBottom {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.typography {
+  color: white;
+}
+
+@media m-sm {
+  .typography {
+    font-size: 0.75rem;
+  }
+}
+
+.hideParticipant {
+  display: none;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}

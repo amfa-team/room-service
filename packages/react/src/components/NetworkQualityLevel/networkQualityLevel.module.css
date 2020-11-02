@@ -1,0 +1,47 @@
+.container {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.root {
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 2px;
+  margin-right: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.bar:not(:last-child) {
+  border-right: none;
+}
+
+.barLevel0 {
+  height: 3px;
+}
+
+.barLevel1 {
+  height: 6px;
+}
+
+.barLevel2 {
+  height: 9px;
+}
+
+.barLevel3 {
+  height: 12px;
+}
+
+.barLevel4 {
+  height: 15px;
+}
+
+.active {
+  background: white;
+}
