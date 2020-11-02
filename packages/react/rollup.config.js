@@ -1,5 +1,6 @@
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
+import postCssValues from "postcss-modules-values";
 import postcss from "rollup-plugin-postcss";
 import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
@@ -34,6 +35,7 @@ export default [
         extract: true,
         minimize: !process.env.ROLLUP_WATCH,
         sourceMap: true,
+        plugins: [postCssValues],
       }),
       babel({
         babelHelpers: "runtime",
