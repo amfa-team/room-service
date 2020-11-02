@@ -5,7 +5,8 @@ const commonPaths = require("./common-paths");
 const config = {
   target: "web",
   entry: {
-    bundle: "./src/index.tsx",
+    polyfills: "./src/polyfills.ts",
+    index: "./src/index.tsx",
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
