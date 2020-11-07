@@ -36,10 +36,39 @@ export interface JoinPayload {
   token: string;
 }
 
+export interface AdminData {
+  secret: string;
+}
+
+export interface PaginationData {
+  pageIndex: number;
+  pageSize: number;
+}
+
+export interface AdminRoomData extends AdminData {
+  pagination: PaginationData;
+}
+
+export interface PaginationContext extends PaginationData {
+  pageCount: number;
+  count: number;
+}
+
+export interface PaginationPayload<T> {
+  pagination: PaginationContext;
+  page: T[];
+}
+
 export type GetRoutes = {
   // empty
 };
 
-export type PostRoutes = {
+export type PublicPostRoutes = {
   join: PostRoute<JoinData, JoinPayload>;
 };
+
+export type AdminPostRoutes = {
+  "admin/room": PostRoute<AdminRoomData, PaginationPayload<IRoom>>;
+};
+
+export type PostRoutes = PublicPostRoutes & AdminPostRoutes;

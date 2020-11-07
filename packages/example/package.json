@@ -17,6 +17,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.2.0",
+    "react-use-localstorage": "^3.5.3",
     "recoil": "^0.1.2",
     "unique-names-generator": "^4.3.1"
   },

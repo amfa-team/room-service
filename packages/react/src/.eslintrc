@@ -4,6 +4,6 @@
     "no-console": "off"
   },
   "settings": {
-    "polyfills": ["navigator.mediaDevices"]
+    "polyfills": ["navigator.mediaDevices", "AbortController"]
   }
 }
