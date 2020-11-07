@@ -17,7 +17,8 @@
           "Edge >= 11",
           "Firefox >= 60",
           "Safari >= 12"
-        ]
+        ],
+        "ignorePartialSupport": true
       }
     ],
     "plugin/declaration-block-no-ignored-properties": true,

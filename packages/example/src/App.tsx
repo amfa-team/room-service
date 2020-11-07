@@ -10,14 +10,14 @@ const username = uniqueNamesGenerator({
 
 const userId = md5(username).toString().substr(0, 24);
 
+const endpoint = process.env.API_ENDPOINT ?? "";
+
 function App(): ReactElement | null {
   return (
     <TwilioApp
       user={{ username, id: userId }}
       space={{ id: "my-space" }}
-      settings={{
-        endpoint: "http://localhost:4000/dev/",
-      }}
+      settings={{ endpoint }}
     />
   );
 }
