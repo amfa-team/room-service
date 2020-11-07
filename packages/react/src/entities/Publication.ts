@@ -1,4 +1,4 @@
-import type { ITrack, IVideoTrack } from "./VideoTrack";
+import type { IAudioTrack, ITrack, IVideoTrack } from "./VideoTrack";
 
 export type SubscribedListener<T extends ITrack> = (track: T) => void;
 
@@ -25,16 +25,16 @@ export interface IAudioTrackPublication {
 
   readonly trackName: string;
 
-  readonly track: ITrack;
+  readonly track: IAudioTrack;
 
   on(
     event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<ITrack>,
+    listener: SubscribedListener<IAudioTrack>,
   ): void;
 
   off(
     event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<ITrack>,
+    listener: SubscribedListener<IAudioTrack>,
   ): void;
 }
 

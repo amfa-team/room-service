@@ -1,6 +1,7 @@
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import postCssValues from "postcss-modules-values";
+import polyfill from "rollup-plugin-polyfill";
 import postcss from "rollup-plugin-postcss";
 import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
@@ -42,6 +43,7 @@ export default [
         extensions,
         plugins: [["@babel/plugin-transform-runtime", { useESModules: true }]],
       }),
+      polyfill(["webrtc-adapter"]),
       ...extraPlugins,
     ],
   },

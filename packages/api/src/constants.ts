@@ -1,0 +1,3 @@
+export const MAX_PARTICIPANTS = 4;
+
+export const MAX_ALLOWED_SESSION_DURATION = 14_400;

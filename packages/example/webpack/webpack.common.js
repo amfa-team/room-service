@@ -1,5 +1,6 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
+const { ProvidePlugin } = require("webpack");
 const commonPaths = require("./common-paths");
 
 const config = {
@@ -27,6 +28,7 @@ const config = {
     },
   },
   plugins: [
+    new ProvidePlugin({ process: "process" }),
     new DotEnv({
       safe: true,
     }),

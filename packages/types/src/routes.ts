@@ -1,3 +1,5 @@
+import type { IRoom } from "./model";
+
 export interface SuccessResponse<T> {
   success: true;
   payload: T;
@@ -24,18 +26,20 @@ export type PostRoute<I, O> = {
   out: O;
 };
 
-export interface HelloData {
-  name: string | null;
+export interface JoinData {
+  spaceId: string;
+  participantId: string;
 }
 
-export interface HelloPayload {
-  message: string;
+export interface JoinPayload {
+  room: IRoom;
+  token: string;
 }
 
 export type GetRoutes = {
-  hello: GetRoute<HelloPayload>;
+  // empty
 };
 
 export type PostRoutes = {
-  hello: PostRoute<HelloData, HelloPayload>;
+  join: PostRoute<JoinData, JoinPayload>;
 };

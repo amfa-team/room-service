@@ -1,32 +1,32 @@
-import type { GetRoutes, PostRoutes, Response } from "@amfa-team/types";
+import type { PostRoutes, Response } from "@amfa-team/types";
 import { fetch as fetchPolyfill } from "whatwg-fetch";
 
 export type ApiSettings = {
   endpoint: string;
 };
 
-export async function apiGet<P extends keyof GetRoutes>(
-  settings: ApiSettings,
-  path: P,
-): Promise<GetRoutes[P]["out"]> {
-  const res = await fetchPolyfill(settings.endpoint + path, {
-    method: "GET",
-  });
+// export async function apiGet<P extends keyof GetRoutes>(
+//   settings: ApiSettings,
+//   path: P,
+// ): Promise<GetRoutes[P]["out"]> {
+//   const res = await fetchPolyfill(settings.endpoint + path, {
+//     method: "GET",
+//   });
 
-  const response: Response<GetRoutes[P]["out"]> | null = await res
-    .json()
-    .catch(() => null);
+//   const response: Response<GetRoutes[P]["out"]> | null = await res
+//     .json()
+//     .catch(() => null);
 
-  if (!res.ok || !response?.success) {
-    let message = `apiGet: failed with "${res.status}"`;
-    if (!response?.success) {
-      message += ` and error "${response?.error}"`;
-    }
-    throw new Error(message);
-  }
+//   if (!res.ok || !response?.success) {
+//     let message = `apiGet: failed with "${res.status}"`;
+//     if (!response?.success) {
+//       message += ` and error "${response?.error}"`;
+//     }
+//     throw new Error(message);
+//   }
 
-  return response.payload;
-}
+//   return response.payload;
+// }
 
 export async function apiPost<P extends keyof PostRoutes>(
   settings: ApiSettings,

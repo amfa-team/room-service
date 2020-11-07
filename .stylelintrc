@@ -9,7 +9,17 @@
     "stylelint-css-modules"
   ],
   "rules": {
-    "plugin/no-unsupported-browser-features": true,
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "browsers": [
+          "Chrome >= 55",
+          "Edge >= 11",
+          "Firefox >= 60",
+          "Safari >= 12"
+        ]
+      }
+    ],
     "plugin/declaration-block-no-ignored-properties": true,
     "css-modules/composed-class-names": true,
     "color-no-invalid-hex": true

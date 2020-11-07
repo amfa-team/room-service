@@ -1,0 +1,47 @@
+@value m-sm: (max-width: 576px);
+
+.container {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: black;
+  width: 100%;
+}
+.innerContainer {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.identityContainer {
+  bottom: 0;
+  z-index: 1;
+  position: absolute;
+}
+.identity {
+  color: white;
+  margin: 0;
+  display: flex;
+  padding: 0.18em 0.3em;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+}
+.avatarContainer {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  z-index: 1;
+  position: absolute;
+  background: black;
+  align-items: center;
+  justify-content: center;
+}
+
+@media m-sm {
+  .avatarContainer svg {
+    transform: scale(0.7);
+  }
+}

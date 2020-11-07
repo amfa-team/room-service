@@ -26,7 +26,10 @@ export default function Participant({
       isLocalParticipant={isLocalParticipant}
       hideParticipant={hideParticipant}
     >
-      <ParticipantTracks participant={participant} />
+      <ParticipantTracks
+        participant={participant}
+        isLocalParticipant={isLocalParticipant}
+      />
     </ParticipantInfo>
   );
 }

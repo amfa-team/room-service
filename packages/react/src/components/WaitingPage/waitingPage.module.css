@@ -1,0 +1,32 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 100px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.localPreviewContainer {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
+
+.joinContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.join {
+  color: #ffffff;
+  background-color: blueviolet;
+  width: 200px;
+  height: 50px;
+  border: 0;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
+}

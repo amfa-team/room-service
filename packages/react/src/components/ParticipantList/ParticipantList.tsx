@@ -27,8 +27,6 @@ export default function ParticipantList(
   const isRemoteParticipantScreenSharing =
     screenShareParticipant && screenShareParticipant !== localParticipant;
 
-  if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
-
   return (
     <aside
       className={classnames(styles.container, {

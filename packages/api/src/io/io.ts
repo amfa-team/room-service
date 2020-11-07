@@ -1,7 +1,12 @@
 import type { GetRoutes, PostRoutes } from "@amfa-team/types";
 import { captureException, flush, init } from "@sentry/node";
-import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import type {
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+  Context,
+} from "aws-lambda";
 import type { JsonDecoder } from "ts.data.json";
+import { connect } from "../mongo/client";
 import { InvalidRequestError } from "./exceptions";
 import type { GetHandler, PostHandler, PublicRequest } from "./types";
 
@@ -54,6 +59,8 @@ export async function handleHttpErrorResponse(
   if (!process.env.IS_OFFLINE) {
     captureException(e);
     await flush(2000);
+  } else {
+    console.error(e);
   }
 
   return {
@@ -83,9 +90,11 @@ export function handleSuccessResponse(data: unknown): APIGatewayProxyResult {
 
 export async function handlePublicGET<P extends keyof GetRoutes>(
   event: APIGatewayProxyEvent,
+  context: Context,
   handler: GetHandler<P>,
 ): Promise<APIGatewayProxyResult> {
   try {
+    await connect(context);
     const payload = await handler();
     return handleSuccessResponse(payload);
   } catch (e) {
@@ -95,10 +104,12 @@ export async function handlePublicGET<P extends keyof GetRoutes>(
 
 export async function handlePublicPOST<P extends keyof PostRoutes>(
   event: APIGatewayProxyEvent,
+  context: Context,
   handler: PostHandler<P>,
   decoder: JsonDecoder.Decoder<PostRoutes[P]["in"]>,
 ): Promise<APIGatewayProxyResult> {
   try {
+    await connect(context);
     const { data } = await parseHttpPublicRequest(event, decoder);
     const payload = await handler(data);
     return handleSuccessResponse(payload);

@@ -7,7 +7,7 @@ interface IBaseTrack {
 
   readonly mediaStreamTrack: MediaStreamTrack | null;
 
-  readonly isSwitchedOff: boolean | undefined;
+  readonly isSwitchedOff?: boolean | undefined;
 
   on(event: "switchedOff" | "switchedOn", listener: () => void): void;
 
@@ -17,15 +17,15 @@ interface IBaseTrack {
 export interface IAudioTrack extends IBaseTrack {
   readonly kind: "audio";
 
-  attach(element: HTMLAudioElement): HTMLAudioElement;
-  detach(element: HTMLAudioElement): Iterator<HTMLAudioElement>;
+  attach(element: HTMLMediaElement): HTMLMediaElement;
+  detach(element: HTMLMediaElement): HTMLMediaElement[];
 }
 
 export interface IVideoTrack extends IBaseTrack {
   readonly kind: "video";
 
-  attach(element: HTMLVideoElement): HTMLVideoElement;
-  detach(element: HTMLVideoElement): Iterator<HTMLVideoElement>;
+  attach(element: HTMLMediaElement): HTMLMediaElement;
+  detach(element: HTMLMediaElement): HTMLMediaElement[];
 }
 
 export type ITrack = IAudioTrack | IVideoTrack;
@@ -89,10 +89,10 @@ export class RawVideoTrack implements IVideoTrack {
     return element;
   }
 
-  detach(element: HTMLVideoElement): Iterator<HTMLVideoElement> {
+  detach(element: HTMLVideoElement): HTMLVideoElement[] {
     this.#attachments.delete(element);
 
-    return this.#attachments.values();
+    return Array.from(this.#attachments.values());
   }
 
   get mediaStreamTrack(): MediaStreamTrack | null {

@@ -16,6 +16,7 @@
           "@amfa-team/room-service": ["./packages/react/src"]
         }
       }
-    }
+    },
+    "targets": ["Chrome >= 55", "Edge >= 11", "Firefox >= 60", "Safari >= 12"]
   }
 }
