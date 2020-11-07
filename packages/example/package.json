@@ -12,10 +12,13 @@
     "@amfa-team/room-service": "^0.1.0",
     "@sentry/react": "^5.27.2",
     "@sentry/tracing": "^5.27.2",
+    "@types/crypto-js": "^4.0.1",
+    "crypto-js": "^4.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.2.0",
     "recoil": "^0.1.2",
+    "unique-names-generator": "^4.3.1",
     "webrtc-adapter": "^7.7.0"
   },
   "devDependencies": {

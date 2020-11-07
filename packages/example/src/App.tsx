@@ -1,12 +1,20 @@
 import { TwilioApp } from "@amfa-team/room-service";
+import md5 from "crypto-js/md5";
 import type { ReactElement } from "react";
 import React from "react";
+import { animals, uniqueNamesGenerator } from "unique-names-generator";
+
+const username = uniqueNamesGenerator({
+  dictionaries: [animals],
+});
+
+const userId = md5(username).toString().substr(0, 24);
 
 function App(): ReactElement | null {
   return (
     <TwilioApp
-      user={{ username: "Moroine", id: "5f8e8b4bd50d540008530efc" }}
-      space={{ id: "yop" }}
+      user={{ username, id: userId }}
+      space={{ id: "my-space" }}
       settings={{
         endpoint: "http://localhost:4000/dev/",
       }}
