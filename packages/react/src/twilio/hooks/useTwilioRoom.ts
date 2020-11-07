@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { atom, useRecoilState } from "recoil";
 import type { Room } from "twilio-video";
 import Video from "twilio-video";
+import useTwilioLocalTracks from "./useTwilioLocalTracks";
 
 const twilioRoom = atom<Room | null>({
   key: "room-service/twilio/room",
@@ -40,6 +41,7 @@ export function useConnectTwilioRoom(token: string): AsyncData<Room> {
   const [room, setRoom] = useRecoilState(twilioRoom);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const { videoTrack, audioTrack } = useTwilioLocalTracks();
 
   useEffect(() => {
     if (!token) {
@@ -69,6 +71,28 @@ export function useConnectTwilioRoom(token: string): AsyncData<Room> {
         setIsLoading(false);
       });
   }, [token, setRoom]);
+
+  useEffect(() => {
+    if (room && videoTrack) {
+      room.localParticipant.publishTrack(videoTrack).catch(setError);
+    }
+    return () => {
+      if (room && videoTrack) {
+        room.localParticipant.unpublishTrack(videoTrack);
+      }
+    };
+  }, [room, videoTrack]);
+
+  useEffect(() => {
+    if (room && audioTrack) {
+      room.localParticipant.publishTrack(audioTrack).catch(setError);
+    }
+    return () => {
+      if (room && audioTrack) {
+        room.localParticipant.unpublishTrack(audioTrack);
+      }
+    };
+  }, [room, audioTrack]);
 
   if (error) {
     throw error;

@@ -1,5 +1,3 @@
-@value m-sm: (max-width: 576px);
-
 .container {
   padding: 2em;
   overflow-y: auto;
@@ -12,15 +10,8 @@
   background: transparent;
 }
 
-@media m-sm {
-  .container {
-    grid-area: 2 / 1 / 3 / 3;
-    overflow-y: initial;
-    overflow-x: auto;
-    display: flex;
-    padding: 8px;
-  }
-  .scrollContainer {
-    display: flex;
-  }
+.scrollContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
 }
