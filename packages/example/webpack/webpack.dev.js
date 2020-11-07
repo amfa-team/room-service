@@ -10,9 +10,6 @@ const host = process.env.HOST || "localhost";
 
 module.exports = merge(common, {
   mode: "development",
-  output: {
-    pathinfo: true,
-  },
   devServer: {
     writeToDisk: true,
     hot: true,

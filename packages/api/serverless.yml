@@ -19,22 +19,20 @@ provider:
   environment:
     SENTRY_ENVIRONMENT: "${self:provider.stage}"
     SENTRY_DNS: "${env:SENTRY_DNS}"
+    MONGO_DB_URL: "${env:MONGO_DB_URL}"
+    TWILIO_ACCOUNT_SID: "${env:TWILIO_ACCOUNT_SID}"
+    TWILIO_API_KEY_SID: "${env:TWILIO_API_KEY_SID}"
+    TWILIO_API_KEY_SECRET: "${env:TWILIO_API_KEY_SECRET}"
 
 package:
   individually: true
 
 functions:
-  hello:
-    handler: src/handler.hello
+  join:
+    handler: src/handler.join
     events:
       - http:
-          path: hello
-          method: get
-  helloYou:
-    handler: src/handler.helloYou
-    events:
-      - http:
-          path: hello
+          path: join
           method: post
 
 custom:
