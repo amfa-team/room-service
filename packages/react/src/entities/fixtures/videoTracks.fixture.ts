@@ -24,7 +24,6 @@ async function getMediaStream(src: VideoSrc): Promise<MediaStream> {
       video.src = video720p;
       break;
     case VideoSrc.camera: {
-      // eslint-disable-next-line compat/compat
       const stream: MediaStream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: true,

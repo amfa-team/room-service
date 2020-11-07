@@ -1,4 +1,4 @@
-import type { IParticipant, IRoom } from "./model";
+import type { IRoom } from "./model";
 
 export interface SuccessResponse<T> {
   success: true;

@@ -1,9 +1,6 @@
 {
   "extends": ["sbs", "sbs/typescript"],
   "settings": {
-    "polyfills": ["navigator.mediaDevices"]
-  },
-  "rules": {
-    "no-console": "off"
+    "polyfills": []
   }
 }

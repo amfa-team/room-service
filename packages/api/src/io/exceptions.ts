@@ -9,7 +9,6 @@ export class PicnicError extends Error {
     this.cause = cause;
 
     if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
       console.error(message, cause);
     }
   }

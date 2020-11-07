@@ -19,6 +19,7 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
   }
 
   // Room type from twilio is badly written ==> need PR on @types/twilio-video
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const room: IRoom = data as any;
 
   return (
