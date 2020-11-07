@@ -3,9 +3,9 @@ import resolve from "@rollup/plugin-node-resolve";
 import postCssValues from "postcss-modules-values";
 import polyfill from "rollup-plugin-polyfill";
 import postcss from "rollup-plugin-postcss";
+import sourcemaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
-import sourcemaps from "rollup-plugin-sourcemaps";
 
 export const extensions = [".js", ".jsx", ".ts", ".tsx"];
 const extraPlugins = process.env.ROLLUP_WATCH ? [] : [terser()];

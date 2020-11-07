@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { IParticipant } from "../entities/Participant";
-import {
+import type {
   ITrackPublication,
   IVideoTrackPublication,
 } from "../entities/Publication";
@@ -17,13 +17,11 @@ export function useParticipantVideoTrack(
 
   useEffect(() => {
     const trackPublished = (publication: ITrackPublication) => {
-      debugger;
       if (publication.kind === "video") {
         setVideoPublication(publication);
       }
     };
     const trackUnpublished = (publication: ITrackPublication) => {
-      debugger;
       if (publication.kind === "video") {
         setVideoPublication(null);
       }
@@ -33,7 +31,6 @@ export function useParticipantVideoTrack(
     if (publication) {
       trackPublished(publication);
     }
-    debugger;
 
     participant.on("trackPublished", trackPublished);
     participant.on("trackUnpublished", trackUnpublished);
@@ -45,15 +42,12 @@ export function useParticipantVideoTrack(
 
   useEffect(() => {
     const onSubscribed = (track: IVideoTrack | null) => {
-      debugger;
       setVideoTrack(track);
     };
     const onUnSubscribed = () => {
-      debugger;
       setVideoTrack(null);
     };
 
-    debugger;
     onSubscribed(videoPublication?.track ?? null);
     videoPublication?.on("subscribed", onSubscribed);
     videoPublication?.on("unsubscribed", onUnSubscribed);
