@@ -16,6 +16,10 @@ import {
   createTwilioRoom,
   disconnectTwilioParticipant,
 } from "../twilio/client";
+import type {
+  ParticipantConnectedEvent,
+  ParticipantDisconnectedEvent,
+} from "../twilio/webhook";
 
 function generateRoomName() {
   return uniqueNamesGenerator({
@@ -46,9 +50,7 @@ export async function createRoom(spaceId: string): Promise<IRoomDocument> {
 export async function findOrCreateParticipant(
   participantId: string,
 ): Promise<IParticipantDocument> {
-  const existingParticipant = await ParticipantModel.findOne({
-    _id: participantId,
-  });
+  const existingParticipant = await ParticipantModel.findById(participantId);
   if (existingParticipant) {
     return existingParticipant;
   }
@@ -67,6 +69,52 @@ export async function getParticipantRoom(
   participant: IParticipant,
 ): Promise<IRoomDocument | null> {
   return participant.room ? RoomModel.findById(participant.room) : null;
+}
+
+export async function onParticipantConnected(event: ParticipantConnectedEvent) {
+  await ParticipantModel.findOneAndUpdate(
+    { _id: event.ParticipantIdentity },
+    { $set: { status: ParticipantStatus.connected, statusValidUntil: null } },
+  );
+}
+
+export async function onParticipantDisconnected(
+  event: ParticipantDisconnectedEvent,
+) {
+  const [room, participant] = await Promise.all([
+    RoomModel.findOneAndUpdate(
+      { _id: event.RoomSid },
+      { $inc: { size: -1 } },
+      { new: true },
+    ),
+    ParticipantModel.findOneAndUpdate(
+      { _id: event.ParticipantIdentity },
+      {
+        $set: {
+          status: ParticipantStatus.disconnected,
+          statusValidUntil: null,
+        },
+      },
+    ),
+  ]);
+
+  const tasks: Promise<unknown>[] = [];
+  if (room) {
+    room.participants = room.participants.filter(
+      (p) => p !== event.ParticipantIdentity,
+    );
+    tasks.push(room.save());
+  }
+  if (participant) {
+    participant.roomVisits.push({
+      id: event.RoomSid,
+      duration: Number(event.ParticipantDuration),
+      timestamp: new Date(event.Timestamp),
+    });
+    tasks.push(participant.save());
+  }
+
+  await Promise.all(tasks);
 }
 
 export async function disconnectParticipant(
@@ -116,8 +164,7 @@ export async function joinRandomRoom(
 ): Promise<[IRoomDocument, IParticipantDocument]> {
   const query: FilterQuery<IParticipantDocument> = {
     spaceId,
-    size: { $lt: MAX_PARTICIPANTS },
-    participants: { $nin: [participant.id] },
+    size: { $gt: 0, $lt: MAX_PARTICIPANTS },
   };
 
   if (participant.room) {
@@ -129,7 +176,7 @@ export async function joinRandomRoom(
     { $inc: { size: 1 } },
     {
       new: true,
-      sort: { size: -1 },
+      sort: { _id: 1, spaceId: 1, size: -1 },
     },
   );
 

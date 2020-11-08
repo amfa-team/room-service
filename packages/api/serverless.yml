@@ -8,6 +8,7 @@ plugins:
   - serverless-webpack
   - serverless-plugin-monorepo
   - serverless-offline
+  - serverless-ngrok-tunnel
 
 provider:
   name: aws
@@ -24,6 +25,7 @@ provider:
     TWILIO_API_KEY_SID: "${env:TWILIO_API_KEY_SID}"
     TWILIO_API_KEY_SECRET: "${env:TWILIO_API_KEY_SECRET}"
     SECRET: "${env:SECRET}"
+    API_ENDPOINT: "${env:API_ENDPOINT}"
 
 package:
   individually: true
@@ -41,8 +43,30 @@ functions:
       - http:
           path: admin/room
           method: post
+  adminParticipants:
+    handler: src/handler.adminParticipants
+    events:
+      - http:
+          path: admin/participant
+          method: post
+  webhookStatus:
+    handler: src/handler.webhookStatus
+    events:
+      - http:
+          path: webhook/twilio/status
+          method: get
 
 custom:
+  ngrokTunnel:
+    envPath: "./.env"
+    tunnels:
+      - port: 4000 # required
+        envProp: API_ENDPOINT
+        ngrokOptions:
+          auth: "user:pwd"
+          authtoken: "1jyclDvBLpaLz01TwCzbRYbIHRB_2oWbDViiCC7SGbgEujzdg"
+          region: "eu"
+
   serverless-offline:
     useChildProcesses: true
     httpPort: 4000

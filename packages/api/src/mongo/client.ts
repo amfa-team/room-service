@@ -1,5 +1,5 @@
 import type { Context } from "aws-lambda";
-import mongoose, { connect as _connect } from "mongoose";
+import { connect as _connect } from "mongoose";
 import type { Mongoose } from "mongoose";
 import { getEnv, getEnvName } from "../utils/env";
 
@@ -68,7 +68,7 @@ async function getClient(url: string): Promise<Mongoose> {
 export async function connect(context: Context): Promise<Mongoose> {
   // eslint-disable-next-line no-param-reassign
   context.callbackWaitsForEmptyEventLoop = false;
-  mongoose.set("debug", true);
+  // mongoose.set("debug", true);
 
   return getClient(getEnv("MONGO_DB_URL"));
 }

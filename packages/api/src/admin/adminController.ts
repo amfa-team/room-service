@@ -45,7 +45,7 @@ export async function handleAdminRooms(
       pageCount: Math.ceil(roomCount / pageSize),
       count: roomCount,
     },
-    page: rooms.map((room) => room.toJSON({ getters: true })),
+    page: rooms.map((room) => room.toJSON()),
   };
 }
 
@@ -69,8 +69,6 @@ export async function handleAdminParticipants(
       pageCount: Math.ceil(participantCount / pageSize),
       count: participantCount,
     },
-    page: participants.map((participant) =>
-      participant.toJSON({ getters: true }),
-    ),
+    page: participants.map((participant) => participant.toJSON()),
   };
 }

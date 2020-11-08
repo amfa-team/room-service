@@ -34,10 +34,32 @@ const ParticipantSchema: Schema = new Schema(
       required: false,
       default: null,
     },
+    roomVisits: {
+      type: [
+        new Schema({
+          id: {
+            type: String,
+            required: true,
+          },
+          duration: {
+            type: Number,
+            required: true,
+          },
+          timestamp: {
+            type: Date,
+            required: true,
+          },
+        }),
+      ],
+      required: false,
+      default: [],
+    },
   },
   {
     minimize: false,
     timestamps: true,
+    toJSON: { getters: true, virtuals: true },
+    toObject: { getters: true, virtuals: true },
   },
 );
 

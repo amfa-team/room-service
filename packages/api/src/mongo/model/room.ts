@@ -39,7 +39,17 @@ const RoomSchema: Schema = new Schema(
   {
     minimize: false,
     timestamps: true,
+    toJSON: { getters: true, virtuals: true },
+    toObject: { getters: true, virtuals: true },
   },
+);
+RoomSchema.index(
+  {
+    _id: 1,
+    spaceId: 1,
+    size: -1,
+  },
+  { name: "room-space-size" }, // for joinRandomRoom
 );
 
 const RoomModel = mongoose.model<IRoomDocument>("Room", RoomSchema);

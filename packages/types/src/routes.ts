@@ -64,7 +64,7 @@ export interface PaginationPayload<T> {
 }
 
 export type GetRoutes = {
-  // empty
+  "webhook/twilio/status": GetRoute<boolean>;
 };
 
 export type PublicPostRoutes = {

@@ -1,4 +1,7 @@
+import crypto from "crypto";
 import type { IParticipant, IRoom } from "@amfa-team/types";
+// @ts-ignore
+import scmp from "scmp";
 import { Twilio, jwt } from "twilio";
 import { MAX_ALLOWED_SESSION_DURATION, MAX_PARTICIPANTS } from "../constants";
 import { getEnv } from "../utils/env";
@@ -7,6 +10,10 @@ const { AccessToken } = jwt;
 const accountSid = getEnv("TWILIO_ACCOUNT_SID");
 const apiKeySID = getEnv("TWILIO_API_KEY_SID");
 const apiKeySecret = getEnv("TWILIO_API_KEY_SECRET");
+const TWILIO_AUTH_TOKEN = getEnv("TWILIO_AUTH_TOKEN");
+const WEBHOOK_URL = process.env.IS_OFFLINE
+  ? `${getEnv("API_ENDPOINT")}/dev/webhook/twilio/status`
+  : `${getEnv("API_ENDPOINT")}/webhook/twilio/status`;
 
 const client = new Twilio(apiKeySID, apiKeySecret, { accountSid });
 
@@ -21,9 +28,8 @@ async function createTwilioRoom(
     ...params,
     maxParticipants: MAX_PARTICIPANTS,
     type: "peer-to-peer",
-    // TODO: to get back status
-    // statusCallback: '',
-    // statusCallbackMethod: 'POST',
+    statusCallback: WEBHOOK_URL,
+    statusCallbackMethod: "GET",
   });
 
   return twilioRoom.sid;
@@ -55,8 +61,27 @@ function getParticipantTwilioToken(participant: IParticipant, room: IRoom) {
   return token.toJwt();
 }
 
+function verifyWebhook(
+  twilioSignature: string,
+  params: Record<string, string>,
+) {
+  const data = Object.keys(params).reduce((acc, key, i) => {
+    const param = `${key}=${params[key]}`;
+    return i === 0 ? `${acc}?${param}` : `${acc}&${param}`;
+  }, WEBHOOK_URL);
+
+  // TODO: PR twilio as validateRequest is not working
+  const expected = crypto
+    .createHmac("sha1", TWILIO_AUTH_TOKEN)
+    .update(Buffer.from(data, "utf-8"))
+    .digest("base64");
+
+  return scmp(Buffer.from(expected), Buffer.from(twilioSignature));
+}
+
 export {
   createTwilioRoom,
   disconnectTwilioParticipant,
   getParticipantTwilioToken,
+  verifyWebhook,
 };

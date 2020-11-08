@@ -47,10 +47,11 @@
     "prettier:check": "prettier --check .",
     "build": "(cd packages/react; yarn build) && yarn workspaces run build",
     "clean": "yarn workspaces run clean",
-    "start": "ttab yarn start:react; ttab yarn start:api; ttab \"sleep 3 && yarn start:example\"",
-    "start:api": "cd packages/api && yarn start",
+    "start": "ttab yarn start:react; ttab yarn start:api; ttab yarn start:tunnel; ttab yarn start:example",
+    "start:tunnel": "cd packages/api && yarn tunnel",
+    "start:api": "sleep 10; cd packages/api && yarn start",
     "start:react": "cd packages/react && yarn start",
-    "start:example": "cd packages/example && yarn start"
+    "start:example": "sleep 3; cd packages/example && yarn start"
   },
   "husky": {
     "hooks": {

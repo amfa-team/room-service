@@ -4,6 +4,12 @@ export enum ParticipantStatus {
   "pending" = "pending",
 }
 
+type RoomVisit = {
+  id: string;
+  duration: number;
+  timestamp: Date;
+};
+
 export interface IParticipant {
   _id: string;
   id: string;
@@ -12,6 +18,7 @@ export interface IParticipant {
   // pending has a validity, see it as a reservation for a fix duration only
   statusValidUntil: Date | null;
   room: string | null;
+  roomVisits: RoomVisit[];
 }
 
 export interface IRoom {

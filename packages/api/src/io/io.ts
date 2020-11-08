@@ -121,7 +121,7 @@ export async function handlePublicGET<P extends keyof GetRoutes>(
 ): Promise<APIGatewayProxyResult> {
   try {
     await connect(context);
-    const payload = await handler();
+    const payload = await handler(event.queryStringParameters, event.headers);
     return handleSuccessResponse(payload);
   } catch (e) {
     return handleHttpErrorResponse(e);

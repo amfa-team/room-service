@@ -8,14 +8,22 @@ import {
   handleAdminParticipants,
   handleAdminRooms,
 } from "./admin/adminController";
-import { handleAdminPOST, handlePublicPOST } from "./io/io";
+import { handleAdminPOST, handlePublicGET, handlePublicPOST } from "./io/io";
 import { handleJoin, joinDecoder } from "./join/joinController";
+import { handleTwilioWebhook } from "./webhook/webhookController";
 
 export async function join(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
   return handlePublicPOST<"join">(event, context, handleJoin, joinDecoder);
+}
+
+export async function webhookStatus(
+  event: APIGatewayProxyEvent,
+  context: Context,
+): Promise<APIGatewayProxyResult> {
+  return handlePublicGET(event, context, handleTwilioWebhook);
 }
 
 export async function adminRooms(

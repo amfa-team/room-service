@@ -24,7 +24,7 @@ export async function handleJoin(data: JoinData): Promise<JoinPayload> {
   }
 
   return {
-    room: room.toJSON({ getters: true }),
+    room: room.toJSON(),
     token: getParticipantTwilioToken(participant, room),
   };
 }

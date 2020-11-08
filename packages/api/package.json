@@ -16,6 +16,7 @@
     "serverless": "^2.9.0",
     "serverless-dotenv-plugin": "^3.1.0",
     "serverless-dynamodb-local": "^0.2.39",
+    "serverless-ngrok-tunnel": "^0.0.3",
     "serverless-offline": "^6.8.0",
     "serverless-plugin-monorepo": "^0.9.0",
     "serverless-pseudo-parameters": "^2.5.0",
@@ -28,6 +29,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
+    "tunnel": "serverless tunnel --stage dev",
     "start": "serverless offline --stage dev",
     "build": "echo \"api: No build script\"",
     "clean": "rm -rf .webpack lib",
@@ -45,6 +47,7 @@
     "aws-lambda": "^1.0.6",
     "lodash.range": "^3.2.0",
     "mongoose": "^5.10.11",
+    "scmp": "^2.1.0",
     "source-map-support": "^0.5.19",
     "ts.data.json": "^1.5.0",
     "twilio": "^3.50.0",
