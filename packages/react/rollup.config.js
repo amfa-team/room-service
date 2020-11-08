@@ -45,7 +45,7 @@ export default [
         extensions,
         plugins: [["@babel/plugin-transform-runtime", { useESModules: true }]],
       }),
-      polyfill(["webrtc-adapter"]),
+      polyfill(["webrtc-adapter", "abortcontroller-polyfill"]),
       ...extraPlugins,
     ],
   },

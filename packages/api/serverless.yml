@@ -23,6 +23,7 @@ provider:
     TWILIO_ACCOUNT_SID: "${env:TWILIO_ACCOUNT_SID}"
     TWILIO_API_KEY_SID: "${env:TWILIO_API_KEY_SID}"
     TWILIO_API_KEY_SECRET: "${env:TWILIO_API_KEY_SECRET}"
+    SECRET: "${env:SECRET}"
 
 package:
   individually: true
@@ -33,6 +34,12 @@ functions:
     events:
       - http:
           path: join
+          method: post
+  adminRooms:
+    handler: src/handler.adminRooms
+    events:
+      - http:
+          path: admin/room
           method: post
 
 custom:

@@ -1,8 +1,10 @@
-import type { GetRoutes, PostRoutes } from "@amfa-team/types";
+import type { AdminData, GetRoutes, PostRoutes } from "@amfa-team/types";
 
 export interface PublicRequest<T> {
   data: T;
 }
+
+export type AdminRequest<T extends AdminData> = PublicRequest<T>;
 
 export interface RequestContext {
   domainName?: string;
