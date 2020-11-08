@@ -115,5 +115,6 @@ jobs:
           TWILIO_API_KEY_SID: ${{ secrets.TWILIO_API_KEY_SID_STAGING }}
           TWILIO_API_KEY_SECRET: ${{ secrets.TWILIO_API_KEY_SECRET_STAGING }}
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN_STAGING }}
+          MONGO_DB_URL: ${{ secrets.MONGO_DB_URL_STAGING }}
           API_ENDPOINT: ${{ secrets.API_ENDPOINT_STAGING }}
           SECRET: ${{ secrets.API_SECRET_STAGING }}

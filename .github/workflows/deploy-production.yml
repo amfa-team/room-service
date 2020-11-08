@@ -115,5 +115,6 @@ jobs:
           TWILIO_API_KEY_SID: ${{ secrets.TWILIO_API_KEY_SID_PRODUCTION }}
           TWILIO_API_KEY_SECRET: ${{ secrets.TWILIO_API_KEY_SECRET_PRODUCTION }}
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN_PRODUCTION }}
+          MONGO_DB_URL: ${{ secrets.MONGO_DB_URL_PRODUCTION }}
           API_ENDPOINT: ${{ secrets.API_ENDPOINT_PRODUCTION }}
           SECRET: ${{ secrets.API_SECRET_PRODUCTION }}
