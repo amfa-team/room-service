@@ -43,10 +43,14 @@ interface DisconnectTwilioParticipant {
 async function disconnectTwilioParticipant(
   params: DisconnectTwilioParticipant,
 ) {
-  await client.video.rooms
-    .get(params.roomSid)
-    .participants.get(params.participantSid)
-    .update({ status: "disconnected" });
+  try {
+    await client.video.rooms
+      .get(params.roomSid)
+      .participants.get(params.participantSid)
+      .update({ status: "disconnected" });
+  } catch (err) {
+    console.error("twilio/client:disconnectTwilioParticipant: fail", err);
+  }
 }
 
 function getParticipantTwilioToken(participant: IParticipant, room: IRoom) {

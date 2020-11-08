@@ -26,8 +26,20 @@ const columns = [
     },
   },
   {
-    Header: "Room",
+    Header: "Current Room",
     accessor: "room",
+  },
+  {
+    Header: "Total Duration",
+    accessor: (p: IParticipant) => {
+      return p.roomVisits.reduce((acc, v) => acc + v.duration, 0);
+    },
+  },
+  {
+    Header: "Total Room Visists",
+    accessor: (p: IParticipant) => {
+      return p.roomVisits.length;
+    },
   },
 ];
 

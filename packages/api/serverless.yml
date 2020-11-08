@@ -55,6 +55,10 @@ functions:
       - http:
           path: webhook/twilio/status
           method: get
+  cron:
+    handler: src/handler.cron
+    events:
+      - schedule: rate(1 minute)
 
 custom:
   ngrokTunnel:
@@ -68,7 +72,7 @@ custom:
           region: "eu"
 
   serverless-offline:
-    useChildProcesses: true
+    # useChildProcesses: true
     httpPort: 4000
 
   webpack:

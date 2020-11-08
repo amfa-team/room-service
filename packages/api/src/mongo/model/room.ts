@@ -35,6 +35,11 @@ const RoomSchema: Schema = new Schema(
       required: true,
       default: 0,
     },
+    live: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
   {
     minimize: false,
