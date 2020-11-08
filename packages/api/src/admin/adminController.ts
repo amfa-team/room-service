@@ -1,5 +1,12 @@
-import type { AdminRoomData, IRoom, PaginationPayload } from "@amfa-team/types";
+import type {
+  AdminParticipantData,
+  AdminRoomData,
+  IParticipant,
+  IRoom,
+  PaginationPayload,
+} from "@amfa-team/types";
 import { JsonDecoder } from "ts.data.json";
+import { ParticipantModel } from "../mongo/model/participant";
 import { RoomModel } from "../mongo/model/room";
 
 export const paginationDecoder = JsonDecoder.object(
@@ -10,12 +17,12 @@ export const paginationDecoder = JsonDecoder.object(
   "paginationDecoder",
 );
 
-export const adminRoomDecoder = JsonDecoder.object(
+export const adminDecoder = JsonDecoder.object(
   {
     pagination: paginationDecoder,
     secret: JsonDecoder.string,
   },
-  "adminRoomDecoder",
+  "adminDecoder",
 );
 
 export async function handleAdminRooms(
@@ -39,5 +46,31 @@ export async function handleAdminRooms(
       count: roomCount,
     },
     page: rooms.map((room) => room.toJSON({ getters: true })),
+  };
+}
+
+export async function handleAdminParticipants(
+  data: AdminParticipantData,
+): Promise<PaginationPayload<IParticipant>> {
+  const { pageSize, pageIndex } = data.pagination;
+  const [participantCount, participants] = await Promise.all([
+    ParticipantModel.countDocuments({}),
+    ParticipantModel.find({}, null, {
+      sort: { _id: 1 },
+      limit: pageSize,
+      skip: pageIndex * pageSize,
+    }),
+  ]);
+
+  return {
+    pagination: {
+      pageSize,
+      pageIndex,
+      pageCount: Math.ceil(participantCount / pageSize),
+      count: participantCount,
+    },
+    page: participants.map((participant) =>
+      participant.toJSON({ getters: true }),
+    ),
   };
 }

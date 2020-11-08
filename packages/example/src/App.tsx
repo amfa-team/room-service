@@ -1,4 +1,4 @@
-import { AdminRoom, TwilioApp } from "@amfa-team/room-service";
+import { AdminApp, TwilioApp } from "@amfa-team/room-service";
 import md5 from "crypto-js/md5";
 import type { ReactElement } from "react";
 import React from "react";
@@ -30,7 +30,7 @@ function App(): ReactElement | null {
             }}
           />
         </form>
-        <AdminRoom settings={{ endpoint, secret }} />
+        <AdminApp settings={{ endpoint, secret }} />
       </Route>
       <Route path="/">
         <TwilioApp

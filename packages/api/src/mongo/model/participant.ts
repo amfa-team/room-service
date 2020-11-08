@@ -13,7 +13,6 @@ const ParticipantSchema: Schema = new Schema(
     _id: {
       type: Schema.Types.ObjectId,
       required: true,
-      unique: true,
     },
     status: {
       type: String,

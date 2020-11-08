@@ -3,7 +3,11 @@ import type {
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
-import { adminRoomDecoder, handleAdminRooms } from "./admin/adminController";
+import {
+  adminDecoder,
+  handleAdminParticipants,
+  handleAdminRooms,
+} from "./admin/adminController";
 import { handleAdminPOST, handlePublicPOST } from "./io/io";
 import { handleJoin, joinDecoder } from "./join/joinController";
 
@@ -22,6 +26,18 @@ export async function adminRooms(
     event,
     context,
     handleAdminRooms,
-    adminRoomDecoder,
+    adminDecoder,
+  );
+}
+
+export async function adminParticipants(
+  event: APIGatewayProxyEvent,
+  context: Context,
+): Promise<APIGatewayProxyResult> {
+  return handleAdminPOST<"admin/participant">(
+    event,
+    context,
+    handleAdminParticipants,
+    adminDecoder,
   );
 }

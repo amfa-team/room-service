@@ -1,4 +1,4 @@
-import type { IRoom } from "./model";
+import type { IParticipant, IRoom } from "./model";
 
 export interface SuccessResponse<T> {
   success: true;
@@ -49,6 +49,10 @@ export interface AdminRoomData extends AdminData {
   pagination: PaginationData;
 }
 
+export interface AdminParticipantData extends AdminData {
+  pagination: PaginationData;
+}
+
 export interface PaginationContext extends PaginationData {
   pageCount: number;
   count: number;
@@ -69,6 +73,10 @@ export type PublicPostRoutes = {
 
 export type AdminPostRoutes = {
   "admin/room": PostRoute<AdminRoomData, PaginationPayload<IRoom>>;
+  "admin/participant": PostRoute<
+    AdminParticipantData,
+    PaginationPayload<IParticipant>
+  >;
 };
 
 export type PostRoutes = PublicPostRoutes & AdminPostRoutes;
