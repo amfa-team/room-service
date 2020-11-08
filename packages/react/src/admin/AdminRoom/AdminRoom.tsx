@@ -25,6 +25,10 @@ const columns = [
     Header: "Participants",
     accessor: (room: IRoom) => room.participants.length,
   },
+  {
+    Header: "Live",
+    accessor: "live",
+  },
 ];
 
 export default function AdminRoom({ settings }: AdminRoomProps) {

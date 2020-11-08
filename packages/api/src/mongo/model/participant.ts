@@ -62,6 +62,15 @@ const ParticipantSchema: Schema = new Schema(
     toObject: { getters: true, virtuals: true },
   },
 );
+ParticipantSchema.index(
+  {
+    status: 1,
+    statusValidUntil: 1,
+  },
+  {
+    name: "status_status-valid-until", // cronController
+  },
+);
 
 const ParticipantModel = mongoose.model<IParticipantDocument>(
   "Participant",

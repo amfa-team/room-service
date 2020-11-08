@@ -27,4 +27,5 @@ export interface IRoom {
   name: string;
   spaceId: string;
   participants: string[];
+  live: boolean;
 }

@@ -19,6 +19,8 @@ import {
 import type {
   ParticipantConnectedEvent,
   ParticipantDisconnectedEvent,
+  RoomCreatedEvent,
+  RoomEndedEvent,
 } from "../twilio/webhook";
 
 function generateRoomName() {
@@ -31,7 +33,10 @@ function generateRoomName() {
   });
 }
 
-export async function createRoom(spaceId: string): Promise<IRoomDocument> {
+export async function createRoom(
+  spaceId: string,
+  participant: IParticipantDocument,
+): Promise<IRoomDocument> {
   const uniqueName = generateRoomName();
 
   const twilioSid = await createTwilioRoom({ uniqueName });
@@ -40,6 +45,9 @@ export async function createRoom(spaceId: string): Promise<IRoomDocument> {
     _id: twilioSid,
     name: uniqueName,
     spaceId,
+    size: 1,
+    participants: [participant.id],
+    live: true,
   });
 
   await room.save();
@@ -69,6 +77,20 @@ export async function getParticipantRoom(
   participant: IParticipant,
 ): Promise<IRoomDocument | null> {
   return participant.room ? RoomModel.findById(participant.room) : null;
+}
+
+export async function onRoomCreated(event: RoomCreatedEvent) {
+  await RoomModel.findOneAndUpdate(
+    { _id: event.RoomSid },
+    { $set: { live: true } },
+  );
+}
+
+export async function onRoomEnded(event: RoomEndedEvent) {
+  await RoomModel.findOneAndUpdate(
+    { _id: event.RoomSid },
+    { $set: { live: false } },
+  );
 }
 
 export async function onParticipantConnected(event: ParticipantConnectedEvent) {
@@ -134,7 +156,7 @@ export async function disconnectParticipant(
     const oldRoom = await RoomModel.findOneAndUpdate(
       { _id: oldRoomId },
       {
-        $dec: { size: 1 },
+        $inc: { size: -1 },
       },
       { new: true },
     );
@@ -180,19 +202,27 @@ export async function joinRandomRoom(
     },
   );
 
-  if (room === null) {
-    await createRoom(spaceId);
-    return joinRandomRoom(spaceId, participant);
-  }
-
   const p = await disconnectParticipant(participant, false);
 
-  room.participants.push(participant.id);
+  if (room === null) {
+    const r = await createRoom(spaceId, participant);
+
+    p.room = r.id;
+    p.status = ParticipantStatus.pending;
+    p.statusValidUntil = new Date(Date.now() + 60_000);
+
+    await p.save();
+
+    return [r, p];
+  }
+
+  room.participants.push(p.id);
+
   p.room = room.id;
   p.status = ParticipantStatus.pending;
   p.statusValidUntil = new Date(Date.now() + 60_000);
 
-  await Promise.all([participant.save(), room.save()]);
+  await Promise.all([p.save(), room.save()]);
 
-  return [room, participant];
+  return [room, p];
 }

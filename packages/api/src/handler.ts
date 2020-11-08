@@ -8,8 +8,15 @@ import {
   handleAdminParticipants,
   handleAdminRooms,
 } from "./admin/adminController";
-import { handleAdminPOST, handlePublicGET, handlePublicPOST } from "./io/io";
+import { cronController } from "./cron/cronHandler";
+import {
+  handleAdminPOST,
+  handleHttpErrorResponse,
+  handlePublicGET,
+  handlePublicPOST,
+} from "./io/io";
 import { handleJoin, joinDecoder } from "./join/joinController";
+import { connect } from "./mongo/client";
 import { handleTwilioWebhook } from "./webhook/webhookController";
 
 export async function join(
@@ -48,4 +55,16 @@ export async function adminParticipants(
     handleAdminParticipants,
     adminDecoder,
   );
+}
+
+export async function cron(
+  e: APIGatewayProxyEvent,
+  context: Context,
+): Promise<void> {
+  try {
+    await connect(context);
+    await cronController();
+  } catch (err) {
+    await handleHttpErrorResponse(err);
+  }
 }

@@ -2,6 +2,8 @@ import { RoomStatusModel } from "../mongo/model/roomStatus";
 import {
   onParticipantConnected,
   onParticipantDisconnected,
+  onRoomCreated,
+  onRoomEnded,
 } from "../service/lifecycleService";
 import { verifyWebhook } from "../twilio/client";
 import type { RoomStatusEvent } from "../twilio/webhook";
@@ -40,6 +42,12 @@ export async function handleTwilioWebhook(
 
   try {
     switch (event.StatusCallbackEvent) {
+      case "room-created":
+        await onRoomCreated(event);
+        break;
+      case "room-ended":
+        await onRoomEnded(event);
+        break;
       case "participant-connected":
         await onParticipantConnected(event);
         break;
