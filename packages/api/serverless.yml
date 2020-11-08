@@ -89,7 +89,7 @@ functions:
   cron:
     handler: src/handler.cron
     events:
-      - schedule: rate(10 minute)
+      - schedule: rate(10 minutes)
 
 custom:
   ngrokTunnel:

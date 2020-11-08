@@ -1,4 +1,5 @@
-service: room-service-example
+service:
+  name: room-service-example
 
 provider:
   name: aws
