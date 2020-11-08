@@ -1,5 +1,5 @@
 service:
-  name: template-service-api
+  name: room-service-api
 
 plugins:
   - serverless-dotenv-plugin
@@ -24,6 +24,7 @@ provider:
     TWILIO_ACCOUNT_SID: "${env:TWILIO_ACCOUNT_SID}"
     TWILIO_API_KEY_SID: "${env:TWILIO_API_KEY_SID}"
     TWILIO_API_KEY_SECRET: "${env:TWILIO_API_KEY_SECRET}"
+    TWILIO_AUTH_TOKEN: "${env:TWILIO_AUTH_TOKEN}"
     SECRET: "${env:SECRET}"
     API_ENDPOINT: "${env:API_ENDPOINT}"
 
@@ -88,7 +89,7 @@ functions:
   cron:
     handler: src/handler.cron
     events:
-      - schedule: rate(1 minute)
+      - schedule: rate(10 minute)
 
 custom:
   ngrokTunnel:
