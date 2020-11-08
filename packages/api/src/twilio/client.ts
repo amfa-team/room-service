@@ -13,7 +13,7 @@ const apiKeySecret = getEnv("TWILIO_API_KEY_SECRET");
 const TWILIO_AUTH_TOKEN = getEnv("TWILIO_AUTH_TOKEN");
 const WEBHOOK_URL = process.env.IS_OFFLINE
   ? `${getEnv("API_ENDPOINT")}/dev/webhook/twilio/status`
-  : `${getEnv("API_ENDPOINT")}/webhook/twilio/status`;
+  : `${getEnv("API_ENDPOINT")}webhook/twilio/status`;
 
 const client = new Twilio(apiKeySID, apiKeySecret, { accountSid });
 
