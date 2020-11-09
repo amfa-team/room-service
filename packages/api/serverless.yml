@@ -15,6 +15,7 @@ provider:
   runtime: nodejs12.x
   region: eu-west-3
   memorySize: 512
+  timeout: 30
   stage: ${opt:stage}
   profile: picnic
   environment:
@@ -116,3 +117,25 @@ custom:
     - dev
     - production
     - staging
+
+resources:
+  GatewayResponseDefault4XX:
+    Type: "AWS::ApiGateway::GatewayResponse"
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+        gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+      ResponseType: DEFAULT_4XX
+      RestApiId:
+        Ref: "ApiGatewayRestApi"
+  GatewayResponseDefault5XX:
+    Type: "AWS::ApiGateway::GatewayResponse"
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+        gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+      ResponseType: DEFAULT_5XX
+      RestApiId:
+        Ref: "ApiGatewayRestApi"
