@@ -13,6 +13,7 @@ import { ParticipantModel } from "../mongo/model/participant";
 import type { IRoomDocument } from "../mongo/model/room";
 import { RoomModel } from "../mongo/model/room";
 import {
+  WEBHOOK_URL,
   createTwilioRoom,
   disconnectTwilioParticipant,
 } from "../twilio/client";
@@ -123,7 +124,7 @@ export async function onParticipantDisconnected(
   const tasks: Promise<unknown>[] = [];
   if (room) {
     room.participants = room.participants.filter(
-      (p) => p !== event.ParticipantIdentity,
+      (p) => p.toString() !== event.ParticipantIdentity,
     );
     tasks.push(room.save());
   }
@@ -186,6 +187,8 @@ export async function joinRandomRoom(
 ): Promise<[IRoomDocument, IParticipantDocument]> {
   const query: FilterQuery<IParticipantDocument> = {
     spaceId,
+    webhookUrl: WEBHOOK_URL,
+    live: true,
     size: { $gt: 0, $lt: MAX_PARTICIPANTS },
   };
 
@@ -198,7 +201,7 @@ export async function joinRandomRoom(
     { $inc: { size: 1 } },
     {
       new: true,
-      sort: { _id: 1, spaceId: 1, size: -1 },
+      sort: { spaceId: 1, webhookUrl: 1, live: 1, size: -1 },
     },
   );
 
