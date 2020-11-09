@@ -20,8 +20,10 @@ const columns = [
   {
     Header: "Status Valid Until",
     accessor: (p: IParticipant) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const d = new Date(p.statusValidUntil as any);
+      if (!p.statusValidUntil) {
+        return "NULL";
+      }
+      const d = new Date(p.statusValidUntil);
       return d.toLocaleString();
     },
   },
