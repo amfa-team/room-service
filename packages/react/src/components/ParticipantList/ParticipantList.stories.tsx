@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import React, { useEffect } from "react";
 import { generateRawParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
@@ -11,14 +12,14 @@ export default {
 
 export function NoVideo(): JSX.Element | null {
   const room = generateRawRoom();
-  return <ParticipantList room={room} />;
+  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
 }
 
 export function SingleParticipant(): JSX.Element | null {
   const room = generateRawRoom();
   room.addParticipant(generateRawParticipant({ identity: "antoine" }));
 
-  return <ParticipantList room={room} />;
+  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
 }
 
 export function TwoParticipant(): JSX.Element | null {
@@ -39,5 +40,5 @@ export function TwoParticipant(): JSX.Element | null {
       .catch(console.error);
   }, [room]);
 
-  return <ParticipantList room={room} />;
+  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
 }

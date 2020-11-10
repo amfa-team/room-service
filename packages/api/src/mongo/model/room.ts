@@ -17,7 +17,7 @@ const RoomSchema: Schema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
+      index: true,
       description: "room unique name",
     },
     spaceId: {
@@ -40,6 +40,10 @@ const RoomSchema: Schema = new Schema(
       required: true,
       default: true,
     },
+    webhookUrl: {
+      type: String,
+      required: true,
+    },
   },
   {
     minimize: false,
@@ -50,11 +54,19 @@ const RoomSchema: Schema = new Schema(
 );
 RoomSchema.index(
   {
-    _id: 1,
     spaceId: 1,
+    webhookUrl: 1,
+    live: 1,
     size: -1,
   },
-  { name: "room-space-size" }, // for joinRandomRoom
+  { name: "room-webhookUrl-space-size" }, // for joinRandomRoom
+);
+RoomSchema.index(
+  {
+    _id: 1,
+    webhookUrl: 1,
+  },
+  { name: "room-webhook" }, // for onParticipantDisconnected
 );
 
 const RoomModel = mongoose.model<IRoomDocument>("Room", RoomSchema);

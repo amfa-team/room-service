@@ -15,7 +15,7 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
   const { isAcquiringLocalTracks, videoTrack } = useTwilioLocalTracks();
   const history = useHistory();
 
-  const { join, isJoining } = useJoin(user.id, spaceId);
+  const { join, isJoining } = useJoin(user.id, spaceId, false);
   const onJoinClicked = useCallback(async () => {
     const roomName = await join();
     history.push(`./${roomName}`);

@@ -9,13 +9,6 @@ import {
 import type { ApiSettings } from "./api";
 import { apiPost } from "./api";
 
-// export const joinQuery = selectorFamily<JoinPayload, ApiSettings>({
-//   key: "react/api/hello",
-//   get: (setting) => async () => {
-//     return apiGet(setting, "hello");
-//   },
-// });
-
 const tokenAtom = atom<null | string>({
   key: "room-service/useApi/token",
   default: null,
@@ -48,7 +41,11 @@ export function useApiSettings(): ApiSettings {
   return settings;
 }
 
-export function useJoin(participantId: string, spaceId: string) {
+export function useJoin(
+  participantId: string,
+  spaceId: string,
+  change: boolean,
+) {
   const settings = useApiSettings();
   const setRoom = useSetRecoilState(roomAtom);
   const setToken = useSetRecoilState(tokenAtom);
@@ -57,7 +54,11 @@ export function useJoin(participantId: string, spaceId: string) {
   const join = useCallback(async () => {
     setIsJoining(true);
     try {
-      const data = await apiPost(settings, "join", { participantId, spaceId });
+      const data = await apiPost(settings, "join", {
+        participantId,
+        spaceId,
+        change,
+      });
       setRoom(data.room);
       setToken(data.token);
       setIsJoining(false);
@@ -68,7 +69,7 @@ export function useJoin(participantId: string, spaceId: string) {
       setIsJoining(false);
       throw e;
     }
-  }, [settings, participantId, spaceId, setToken, setRoom]);
+  }, [settings, participantId, spaceId, setToken, setRoom, change]);
 
   return {
     join,

@@ -27,7 +27,7 @@ const columns = [
   },
   {
     Header: "Live",
-    accessor: "live",
+    accessor: (room: IRoom) => (room.live ? "TRUE" : "FALSE"),
   },
 ];
 

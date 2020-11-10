@@ -15,6 +15,7 @@ provider:
   runtime: nodejs12.x
   region: eu-west-3
   memorySize: 512
+  timeout: 30
   stage: ${opt:stage}
   profile: picnic
   environment:

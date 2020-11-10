@@ -6,6 +6,7 @@ import type {
   UsePaginationOptions,
   UsePaginationState,
 } from "react-table";
+import classes from "./table.module.css";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 interface TableProps<T extends object> {
@@ -33,7 +34,7 @@ export default function Table<T extends object>({
 
   const initialPaginationState: UsePaginationState<T> = {
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 50,
   };
 
   const instanceProps = useTable(
@@ -80,14 +81,14 @@ export default function Table<T extends object>({
 
   return (
     <>
-      <table {...getTableProps()}>
+      <table className={classes.table} {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             /* eslint-disable-next-line react/jsx-key */
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 /* eslint-disable-next-line react/jsx-key */
-                <th {...column.getHeaderProps()}>
+                <th className={classes.th} {...column.getHeaderProps()}>
                   {column.render("Header")}
                   {/* <span>
                     {column.isSorted
@@ -110,7 +111,9 @@ export default function Table<T extends object>({
                 {row.cells.map((cell) => {
                   return (
                     /* eslint-disable-next-line react/jsx-key */
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td className={classes.td} {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </td>
                   );
                 })}
               </tr>

@@ -28,4 +28,5 @@ export interface IRoom {
   spaceId: string;
   participants: string[];
   live: boolean;
+  webhookUrl: string;
 }

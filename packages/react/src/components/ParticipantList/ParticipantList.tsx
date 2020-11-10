@@ -9,6 +9,7 @@ import styles from "./participantList.module.css";
 
 export interface ParticipantListProps {
   room: IRoom;
+  onShuffle: () => void;
 }
 
 export default function ParticipantList(
@@ -34,6 +35,9 @@ export default function ParticipantList(
       })}
     >
       <div className={styles.scrollContainer}>
+        <button type="button" onClick={props.onShuffle}>
+          Shuffle
+        </button>
         <Participant
           participant={localParticipant}
           isLocalParticipant
