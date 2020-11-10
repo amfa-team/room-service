@@ -49,6 +49,7 @@ export async function createRoom(
     size: 1,
     participants: [participant.id],
     live: true,
+    webhookUrl: WEBHOOK_URL,
   });
 
   await room.save();

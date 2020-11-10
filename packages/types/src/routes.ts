@@ -29,6 +29,7 @@ export type PostRoute<I, O> = {
 export interface JoinData {
   spaceId: string;
   participantId: string;
+  change: boolean;
 }
 
 export interface JoinPayload {

@@ -25,7 +25,7 @@ function TwilioApp(props: TwilioAppProps) {
   return (
     <Switch>
       <Route path={`${path}:roomName`}>
-        <TwilioRoomPage />
+        <TwilioRoomPage user={props.user} spaceId={props.space.id} />
       </Route>
       <Route exact path={path}>
         <TwilioWaitingPage user={props.user} spaceId={props.space.id} />

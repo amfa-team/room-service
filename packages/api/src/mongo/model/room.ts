@@ -43,7 +43,6 @@ const RoomSchema: Schema = new Schema(
     webhookUrl: {
       type: String,
       required: true,
-      default: true,
     },
   },
   {

@@ -11,6 +11,7 @@ export const joinDecoder = JsonDecoder.object(
   {
     spaceId: JsonDecoder.string,
     participantId: JsonDecoder.string,
+    change: JsonDecoder.boolean,
   },
   "joinDecoder",
 );
@@ -19,7 +20,7 @@ export async function handleJoin(data: JoinData): Promise<JoinPayload> {
   let participant = await findOrCreateParticipant(data.participantId);
   let room = await getParticipantRoom(participant);
 
-  if (!room) {
+  if (data.change || !room) {
     [room, participant] = await joinRandomRoom(data.spaceId, participant);
   }
 
