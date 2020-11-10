@@ -45,6 +45,7 @@ module.exports = {
           authToken: process.env.SENTRY_AUTH_TOKEN,
           org: "side-by-side-sas",
           project: "room-service-api",
+          include: "./src",
         }),
   ],
   externals: [
