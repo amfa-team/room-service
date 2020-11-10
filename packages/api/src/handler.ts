@@ -36,7 +36,7 @@ export const webhookStatus = AWSLambda.wrapHandler(async function webhookStatus(
     context,
     handleTwilioWebhook,
     JsonDecoder.string,
-    true,
+    false,
   );
 });
 
