@@ -1,3 +1,4 @@
+import { AWSLambda } from "@sentry/serverless";
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -19,21 +20,21 @@ import { handleJoin, joinDecoder } from "./join/joinController";
 import { connect } from "./mongo/client";
 import { handleTwilioWebhook } from "./webhook/webhookController";
 
-export async function join(
+export const join = AWSLambda.wrapHandler(async function join(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
   return handlePublicPOST<"join">(event, context, handleJoin, joinDecoder);
-}
+});
 
-export async function webhookStatus(
+export const webhookStatus = AWSLambda.wrapHandler(async function webhookStatus(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
   return handlePublicGET(event, context, handleTwilioWebhook);
-}
+});
 
-export async function adminRooms(
+export const adminRooms = AWSLambda.wrapHandler(async function adminRooms(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
@@ -43,21 +44,23 @@ export async function adminRooms(
     handleAdminRooms,
     adminDecoder,
   );
-}
+});
 
-export async function adminParticipants(
-  event: APIGatewayProxyEvent,
-  context: Context,
-): Promise<APIGatewayProxyResult> {
-  return handleAdminPOST<"admin/participant">(
-    event,
-    context,
-    handleAdminParticipants,
-    adminDecoder,
-  );
-}
+export const adminParticipants = AWSLambda.wrapHandler(
+  async function adminParticipants(
+    event: APIGatewayProxyEvent,
+    context: Context,
+  ): Promise<APIGatewayProxyResult> {
+    return handleAdminPOST<"admin/participant">(
+      event,
+      context,
+      handleAdminParticipants,
+      adminDecoder,
+    );
+  },
+);
 
-export async function cron(
+export const cron = AWSLambda.wrapHandler(async function cron(
   e: APIGatewayProxyEvent,
   context: Context,
 ): Promise<void> {
@@ -67,4 +70,4 @@ export async function cron(
   } catch (err) {
     await handleHttpErrorResponse(err);
   }
-}
+});
