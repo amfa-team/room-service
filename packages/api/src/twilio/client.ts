@@ -1,9 +1,9 @@
 import crypto from "crypto";
+import querystring from "querystring";
 import type { IParticipant, IRoom } from "@amfa-team/types";
 // @ts-ignore
 import scmp from "scmp";
-import { Twilio, jwt } from "twilio";
-import { validateRequestWithBody } from "twilio/lib/webhooks/webhooks";
+import { Twilio, jwt, validateRequest, validateRequestWithBody } from "twilio";
 import { MAX_ALLOWED_SESSION_DURATION, MAX_PARTICIPANTS } from "../constants";
 import { getEnv } from "../utils/env";
 
@@ -75,7 +75,19 @@ function verifyWebhook(twilioSignature: string, params: string) {
       params,
     )
   ) {
-    console.log("twilioClient.verifyWebhook: twilio methods worked");
+    console.log("twilioClient.verifyWebhook: twilio body methods worked");
+    return true;
+  }
+
+  if (
+    validateRequest(
+      TWILIO_AUTH_TOKEN,
+      twilioSignature,
+      WEBHOOK_URL,
+      querystring.parse(params),
+    )
+  ) {
+    console.log("twilioClient.verifyWebhook: twilio get methods worked");
     return true;
   }
 

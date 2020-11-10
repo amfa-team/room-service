@@ -118,3 +118,4 @@ jobs:
           MONGO_DB_URL: ${{ secrets.MONGO_DB_URL_PRODUCTION }}
           API_ENDPOINT: ${{ secrets.API_ENDPOINT_PRODUCTION }}
           SECRET: ${{ secrets.API_SECRET_PRODUCTION }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
