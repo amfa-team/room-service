@@ -112,7 +112,8 @@ export async function onParticipantDisconnected(
       { new: true },
     ),
     ParticipantModel.findOneAndUpdate(
-      { _id: event.ParticipantIdentity },
+      // we need to use room filter to prevent race condition when shuffle is used
+      { _id: event.ParticipantIdentity, room: event.RoomSid },
       {
         $set: {
           status: ParticipantStatus.disconnected,
