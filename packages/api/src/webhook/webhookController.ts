@@ -1,3 +1,4 @@
+import querystring from "querystring";
 import { RoomStatusModel } from "../mongo/model/roomStatus";
 import {
   onParticipantConnected,
@@ -10,7 +11,7 @@ import type { RoomStatusEvent } from "../twilio/webhook";
 import { roomStatusEventDecoder } from "../twilio/webhook";
 
 export async function handleTwilioWebhook(
-  params: Record<string, string> | null,
+  params: string | null,
   headers: Record<string, string | null>,
 ): Promise<boolean> {
   if (params === null) {
@@ -23,15 +24,18 @@ export async function handleTwilioWebhook(
     );
   }
 
-  const result = roomStatusEventDecoder.decode(params);
+  const data = querystring.parse(params);
+  const result = roomStatusEventDecoder.decode(data);
 
   if (!result.isOk()) {
     console.error(
       "webhookController.handleTwilioWebhook: unknown event",
       params,
+      data,
     );
     await RoomStatusModel.create({
-      event: params,
+      event: null,
+      rawEvent: params,
       success: false,
     });
 
@@ -64,7 +68,8 @@ export async function handleTwilioWebhook(
       error,
     );
     await RoomStatusModel.create({
-      event: params,
+      event,
+      rawEvent: params,
       success: false,
     });
     return false;
@@ -72,7 +77,8 @@ export async function handleTwilioWebhook(
 
   // Out from try/catch to return error status on fail (twilio will retry the request
   await RoomStatusModel.create({
-    event: params,
+    event,
+    rawEvent: params,
     success: true,
   });
 

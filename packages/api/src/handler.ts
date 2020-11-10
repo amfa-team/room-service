@@ -4,6 +4,7 @@ import type {
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
+import { JsonDecoder } from "ts.data.json";
 import {
   adminDecoder,
   handleAdminParticipants,
@@ -13,7 +14,6 @@ import { cronController } from "./cron/cronHandler";
 import {
   handleAdminPOST,
   handleHttpErrorResponse,
-  handlePublicGET,
   handlePublicPOST,
 } from "./io/io";
 import { handleJoin, joinDecoder } from "./join/joinController";
@@ -31,7 +31,13 @@ export const webhookStatus = AWSLambda.wrapHandler(async function webhookStatus(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
-  return handlePublicGET(event, context, handleTwilioWebhook);
+  return handlePublicPOST<"webhook/twilio/status">(
+    event,
+    context,
+    handleTwilioWebhook,
+    JsonDecoder.string,
+    true,
+  );
 });
 
 export const adminRooms = AWSLambda.wrapHandler(async function adminRooms(

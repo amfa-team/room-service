@@ -18,4 +18,5 @@ export type GetHandler<P extends keyof GetRoutes> = (
 
 export type PostHandler<P extends keyof PostRoutes> = (
   data: PostRoutes[P]["in"],
+  headers: Record<string, string>,
 ) => Promise<PostRoutes[P]["out"]>;

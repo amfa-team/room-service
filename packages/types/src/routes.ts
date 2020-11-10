@@ -65,11 +65,12 @@ export interface PaginationPayload<T> {
 }
 
 export type GetRoutes = {
-  "webhook/twilio/status": GetRoute<boolean>;
+  // no-op
 };
 
 export type PublicPostRoutes = {
   join: PostRoute<JoinData, JoinPayload>;
+  "webhook/twilio/status": PostRoute<string, boolean>;
 };
 
 export type AdminPostRoutes = {

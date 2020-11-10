@@ -20,12 +20,11 @@ import type {
   PublicRequest,
 } from "./types";
 
-if (!process.env.IS_OFFLINE) {
-  init({
-    dsn: process.env.SENTRY_DNS,
-    environment: process.env.SENTRY_ENVIRONMENT,
-  });
-}
+init({
+  dsn: process.env.SENTRY_DNS,
+  environment: process.env.SENTRY_ENVIRONMENT,
+  enabled: !process.env.IS_OFFLINE,
+});
 
 const SECRET = process.env.SECRET ?? "";
 
@@ -50,8 +49,9 @@ function decode<T>(data: unknown, decoder: JsonDecoder.Decoder<T>): T {
 export function parseHttpPublicRequest<T>(
   event: APIGatewayProxyEvent,
   decoder: JsonDecoder.Decoder<T>,
+  jsonParse: boolean,
 ): PublicRequest<T> {
-  const body = parse(event.body);
+  const body = jsonParse ? parse(event.body) : event.body;
   return { data: decode(body, decoder) };
 }
 
@@ -135,11 +135,12 @@ export async function handlePublicPOST<P extends keyof PublicPostRoutes>(
   context: Context,
   handler: PostHandler<P>,
   decoder: JsonDecoder.Decoder<PublicPostRoutes[P]["in"]>,
+  jsonParse: boolean = true,
 ): Promise<APIGatewayProxyResult> {
   try {
     await connect(context);
-    const { data } = await parseHttpPublicRequest(event, decoder);
-    const payload = await handler(data);
+    const { data } = await parseHttpPublicRequest(event, decoder, jsonParse);
+    const payload = await handler(data, event.headers);
     return handleSuccessResponse(payload);
   } catch (e) {
     return handleHttpErrorResponse(e, event);
@@ -155,7 +156,7 @@ export async function handleAdminPOST<P extends keyof AdminPostRoutes>(
   try {
     await connect(context);
     const { data } = await parseHttpAdminRequest(event, decoder);
-    const payload = await handler(data);
+    const payload = await handler(data, event.headers);
     return handleSuccessResponse(payload);
   } catch (e) {
     return handleHttpErrorResponse(e, event);

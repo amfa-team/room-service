@@ -86,7 +86,7 @@ functions:
     events:
       - http:
           path: webhook/twilio/status
-          method: get
+          method: post
   cron:
     handler: src/handler.cron
     events:

@@ -4,7 +4,8 @@ import type { RoomStatusEvent } from "../../twilio/webhook";
 
 interface IRoomStatusDocument extends Document {
   id: string;
-  event: RoomStatusEvent | Record<string, string>;
+  event: RoomStatusEvent | null;
+  rawEvent: string;
   success: boolean;
 }
 
@@ -12,6 +13,11 @@ const RoomStatusSchema: Schema = new Schema(
   {
     event: {
       type: Schema.Types.Mixed,
+      required: false,
+      default: null,
+    },
+    rawEvent: {
+      type: Schema.Types.String,
       required: true,
     },
     success: {
