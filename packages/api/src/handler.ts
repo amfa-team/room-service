@@ -68,6 +68,6 @@ export const cron = AWSLambda.wrapHandler(async function cron(
     await connect(context);
     await cronController();
   } catch (err) {
-    await handleHttpErrorResponse(err);
+    await handleHttpErrorResponse(err, e);
   }
 });

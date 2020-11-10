@@ -3,6 +3,7 @@ import type { IParticipant, IRoom } from "@amfa-team/types";
 // @ts-ignore
 import scmp from "scmp";
 import { Twilio, jwt } from "twilio";
+import { validateRequest } from "twilio/lib/webhooks/webhooks";
 import { MAX_ALLOWED_SESSION_DURATION, MAX_PARTICIPANTS } from "../constants";
 import { getEnv } from "../utils/env";
 
@@ -69,12 +70,21 @@ function verifyWebhook(
   twilioSignature: string,
   params: Record<string, string>,
 ) {
+  if (
+    validateRequest(TWILIO_AUTH_TOKEN, twilioSignature, WEBHOOK_URL, params)
+  ) {
+    console.log("twilioClient.verifyWebhook: twilio methods worked");
+    return true;
+  }
+
+  console.warn("twilioClient.verifyWebhook: twilio methods failed");
+
   const data = Object.keys(params).reduce((acc, key, i) => {
     const param = `${key}=${params[key]}`;
     return i === 0 ? `${acc}?${param}` : `${acc}&${param}`;
   }, WEBHOOK_URL);
 
-  // TODO: PR twilio as validateRequest is not working
+  // TODO: PR twilio as validateRequest is not working in local
   const expected = crypto
     .createHmac("sha1", TWILIO_AUTH_TOKEN)
     .update(Buffer.from(data, "utf-8"))

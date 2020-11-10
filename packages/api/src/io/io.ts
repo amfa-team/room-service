@@ -71,6 +71,7 @@ export function parseHttpAdminRequest<T extends AdminData>(
 
 export async function handleHttpErrorResponse(
   e: unknown,
+  event: APIGatewayProxyEvent,
 ): Promise<APIGatewayProxyResult> {
   if (e instanceof InvalidRequestError) {
     return {
@@ -82,6 +83,7 @@ export async function handleHttpErrorResponse(
     };
   }
 
+  console.log("handleHttpErrorResponse: event", event);
   if (!process.env.IS_OFFLINE) {
     captureException(e);
     await flush(2000);
@@ -124,7 +126,7 @@ export async function handlePublicGET<P extends keyof GetRoutes>(
     const payload = await handler(event.queryStringParameters, event.headers);
     return handleSuccessResponse(payload);
   } catch (e) {
-    return handleHttpErrorResponse(e);
+    return handleHttpErrorResponse(e, event);
   }
 }
 
@@ -140,7 +142,7 @@ export async function handlePublicPOST<P extends keyof PublicPostRoutes>(
     const payload = await handler(data);
     return handleSuccessResponse(payload);
   } catch (e) {
-    return handleHttpErrorResponse(e);
+    return handleHttpErrorResponse(e, event);
   }
 }
 
@@ -156,6 +158,6 @@ export async function handleAdminPOST<P extends keyof AdminPostRoutes>(
     const payload = await handler(data);
     return handleSuccessResponse(payload);
   } catch (e) {
-    return handleHttpErrorResponse(e);
+    return handleHttpErrorResponse(e, event);
   }
 }
