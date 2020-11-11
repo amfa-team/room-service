@@ -66,7 +66,7 @@ export const adminParticipants = AWSLambda.wrapHandler(
   },
 );
 
-export const cron = AWSLambda.wrapHandler(async function cron(
+export async function cron(
   e: APIGatewayProxyEvent,
   context: Context,
 ): Promise<void> {
@@ -76,4 +76,4 @@ export const cron = AWSLambda.wrapHandler(async function cron(
   } catch (err) {
     await handleHttpErrorResponse(err, e);
   }
-});
+}

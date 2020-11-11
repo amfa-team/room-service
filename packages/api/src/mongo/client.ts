@@ -18,8 +18,6 @@ async function getClient(url: string): Promise<Mongoose> {
   try {
     cachedClient = _connect(url, {
       appname: `room-service-${getEnvName()}`,
-      reconnectTries: 60,
-      reconnectInterval: 500,
       useNewUrlParser: true,
       useUnifiedTopology: true,
       connectTimeoutMS: 10_000,
