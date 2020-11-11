@@ -15,9 +15,9 @@ import {
   handleAdminPOST,
   handleHttpErrorResponse,
   handlePublicPOST,
+  init,
 } from "./io/io";
 import { handleJoin, joinDecoder } from "./join/joinController";
-import { connect } from "./mongo/client";
 import { handleTwilioWebhook } from "./webhook/webhookController";
 
 export const join = AWSLambda.wrapHandler(async function join(
@@ -71,7 +71,7 @@ export const cron = AWSLambda.wrapHandler(async function cron(
   context: Context,
 ): Promise<void> {
   try {
-    await connect(context);
+    await init(context);
     await cronController();
   } catch (err) {
     await handleHttpErrorResponse(err, e);
