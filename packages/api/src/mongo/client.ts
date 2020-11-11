@@ -75,16 +75,20 @@ async function getClient(url: string): Promise<Mongoose> {
   }
 }
 
-export async function connect(context: Context): Promise<Mongoose> {
-  // eslint-disable-next-line no-param-reassign
-  context.callbackWaitsForEmptyEventLoop = false;
+export async function connect(context: Context | null): Promise<Mongoose> {
+  if (context) {
+    // eslint-disable-next-line no-param-reassign
+    context.callbackWaitsForEmptyEventLoop = false;
+  }
   // mongoose.set("debug", true);
 
   return getClient(getEnv("MONGO_DB_URL"));
 }
 
-export function close(context: Context) {
-  // eslint-disable-next-line no-param-reassign
-  context.callbackWaitsForEmptyEventLoop = true;
+export function close(context: Context | null) {
+  if (context) {
+    // eslint-disable-next-line no-param-reassign
+    context.callbackWaitsForEmptyEventLoop = true;
+  }
   closing = true;
 }

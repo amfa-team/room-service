@@ -67,16 +67,13 @@ export const adminParticipants = AWSLambda.wrapHandler(
   },
 );
 
-export async function cron(
-  e: APIGatewayProxyEvent,
-  context: Context,
-): Promise<void> {
+export async function cron(e: APIGatewayProxyEvent): Promise<void> {
   try {
-    await init(context);
+    await init(null);
     await cronController();
   } catch (err) {
     await handleHttpErrorResponse(err, e);
   } finally {
-    await teardown(context);
+    await teardown(null);
   }
 }

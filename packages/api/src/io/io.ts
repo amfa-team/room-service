@@ -21,7 +21,7 @@ import type {
   PublicRequest,
 } from "./types";
 
-export async function init(context: Context) {
+export async function init(context: Context | null) {
   initSentry({
     dsn: process.env.SENTRY_DNS,
     environment: process.env.SENTRY_ENVIRONMENT,
@@ -30,7 +30,7 @@ export async function init(context: Context) {
   await connect(context);
 }
 
-export async function teardown(context: Context) {
+export async function teardown(context: Context | null) {
   close(context);
   await flush(2000);
 }
