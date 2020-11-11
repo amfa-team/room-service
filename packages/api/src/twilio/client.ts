@@ -1,9 +1,6 @@
-import crypto from "crypto";
 import querystring from "querystring";
 import type { IParticipant, IRoom } from "@amfa-team/types";
-// @ts-ignore
-import scmp from "scmp";
-import { Twilio, jwt, validateRequest, validateRequestWithBody } from "twilio";
+import { Twilio, jwt, validateRequest } from "twilio";
 import { MAX_ALLOWED_SESSION_DURATION, MAX_PARTICIPANTS } from "../constants";
 import { logger } from "../io/logger";
 import { getEnv } from "../utils/env";
@@ -68,39 +65,12 @@ function getParticipantTwilioToken(participant: IParticipant, room: IRoom) {
 }
 
 function verifyWebhook(twilioSignature: string, params: string) {
-  if (
-    validateRequestWithBody(
-      TWILIO_AUTH_TOKEN,
-      twilioSignature,
-      WEBHOOK_URL,
-      params,
-    )
-  ) {
-    logger.log("twilioClient.verifyWebhook: twilio body methods worked");
-    return true;
-  }
-
-  if (
-    validateRequest(
-      TWILIO_AUTH_TOKEN,
-      twilioSignature,
-      WEBHOOK_URL,
-      querystring.parse(params),
-    )
-  ) {
-    logger.log("twilioClient.verifyWebhook: twilio get methods worked");
-    return true;
-  }
-
-  logger.warn("twilioClient.verifyWebhook: twilio methods failed");
-
-  // TODO: PR twilio as validateRequest is not working in local
-  const expected = crypto
-    .createHmac("sha1", TWILIO_AUTH_TOKEN)
-    .update(Buffer.from(params, "utf-8"))
-    .digest("base64");
-
-  return scmp(Buffer.from(expected), Buffer.from(twilioSignature));
+  return validateRequest(
+    TWILIO_AUTH_TOKEN,
+    twilioSignature,
+    WEBHOOK_URL,
+    querystring.parse(params),
+  );
 }
 
 export {
