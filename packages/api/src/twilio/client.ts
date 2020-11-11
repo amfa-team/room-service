@@ -5,6 +5,7 @@ import type { IParticipant, IRoom } from "@amfa-team/types";
 import scmp from "scmp";
 import { Twilio, jwt, validateRequest, validateRequestWithBody } from "twilio";
 import { MAX_ALLOWED_SESSION_DURATION, MAX_PARTICIPANTS } from "../constants";
+import { logger } from "../io/logger";
 import { getEnv } from "../utils/env";
 
 const { AccessToken } = jwt;
@@ -50,7 +51,7 @@ async function disconnectTwilioParticipant(
       .participants.get(params.participantSid)
       .update({ status: "disconnected" });
   } catch (err) {
-    console.error("twilio/client:disconnectTwilioParticipant: fail", err);
+    logger.error(err, "twilio/client:disconnectTwilioParticipant: fail");
   }
 }
 
@@ -75,7 +76,7 @@ function verifyWebhook(twilioSignature: string, params: string) {
       params,
     )
   ) {
-    console.log("twilioClient.verifyWebhook: twilio body methods worked");
+    logger.log("twilioClient.verifyWebhook: twilio body methods worked");
     return true;
   }
 
@@ -87,11 +88,11 @@ function verifyWebhook(twilioSignature: string, params: string) {
       querystring.parse(params),
     )
   ) {
-    console.log("twilioClient.verifyWebhook: twilio get methods worked");
+    logger.log("twilioClient.verifyWebhook: twilio get methods worked");
     return true;
   }
 
-  console.warn("twilioClient.verifyWebhook: twilio methods failed");
+  logger.warn("twilioClient.verifyWebhook: twilio methods failed");
 
   // TODO: PR twilio as validateRequest is not working in local
   const expected = crypto

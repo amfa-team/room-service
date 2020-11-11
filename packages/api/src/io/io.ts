@@ -4,7 +4,7 @@ import type {
   GetRoutes,
   PublicPostRoutes,
 } from "@amfa-team/types";
-import { captureException, flush, init } from "@sentry/node";
+import { init } from "@sentry/node";
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -13,6 +13,7 @@ import type {
 import type { JsonDecoder } from "ts.data.json";
 import { connect } from "../mongo/client";
 import { ForbiddenError, InvalidRequestError } from "./exceptions";
+import { logger } from "./logger";
 import type {
   AdminRequest,
   GetHandler,
@@ -83,13 +84,7 @@ export async function handleHttpErrorResponse(
     };
   }
 
-  console.log("handleHttpErrorResponse: event", event);
-  if (!process.env.IS_OFFLINE) {
-    captureException(e);
-    await flush(2000);
-  } else {
-    console.error(e);
-  }
+  logger.error(e, "handleHttpErrorResponse", { event });
 
   return {
     statusCode: 500,

@@ -1,4 +1,5 @@
 import querystring from "querystring";
+import { logger } from "../io/logger";
 import { RoomStatusModel } from "../mongo/model/roomStatus";
 import {
   onParticipantConnected,
@@ -28,10 +29,10 @@ export async function handleTwilioWebhook(
   const result = roomStatusEventDecoder.decode(data);
 
   if (!result.isOk()) {
-    console.error(
-      "webhookController.handleTwilioWebhook: unknown event",
-      params,
-      data,
+    logger.error(
+      new Error("webhookController.handleTwilioWebhook: unknown event"),
+      null,
+      { params, data },
     );
     await RoomStatusModel.create({
       event: null,
@@ -63,9 +64,10 @@ export async function handleTwilioWebhook(
   } catch (error) {
     // Do not throw to prevent Twilio from sending back the request, we saved the query in database
     // we need to fix something
-    console.error(
-      "webhookController.handleTwilioWebhook: failed to process event",
+    logger.error(
       error,
+      "webhookController.handleTwilioWebhook: failed to process event",
+      { params, data },
     );
     await RoomStatusModel.create({
       event,

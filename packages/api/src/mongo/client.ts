@@ -1,16 +1,17 @@
 import type { Context } from "aws-lambda";
 import { connect as _connect } from "mongoose";
 import type { Mongoose } from "mongoose";
+import { logger } from "../io/logger";
 import { getEnv, getEnvName } from "../utils/env";
 
 const cachedClientMap: Map<string, Promise<Mongoose>> = new Map();
 
 async function getClient(url: string): Promise<Mongoose> {
-  console.log("[mongo/client:getClient]: connecting to mongodb");
+  logger.info("[mongo/client:getClient]: connecting to mongodb");
 
   let cachedClient = cachedClientMap.get(url) ?? null;
   if (cachedClient) {
-    console.log("[mongo/client:getClient]: using cached mongodb client");
+    logger.info("[mongo/client:getClient]: using cached mongodb client");
     return cachedClient;
   }
 
@@ -31,36 +32,36 @@ async function getClient(url: string): Promise<Mongoose> {
 
     const client: Mongoose = await cachedClient;
 
-    console.log("[mongo/client:connect]: connected to mongodb", {
+    logger.info("[mongo/client:connect]: connected to mongodb", {
       url,
     });
 
     client.connection.on("error", (err) => {
-      console.error("[mongo/client:event]: error", { err });
+      logger.error(err, "[mongo/client:event]: error");
     });
 
     client.connection.on("reconnectFailed", (err) => {
-      console.error("[mongo/client:event]: reconnectFailed", { err });
+      logger.error(err, "[mongo/client:event]: reconnectFailed");
       cachedClientMap.delete(url);
     });
 
     client.connection.on("disconnected", () => {
-      console.error("[mongo/client:event]: disconnected");
+      logger.error(new Error("[mongo/client:event]: disconnected"));
     });
 
     client.connection.on("connected", () => {
-      console.warn("[mongo/client:event]: disconnected");
+      logger.warn("[mongo/client:event]: disconnected");
     });
 
     client.connection.on("close", () => {
-      console.warn("[mongo/client:event]: close");
+      logger.warn("[mongo/client:event]: close");
       cachedClientMap.delete(url);
     });
 
     return client;
   } catch (e) {
     const message = "[mongo/client:connect]: unable to connect to mongodb";
-    console.error(message, { error: e });
+    logger.error(e, message);
     throw new Error(message);
   }
 }

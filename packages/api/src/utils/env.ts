@@ -1,3 +1,5 @@
+import { logger } from "../io/logger";
+
 export function getEnv(key: string): string {
   const value = process.env[key];
 
@@ -15,7 +17,7 @@ export function getOptionalEnv(
   const value = process.env[key] ?? null;
 
   if (!value) {
-    console.warn(
+    logger.warn(
       `getOptionalEnv: missing env-var "${key}", using default value "${defaultValue}"`,
     );
 
