@@ -191,7 +191,7 @@ export async function joinRandomRoom(
     spaceId,
     webhookUrl: WEBHOOK_URL,
     live: true,
-    size: { $gt: 0, $lt: MAX_PARTICIPANTS },
+    size: { $lt: MAX_PARTICIPANTS },
   };
 
   if (participant.room) {
