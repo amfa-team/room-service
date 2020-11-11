@@ -4,7 +4,7 @@ import type {
   GetRoutes,
   PublicPostRoutes,
 } from "@amfa-team/types";
-import { init } from "@sentry/node";
+import { init as initSentry } from "@sentry/node";
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -21,11 +21,14 @@ import type {
   PublicRequest,
 } from "./types";
 
-init({
-  dsn: process.env.SENTRY_DNS,
-  environment: process.env.SENTRY_ENVIRONMENT,
-  enabled: !process.env.IS_OFFLINE,
-});
+export async function init(context: Context) {
+  initSentry({
+    dsn: process.env.SENTRY_DNS,
+    environment: process.env.SENTRY_ENVIRONMENT,
+    enabled: !process.env.IS_OFFLINE,
+  });
+  await connect(context);
+}
 
 const SECRET = process.env.SECRET ?? "";
 
@@ -117,7 +120,7 @@ export async function handlePublicGET<P extends keyof GetRoutes>(
   handler: GetHandler<P>,
 ): Promise<APIGatewayProxyResult> {
   try {
-    await connect(context);
+    await init(context);
     const payload = await handler(event.queryStringParameters, event.headers);
     return handleSuccessResponse(payload);
   } catch (e) {
@@ -133,7 +136,7 @@ export async function handlePublicPOST<P extends keyof PublicPostRoutes>(
   jsonParse: boolean = true,
 ): Promise<APIGatewayProxyResult> {
   try {
-    await connect(context);
+    await init(context);
     const { data } = await parseHttpPublicRequest(event, decoder, jsonParse);
     const payload = await handler(data, event.headers);
     return handleSuccessResponse(payload);
@@ -149,7 +152,7 @@ export async function handleAdminPOST<P extends keyof AdminPostRoutes>(
   decoder: JsonDecoder.Decoder<AdminPostRoutes[P]["in"]>,
 ): Promise<APIGatewayProxyResult> {
   try {
-    await connect(context);
+    await init(context);
     const { data } = await parseHttpAdminRequest(event, decoder);
     const payload = await handler(data, event.headers);
     return handleSuccessResponse(payload);
