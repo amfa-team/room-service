@@ -5,6 +5,7 @@ import { logger } from "../io/logger";
 import { getEnv, getEnvName } from "../utils/env";
 
 const cachedClientMap: Map<string, Promise<Mongoose>> = new Map();
+let closing = false;
 
 async function getClient(url: string): Promise<Mongoose> {
   logger.info("[mongo/client:getClient]: connecting to mongodb");
@@ -61,7 +62,9 @@ async function getClient(url: string): Promise<Mongoose> {
     client.connection.on("close", () => {
       logger.warn("[mongo/client:event]: close");
       cachedClientMap.delete(url);
-      getClient(url).catch((e) => logger.error(e));
+      if (!closing) {
+        getClient(url).catch((e) => logger.error(e));
+      }
     });
 
     return client;
@@ -78,4 +81,10 @@ export async function connect(context: Context): Promise<Mongoose> {
   // mongoose.set("debug", true);
 
   return getClient(getEnv("MONGO_DB_URL"));
+}
+
+export function close(context: Context) {
+  // eslint-disable-next-line no-param-reassign
+  context.callbackWaitsForEmptyEventLoop = true;
+  closing = true;
 }

@@ -16,6 +16,7 @@ import {
   handleHttpErrorResponse,
   handlePublicPOST,
   init,
+  teardown,
 } from "./io/io";
 import { handleJoin, joinDecoder } from "./join/joinController";
 import { handleTwilioWebhook } from "./webhook/webhookController";
@@ -75,5 +76,7 @@ export async function cron(
     await cronController();
   } catch (err) {
     await handleHttpErrorResponse(err, e);
+  } finally {
+    await teardown(context);
   }
 }

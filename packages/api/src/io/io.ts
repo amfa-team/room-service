@@ -4,14 +4,14 @@ import type {
   GetRoutes,
   PublicPostRoutes,
 } from "@amfa-team/types";
-import { init as initSentry } from "@sentry/node";
+import { flush, init as initSentry } from "@sentry/node";
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
 import type { JsonDecoder } from "ts.data.json";
-import { connect } from "../mongo/client";
+import { close, connect } from "../mongo/client";
 import { ForbiddenError, InvalidRequestError } from "./exceptions";
 import { logger } from "./logger";
 import type {
@@ -28,6 +28,11 @@ export async function init(context: Context) {
     enabled: !process.env.IS_OFFLINE,
   });
   await connect(context);
+}
+
+export async function teardown(context: Context) {
+  close(context);
+  await flush(2000);
 }
 
 const SECRET = process.env.SECRET ?? "";
