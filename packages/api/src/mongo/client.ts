@@ -18,6 +18,8 @@ async function getClient(url: string): Promise<Mongoose> {
   try {
     cachedClient = _connect(url, {
       appname: `room-service-${getEnvName()}`,
+      reconnectTries: 60,
+      reconnectInterval: 500,
       useNewUrlParser: true,
       useUnifiedTopology: true,
       connectTimeoutMS: 10_000,
@@ -38,11 +40,12 @@ async function getClient(url: string): Promise<Mongoose> {
 
     client.connection.on("error", (err) => {
       logger.error(err, "[mongo/client:event]: error");
+      client.disconnect().catch((e) => logger.error(e));
     });
 
     client.connection.on("reconnectFailed", (err) => {
       logger.error(err, "[mongo/client:event]: reconnectFailed");
-      cachedClientMap.delete(url);
+      client.disconnect().catch((e) => logger.error(e));
     });
 
     client.connection.on("disconnected", () => {
@@ -50,12 +53,17 @@ async function getClient(url: string): Promise<Mongoose> {
     });
 
     client.connection.on("connected", () => {
-      logger.warn("[mongo/client:event]: disconnected");
+      logger.info("[mongo/client:event]: connected");
+    });
+
+    client.connection.on("reconnected", () => {
+      logger.warn("[mongo/client:event]: reconnected");
     });
 
     client.connection.on("close", () => {
       logger.warn("[mongo/client:event]: close");
       cachedClientMap.delete(url);
+      getClient(url).catch((e) => logger.error(e));
     });
 
     return client;
