@@ -66,8 +66,17 @@ export function parseHttpPublicRequest<T>(
   decoder: JsonDecoder.Decoder<T>,
   jsonParse: boolean,
 ): PublicRequest<T> {
-  const body = jsonParse ? parse(event.body) : event.body;
-  return { data: decode(body, decoder) };
+  const rawBody = event.body;
+  logger.info("io.parseHttpPublicRequest: will", { rawBody, jsonParse });
+  const body = jsonParse ? parse(rawBody) : rawBody;
+  const data = decode(body, decoder);
+  logger.info("io.parseHttpPublicRequest: did", {
+    rawBody,
+    data,
+    body,
+    jsonParse,
+  });
+  return { data };
 }
 
 export function parseHttpAdminRequest<T extends AdminData>(
@@ -147,11 +156,18 @@ export async function handlePublicPOST<P extends keyof PublicPostRoutes>(
   jsonParse: boolean = true,
 ): Promise<APIGatewayProxyResult> {
   try {
+    logger.info("io.handlePublicPOST: will", { event });
+
     await init(context);
+
     const { data } = await parseHttpPublicRequest(event, decoder, jsonParse);
     const payload = await handler(data, event.headers);
-    return handleSuccessResponse(payload);
+    const response = await handleSuccessResponse(payload);
+
+    logger.info("io.handlePublicPOST: did");
+    return response;
   } catch (e) {
+    logger.error(e, "io.handlePublicPOST: fail");
     return handleHttpErrorResponse(e, event);
   }
 }

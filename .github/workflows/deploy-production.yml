@@ -86,7 +86,7 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_SDK }}
           SLACK_CHANNEL: deploys
-          SLACK_TITLE: sbs-service-template/example deployed
+          SLACK_TITLE: room-service/example deployed
   deploy-api:
     runs-on: ubuntu-latest
     needs: install
