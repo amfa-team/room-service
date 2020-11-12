@@ -23,37 +23,43 @@ export const logger = {
   warn(message: string, extra: Record<string, unknown> = {}) {
     console.warn(message, extra);
 
-    withScope((scope) => {
-      scope.setExtras(extra);
-      scope.addBreadcrumb({
-        category: "warn",
-        message,
-        level: Severity.Warning,
+    if (!process.env.IS_OFFLINE) {
+      withScope((scope) => {
+        scope.setExtras(extra);
+        scope.addBreadcrumb({
+          category: "warn",
+          message,
+          level: Severity.Warning,
+        });
       });
-    });
+    }
   },
   info(message: string, extra: Record<string, unknown> = {}) {
     console.info(message, extra);
 
-    withScope((scope) => {
-      scope.setExtras(extra);
-      scope.addBreadcrumb({
-        category: "info",
-        message,
-        level: Severity.Info,
+    if (!process.env.IS_OFFLINE) {
+      withScope((scope) => {
+        scope.setExtras(extra);
+        scope.addBreadcrumb({
+          category: "info",
+          message,
+          level: Severity.Info,
+        });
       });
-    });
+    }
   },
   log(message: string, extra: Record<string, unknown> = {}) {
     console.log(message, extra);
 
-    withScope((scope) => {
-      scope.setExtras(extra);
-      scope.addBreadcrumb({
-        category: "log",
-        message,
-        level: Severity.Log,
+    if (!process.env.IS_OFFLINE) {
+      withScope((scope) => {
+        scope.setExtras(extra);
+        scope.addBreadcrumb({
+          category: "log",
+          message,
+          level: Severity.Log,
+        });
       });
-    });
+    }
   },
 };

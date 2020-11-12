@@ -23,11 +23,13 @@ import type {
 
 export async function init(context: Context | null) {
   logger.info("io.init: will");
+
   initSentry({
     dsn: process.env.SENTRY_DNS,
     environment: process.env.SENTRY_ENVIRONMENT,
     enabled: !process.env.IS_OFFLINE,
   });
+
   await connect(context);
   logger.info("io.init: did");
 }

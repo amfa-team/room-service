@@ -60,4 +60,5 @@ module.exports = {
     }),
   ],
   cache: false,
+  stats: "minimal",
 };
