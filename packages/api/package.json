@@ -43,7 +43,6 @@
   "dependencies": {
     "@amfa-team/shared": "^0.1.0",
     "@amfa-team/types": "^0.1.0",
-    "@sentry/node": "^5.27.2",
     "@sentry/serverless": "^5.27.3",
     "@types/aws-lambda": "^8.10.64",
     "aws-lambda": "^1.0.6",

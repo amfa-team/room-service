@@ -1,6 +1,11 @@
 /* eslint-disable no-console */
 
-import { Severity, captureException, withScope } from "@sentry/serverless";
+import {
+  Severity,
+  addBreadcrumb,
+  captureException,
+  withScope,
+} from "@sentry/serverless";
 
 export const logger = {
   error(
@@ -24,13 +29,11 @@ export const logger = {
     console.warn(message, extra);
 
     if (!process.env.IS_OFFLINE) {
-      withScope((scope) => {
-        scope.setExtras(extra);
-        scope.addBreadcrumb({
-          category: "warn",
-          message,
-          level: Severity.Warning,
-        });
+      addBreadcrumb({
+        category: "warn",
+        message,
+        level: Severity.Warning,
+        data: extra,
       });
     }
   },
@@ -38,13 +41,11 @@ export const logger = {
     console.info(message, extra);
 
     if (!process.env.IS_OFFLINE) {
-      withScope((scope) => {
-        scope.setExtras(extra);
-        scope.addBreadcrumb({
-          category: "info",
-          message,
-          level: Severity.Info,
-        });
+      addBreadcrumb({
+        category: "info",
+        message,
+        level: Severity.Info,
+        data: extra,
       });
     }
   },
@@ -52,13 +53,11 @@ export const logger = {
     console.log(message, extra);
 
     if (!process.env.IS_OFFLINE) {
-      withScope((scope) => {
-        scope.setExtras(extra);
-        scope.addBreadcrumb({
-          category: "log",
-          message,
-          level: Severity.Log,
-        });
+      addBreadcrumb({
+        category: "log",
+        message,
+        level: Severity.Log,
+        data: extra,
       });
     }
   },

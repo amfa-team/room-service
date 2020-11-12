@@ -4,7 +4,7 @@ import type {
   GetRoutes,
   PublicPostRoutes,
 } from "@amfa-team/types";
-import { flush, init as initSentry } from "@sentry/node";
+import { flush, init as initSentry } from "@sentry/serverless";
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -21,15 +21,17 @@ import type {
   PublicRequest,
 } from "./types";
 
-export async function init(context: Context | null) {
-  logger.info("io.init: will");
-
+export function setup() {
   initSentry({
     dsn: process.env.SENTRY_DNS,
     environment: process.env.SENTRY_ENVIRONMENT,
-    enabled: !process.env.IS_OFFLINE,
+    enabled: true, // !process.env.IS_OFFLINE,
+    debug: true,
   });
+}
 
+export async function init(context: Context | null) {
+  logger.info("io.init: will");
   await connect(context);
   logger.info("io.init: did");
 }
