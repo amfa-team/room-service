@@ -131,6 +131,7 @@ export async function onParticipantDisconnected(
     tasks.push(room.save());
   }
   if (participant) {
+    participant.room = null;
     participant.roomVisits.push({
       id: event.RoomSid,
       duration: Number(event.ParticipantDuration),

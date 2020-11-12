@@ -34,6 +34,31 @@ async function createTwilioRoom(
   return twilioRoom.sid;
 }
 
+async function getTwilioRoomState(roomSid: string) {
+  try {
+    const [room, participants] = await Promise.all([
+      client.video.rooms.get(roomSid).fetch(),
+      client.video.rooms
+        .get(roomSid)
+        .participants.list({ status: "connected" }),
+    ]);
+    return {
+      status: room.status,
+      participants: participants.map((p) => p.identity),
+    };
+  } catch (e) {
+    if (e?.status === 404) {
+      return {
+        status: "disconnected",
+        participants: [],
+      };
+    }
+
+    logger.error(e, "twilioClient.getTwilioRoomState: fail");
+    return null;
+  }
+}
+
 interface DisconnectTwilioParticipant {
   roomSid: string;
   participantSid: string;
@@ -48,7 +73,9 @@ async function disconnectTwilioParticipant(
       .participants.get(params.participantSid)
       .update({ status: "disconnected" });
   } catch (err) {
-    logger.error(err, "twilio/client:disconnectTwilioParticipant: fail");
+    if (err?.status !== 404) {
+      logger.error(err, "twilio/client:disconnectTwilioParticipant: fail");
+    }
   }
 }
 
@@ -78,4 +105,5 @@ export {
   disconnectTwilioParticipant,
   getParticipantTwilioToken,
   verifyWebhook,
+  getTwilioRoomState,
 };

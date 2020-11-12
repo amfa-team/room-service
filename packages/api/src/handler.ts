@@ -69,28 +69,16 @@ export const adminParticipants = AWSLambda.wrapHandler(
   },
 );
 
-export function cron(
-  e: APIGatewayProxyEvent,
-  ctx: Context,
-  callback: (err: Error | null, e: APIGatewayProxyResult | null) => void,
-  ...args: any[]
-) {
-  logger.info("cron: will", { e, ctx, callback, args });
-  const fn = async () => {
-    try {
-      await init(null);
-      await cronController();
+export async function cron(e: APIGatewayProxyEvent, context: Context) {
+  try {
+    await init(context);
+    await cronController();
 
-      await teardown(null);
-      return handleSuccessResponse(null);
-    } catch (err) {
-      logger.error(err);
-      await teardown(null);
-      return handleHttpErrorResponse(err, e);
-    }
-  };
-
-  fn()
-    .then((r) => callback(null, r))
-    .catch((err) => callback(err, null));
+    await teardown(context);
+    return handleSuccessResponse(null);
+  } catch (err) {
+    logger.error(err);
+    await teardown(context);
+    return handleHttpErrorResponse(err, e);
+  }
 }
