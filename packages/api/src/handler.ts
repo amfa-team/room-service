@@ -19,6 +19,7 @@ import {
   init,
   teardown,
 } from "./io/io";
+import { logger } from "./io/logger";
 import { handleJoin, joinDecoder } from "./join/joinController";
 import { handleTwilioWebhook } from "./webhook/webhookController";
 
@@ -68,17 +69,26 @@ export const adminParticipants = AWSLambda.wrapHandler(
   },
 );
 
-export async function cron(
+export function cron(
   e: APIGatewayProxyEvent,
-): Promise<APIGatewayProxyResult> {
-  try {
-    await init(null);
-    await cronController();
+  ctx: Context,
+  callback: (err: Error | null, e: APIGatewayProxyResult | null) => void,
+) {
+  const fn = async () => {
+    try {
+      await init(null);
+      await cronController();
 
-    await teardown(null);
-    return handleSuccessResponse(null);
-  } catch (err) {
-    await teardown(null);
-    return handleHttpErrorResponse(err, e);
-  }
+      await teardown(null);
+      return handleSuccessResponse(null);
+    } catch (err) {
+      logger.error(err);
+      await teardown(null);
+      return handleHttpErrorResponse(err, e);
+    }
+  };
+
+  fn()
+    .then((r) => callback(null, r))
+    .catch((err) => callback(err, null));
 }
