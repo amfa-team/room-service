@@ -34,7 +34,14 @@ async function createTwilioRoom(
   return twilioRoom.sid;
 }
 
-async function getTwilioRoomState(roomSid: string) {
+interface TwilioRoomState {
+  live: boolean;
+  participants: string[];
+}
+
+async function getTwilioRoomState(
+  roomSid: string,
+): Promise<TwilioRoomState | null> {
   try {
     const [room, participants] = await Promise.all([
       client.video.rooms.get(roomSid).fetch(),
@@ -43,13 +50,13 @@ async function getTwilioRoomState(roomSid: string) {
         .participants.list({ status: "connected" }),
     ]);
     return {
-      status: room.status,
+      live: room.status === "in-progress",
       participants: participants.map((p) => p.identity),
     };
   } catch (e) {
     if (e?.status === 404) {
       return {
-        status: "disconnected",
+        live: false,
         participants: [],
       };
     }

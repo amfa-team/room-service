@@ -32,7 +32,7 @@
   "scripts": {
     "tunnel": "serverless tunnel --stage dev",
     "start": "serverless offline --stage dev",
-    "build": "echo \"api: No build script\"",
+    "build": "serverless webpack --stage dev",
     "clean": "rm -rf .webpack lib",
     "aws:profile:set": "serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --profile picnic -o",
     "deploy:staging": "serverless deploy --stage staging",

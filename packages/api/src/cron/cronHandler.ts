@@ -16,7 +16,7 @@ async function validateRoom(room: IRoomDocument) {
     const tasks = [];
 
     if (twilioState) {
-      if (room.live && twilioState.status !== "in-progress") {
+      if (room.live && !twilioState.live) {
         tasks.push(
           RoomModel.findOneAndUpdate(
             { id: room.id },
