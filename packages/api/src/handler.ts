@@ -15,6 +15,7 @@ import {
   handleAdminPOST,
   handleHttpErrorResponse,
   handlePublicPOST,
+  handleSuccessResponse,
   init,
   teardown,
 } from "./io/io";
@@ -67,13 +68,17 @@ export const adminParticipants = AWSLambda.wrapHandler(
   },
 );
 
-export async function cron(e: APIGatewayProxyEvent): Promise<void> {
+export async function cron(
+  e: APIGatewayProxyEvent,
+): Promise<APIGatewayProxyResult> {
   try {
     await init(null);
     await cronController();
-  } catch (err) {
-    await handleHttpErrorResponse(err, e);
-  } finally {
+
     await teardown(null);
+    return handleSuccessResponse(null);
+  } catch (err) {
+    await teardown(null);
+    return handleHttpErrorResponse(err, e);
   }
 }
