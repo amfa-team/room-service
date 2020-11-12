@@ -73,7 +73,9 @@ export function cron(
   e: APIGatewayProxyEvent,
   ctx: Context,
   callback: (err: Error | null, e: APIGatewayProxyResult | null) => void,
+  ...args: any[]
 ) {
+  logger.info("cron: will", { e, ctx, callback, args });
   const fn = async () => {
     try {
       await init(null);
