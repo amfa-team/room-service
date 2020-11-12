@@ -23,37 +23,46 @@ import { logger } from "./io/logger";
 import { handleJoin, joinDecoder } from "./join/joinController";
 import { handleTwilioWebhook } from "./webhook/webhookController";
 
-export const join = AWSLambda.wrapHandler(async function join(
-  event: APIGatewayProxyEvent,
-  context: Context,
-): Promise<APIGatewayProxyResult> {
-  return handlePublicPOST<"join">(event, context, handleJoin, joinDecoder);
-});
+export const join = AWSLambda.wrapHandler(
+  async function join(
+    event: APIGatewayProxyEvent,
+    context: Context,
+  ): Promise<APIGatewayProxyResult> {
+    return handlePublicPOST<"join">(event, context, handleJoin, joinDecoder);
+  },
+  { rethrowAfterCapture: true },
+);
 
-export const webhookStatus = AWSLambda.wrapHandler(async function webhookStatus(
-  event: APIGatewayProxyEvent,
-  context: Context,
-): Promise<APIGatewayProxyResult> {
-  return handlePublicPOST<"webhook/twilio/status">(
-    event,
-    context,
-    handleTwilioWebhook,
-    JsonDecoder.string,
-    false,
-  );
-});
+export const webhookStatus = AWSLambda.wrapHandler(
+  async function webhookStatus(
+    event: APIGatewayProxyEvent,
+    context: Context,
+  ): Promise<APIGatewayProxyResult> {
+    return handlePublicPOST<"webhook/twilio/status">(
+      event,
+      context,
+      handleTwilioWebhook,
+      JsonDecoder.string,
+      false,
+    );
+  },
+  { rethrowAfterCapture: true },
+);
 
-export const adminRooms = AWSLambda.wrapHandler(async function adminRooms(
-  event: APIGatewayProxyEvent,
-  context: Context,
-): Promise<APIGatewayProxyResult> {
-  return handleAdminPOST<"admin/room">(
-    event,
-    context,
-    handleAdminRooms,
-    adminDecoder,
-  );
-});
+export const adminRooms = AWSLambda.wrapHandler(
+  async function adminRooms(
+    event: APIGatewayProxyEvent,
+    context: Context,
+  ): Promise<APIGatewayProxyResult> {
+    return handleAdminPOST<"admin/room">(
+      event,
+      context,
+      handleAdminRooms,
+      adminDecoder,
+    );
+  },
+  { rethrowAfterCapture: true },
+);
 
 export const adminParticipants = AWSLambda.wrapHandler(
   async function adminParticipants(
@@ -67,21 +76,22 @@ export const adminParticipants = AWSLambda.wrapHandler(
       adminDecoder,
     );
   },
+  { rethrowAfterCapture: true },
 );
 
-export const cron = AWSLambda.wrapHandler(async function cron(
-  e: APIGatewayProxyEvent,
-  context: Context,
-) {
-  try {
-    await init(context);
-    await cronController();
+export const cron = AWSLambda.wrapHandler(
+  async function cron(e: APIGatewayProxyEvent, context: Context) {
+    try {
+      await init(context);
+      await cronController();
 
-    await teardown(context);
-    return handleSuccessResponse(null);
-  } catch (err) {
-    logger.error(err);
-    await teardown(context);
-    return handleHttpErrorResponse(err, e);
-  }
-});
+      await teardown(context);
+      return handleSuccessResponse(null);
+    } catch (err) {
+      logger.error(err);
+      await teardown(context);
+      return handleHttpErrorResponse(err, e);
+    }
+  },
+  { rethrowAfterCapture: true },
+);
