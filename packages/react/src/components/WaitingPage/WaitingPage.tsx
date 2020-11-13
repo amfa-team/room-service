@@ -9,6 +9,7 @@ interface WaitingPageProps {
   videoTrack: IVideoTrack | null;
   join: () => void;
   disabled?: boolean;
+  roomFull?: boolean;
 }
 
 export default function WaitingPage(props: WaitingPageProps) {
@@ -20,6 +21,7 @@ export default function WaitingPage(props: WaitingPageProps) {
           identity={props.identity}
         />
       </div>
+      {props.roomFull && <div>room is full</div>}
       <div className={classes.joinContainer}>
         <button
           className={classnames(classes.join, {
@@ -38,4 +40,5 @@ export default function WaitingPage(props: WaitingPageProps) {
 
 WaitingPage.defaultProps = {
   disabled: false,
+  roomFull: false,
 };

@@ -6,6 +6,7 @@ import ParticipantList from "../../components/ParticipantList/ParticipantList";
 import type { IRoom } from "../../entities/Room";
 import type { IUser } from "../../entities/User";
 import { useConnectTwilioRoom } from "../hooks/useTwilioRoom";
+import TwilioWaitingPage from "./TwilioWaitingPage";
 
 interface TwilioRoomPagePropsContainer {
   user: IUser;
@@ -13,12 +14,17 @@ interface TwilioRoomPagePropsContainer {
 }
 interface TwilioRoomPageProps extends TwilioRoomPagePropsContainer {
   token: string;
+  roomName: string;
 }
 
 function TwilioRoomPage(props: TwilioRoomPageProps) {
-  const params = useParams<{ roomName: string }>();
   const { isLoading, data } = useConnectTwilioRoom(props.token);
-  const { join, isJoining } = useJoin(props.user.id, props.spaceId, true);
+  const { join, isJoining } = useJoin(
+    props.user.id,
+    props.spaceId,
+    true,
+    props.roomName,
+  );
   const history = useHistory();
 
   const onShuffleClicked = useCallback(async () => {
@@ -36,7 +42,7 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
 
   return (
     <div>
-      <div>{params.roomName}</div>
+      <div>{props.roomName}</div>
       <ParticipantList room={room} onShuffle={onShuffleClicked} />
     </div>
   );
@@ -46,14 +52,24 @@ export default function TwilioRoomPageContainer(
   props: TwilioRoomPagePropsContainer,
 ) {
   const token = useToken();
-  const history = useHistory();
+  const params = useParams<{ roomName: string }>();
 
   if (!token) {
-    history.push("..");
-    return null;
+    return (
+      <TwilioWaitingPage
+        user={props.user}
+        spaceId={props.spaceId}
+        roomName={params.roomName}
+      />
+    );
   }
 
   return (
-    <TwilioRoomPage token={token} user={props.user} spaceId={props.spaceId} />
+    <TwilioRoomPage
+      token={token}
+      user={props.user}
+      spaceId={props.spaceId}
+      roomName={params.roomName}
+    />
   );
 }

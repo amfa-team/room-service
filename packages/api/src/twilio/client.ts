@@ -20,6 +20,10 @@ interface CreateTwilioRoomParams {
   uniqueName: string;
 }
 
+function getTwilioUniqueName(spaceId: string, roomName: string) {
+  return `${spaceId}-${roomName}`;
+}
+
 async function createTwilioRoom(
   params: CreateTwilioRoomParams,
 ): Promise<string> {
@@ -92,7 +96,9 @@ function getParticipantTwilioToken(participant: IParticipant, room: IRoom) {
     identity: `${participant._id}`,
   });
   const { VideoGrant } = AccessToken;
-  const videoGrant = new VideoGrant({ room: room.name });
+  const videoGrant = new VideoGrant({
+    room: getTwilioUniqueName(room.spaceId, room.name),
+  });
   token.addGrant(videoGrant);
 
   return token.toJwt();
@@ -113,4 +119,5 @@ export {
   getParticipantTwilioToken,
   verifyWebhook,
   getTwilioRoomState,
+  getTwilioUniqueName,
 };
