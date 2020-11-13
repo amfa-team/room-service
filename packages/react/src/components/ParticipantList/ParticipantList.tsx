@@ -55,7 +55,7 @@ export default function ParticipantList(
   const controls = useAnimation();
   const controlsChildren = useAnimation();
 
-  const onShuffleClicked = async () => {
+  const onShuffleButtonClicked = async () => {
     props.onShuffle();
     const animationStart = controlsChildren.start("hidden");
     await controls.start("visible");
@@ -73,7 +73,7 @@ export default function ParticipantList(
       <motion.div
         className={styles.shuffleCTA}
         whileTap={{ scale: 0.8 }}
-        onClick={async () => onShuffleClicked()}
+        onClick={async () => onShuffleButtonClicked()}
       >
         <span>Shuffle</span>
       </motion.div>
