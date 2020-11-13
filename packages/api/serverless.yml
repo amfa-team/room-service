@@ -28,6 +28,7 @@ provider:
     TWILIO_AUTH_TOKEN: "${env:TWILIO_AUTH_TOKEN}"
     SECRET: "${env:SECRET}"
     API_ENDPOINT: "${env:API_ENDPOINT}"
+    NGROK: "${env:NGROK}"
 
 package:
   individually: true
@@ -100,7 +101,7 @@ custom:
         envProp: API_ENDPOINT
         ngrokOptions:
           auth: "user:pwd"
-          authtoken: "1jyclDvBLpaLz01TwCzbRYbIHRB_2oWbDViiCC7SGbgEujzdg"
+          authtoken: "${env:NGROK}"
           region: "eu"
 
   serverless-offline:
