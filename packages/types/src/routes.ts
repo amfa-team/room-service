@@ -30,6 +30,7 @@ export interface JoinData {
   spaceId: string;
   participantId: string;
   change: boolean;
+  roomName: string | null;
 }
 
 export interface JoinPayload {
@@ -69,7 +70,7 @@ export type GetRoutes = {
 };
 
 export type PublicPostRoutes = {
-  join: PostRoute<JoinData, JoinPayload>;
+  join: PostRoute<JoinData, JoinPayload | null>;
   "webhook/twilio/status": PostRoute<string, boolean>;
 };
 

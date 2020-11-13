@@ -16,6 +16,7 @@ import {
   WEBHOOK_URL,
   createTwilioRoom,
   disconnectTwilioParticipant,
+  getTwilioUniqueName,
 } from "../twilio/client";
 import type {
   ParticipantConnectedEvent,
@@ -38,13 +39,15 @@ export async function createRoom(
   spaceId: string,
   participant: IParticipantDocument,
 ): Promise<IRoomDocument> {
-  const uniqueName = generateRoomName();
+  const name = generateRoomName();
 
-  const twilioSid = await createTwilioRoom({ uniqueName });
+  const twilioSid = await createTwilioRoom({
+    uniqueName: getTwilioUniqueName(spaceId, name),
+  });
 
   const room = new RoomModel({
     _id: twilioSid,
-    name: uniqueName,
+    name,
     spaceId,
     size: 1,
     participants: [participant.id],
@@ -185,10 +188,27 @@ export async function disconnectParticipant(
   return participant;
 }
 
-export async function joinRandomRoom(
+async function setParticipantPending(
+  roomId: string,
+  participant: IParticipantDocument,
+) {
+  // eslint-disable-next-line no-param-reassign
+  participant.room = roomId;
+  // eslint-disable-next-line no-param-reassign
+  participant.status = ParticipantStatus.pending;
+  // eslint-disable-next-line no-param-reassign
+  participant.statusValidUntil = new Date(Date.now() + 60_000);
+
+  await participant.save();
+
+  return participant;
+}
+
+export async function joinRoom(
   spaceId: string,
   participant: IParticipantDocument,
-): Promise<[IRoomDocument, IParticipantDocument]> {
+  roomName: string | null,
+): Promise<null | [IRoomDocument, IParticipantDocument]> {
   const query: FilterQuery<IParticipantDocument> = {
     spaceId,
     webhookUrl: WEBHOOK_URL,
@@ -196,40 +216,38 @@ export async function joinRandomRoom(
     size: { $lt: MAX_PARTICIPANTS },
   };
 
+  if (roomName) {
+    query.name = roomName;
+  }
+
   if (participant.room) {
     query._id = { $ne: participant.room };
   }
 
-  const room = await RoomModel.findOneAndUpdate(
-    query,
-    { $inc: { size: 1 } },
-    {
-      new: true,
-      sort: { spaceId: 1, webhookUrl: 1, live: 1, size: -1 },
-    },
-  );
+  const [room, p] = await Promise.all([
+    RoomModel.findOneAndUpdate(
+      query,
+      { $inc: { size: 1 } },
+      {
+        new: true,
+        sort: { spaceId: 1, webhookUrl: 1, live: 1, size: -1 },
+      },
+    ),
+    disconnectParticipant(participant, false),
+  ]);
 
-  const p = await disconnectParticipant(participant, false);
+  if (room === null && roomName !== null) {
+    return null;
+  }
 
   if (room === null) {
     const r = await createRoom(spaceId, participant);
-
-    p.room = r.id;
-    p.status = ParticipantStatus.pending;
-    p.statusValidUntil = new Date(Date.now() + 60_000);
-
-    await p.save();
-
-    return [r, p];
+    return [r, await setParticipantPending(r.id, p)];
   }
 
   room.participants.push(p.id);
 
-  p.room = room.id;
-  p.status = ParticipantStatus.pending;
-  p.statusValidUntil = new Date(Date.now() + 60_000);
-
-  await Promise.all([p.save(), room.save()]);
+  await Promise.all([setParticipantPending(room.id, p), room.save()]);
 
   return [room, p];
 }

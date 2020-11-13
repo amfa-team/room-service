@@ -1,5 +1,5 @@
 import type { IRoom } from "@amfa-team/types";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   atom,
   useRecoilState,
@@ -45,31 +45,55 @@ export function useJoin(
   participantId: string,
   spaceId: string,
   change: boolean,
+  roomName: string | null,
 ) {
   const settings = useApiSettings();
   const setRoom = useSetRecoilState(roomAtom);
   const setToken = useSetRecoilState(tokenAtom);
   const [isJoining, setIsJoining] = useState(false);
+  const [join, setJoin] = useState<() => Promise<string | null>>(
+    async () => null,
+  );
 
-  const join = useCallback(async () => {
-    setIsJoining(true);
-    try {
-      const data = await apiPost(settings, "join", {
-        participantId,
-        spaceId,
-        change,
-      });
-      setRoom(data.room);
-      setToken(data.token);
-      setIsJoining(false);
+  useEffect(() => {
+    setIsJoining(false);
+    const abortController = new AbortController();
 
-      return data.room.name;
-    } catch (e) {
-      console.error("useApi/useJoin: fail", e);
-      setIsJoining(false);
-      throw e;
-    }
-  }, [settings, participantId, spaceId, setToken, setRoom, change]);
+    const j = async () => {
+      setIsJoining(true);
+      try {
+        const data = await apiPost(
+          settings,
+          "join",
+          {
+            participantId,
+            spaceId,
+            change,
+            roomName,
+          },
+          abortController.signal,
+        );
+        setRoom(data?.room ?? null);
+        setToken(data?.token ?? null);
+        setIsJoining(false);
+
+        return data?.room.name ?? null;
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          console.error("useApi/useJoin: fail", e);
+          setIsJoining(false);
+          throw e;
+        }
+        return null;
+      }
+    };
+
+    setJoin(() => j);
+
+    return () => {
+      abortController.abort();
+    };
+  }, [settings, participantId, spaceId, setToken, setRoom, change, roomName]);
 
   return {
     join,
