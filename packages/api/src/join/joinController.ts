@@ -12,7 +12,10 @@ export const joinDecoder = JsonDecoder.object(
     spaceId: JsonDecoder.string,
     participantId: JsonDecoder.string,
     change: JsonDecoder.boolean,
-    roomName: JsonDecoder.string,
+    roomName: JsonDecoder.oneOf(
+      [JsonDecoder.string, JsonDecoder.isExactly(null)],
+      "roomName",
+    ),
   },
   "joinDecoder",
 );
