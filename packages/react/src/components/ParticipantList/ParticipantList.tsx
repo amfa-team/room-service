@@ -3,6 +3,7 @@ import React from "react";
 import type { IRoom } from "../../entities/Room";
 import useParticipants from "../../hooks/useParticipants";
 import { useSelectedParticipant } from "../../hooks/useSelectedParticipant";
+import EmptySeat from "../../icons/EmptySeat";
 import Participant from "../Participant/Participant";
 import styles from "./participantList.module.css";
 
@@ -76,9 +77,9 @@ export default function ParticipantList(
       >
         <span>Shuffle</span>
       </motion.div>
-      <ul className={styles.itemsContainer}>
+      <ul className={styles.participantsContainer}>
         <motion.li
-          className={styles.item}
+          className={styles.participant}
           variants={itemAnimation}
           animate={controlsChildren}
         >
@@ -93,7 +94,7 @@ export default function ParticipantList(
         {participants.map((participant) => (
           <motion.li
             key={participant.sid}
-            className={styles.item}
+            className={styles.participant}
             variants={itemAnimation}
             animate={controlsChildren}
           >
@@ -106,11 +107,25 @@ export default function ParticipantList(
             />
           </motion.li>
         ))}
-        <motion.li
-          className={styles.item}
-          variants={itemAnimation}
-          animate={controlsChildren}
-        />
+        {["0", "1", "2"]
+          .filter((d) => !Object.keys(participants).includes(d))
+          .map((index) => (
+            <motion.li
+              key={index}
+              className={styles.participant}
+              variants={itemAnimation}
+              animate={controlsChildren}
+            >
+              <div className={styles.emptySeatContainer}>
+                <div className={styles.emptySeatInnerContainer}>
+                  <div className={styles.emptySeatAvatarContainer}>
+                    <EmptySeat />
+                    Available seat
+                  </div>
+                </div>
+              </div>
+            </motion.li>
+          ))}
       </ul>
     </motion.div>
   );
