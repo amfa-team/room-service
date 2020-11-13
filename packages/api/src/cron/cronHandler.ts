@@ -9,8 +9,10 @@ import { getTwilioRoomState } from "../twilio/client";
 async function validateRoom(room: IRoomDocument) {
   try {
     const [twilioState, participants] = await Promise.all([
-      getTwilioRoomState(room.id),
-      ParticipantModel.find({ id: { $in: room.participants } }),
+      room.live
+        ? getTwilioRoomState(room.id)
+        : { live: false, participants: [] },
+      ParticipantModel.find({ _id: { $in: room.participants } }),
     ]);
 
     const tasks = [];
@@ -19,8 +21,8 @@ async function validateRoom(room: IRoomDocument) {
       if (room.live && !twilioState.live) {
         tasks.push(
           RoomModel.findOneAndUpdate(
-            { id: room.id },
-            { $set: { live: false } },
+            { _id: room.id },
+            { $set: { live: false, participants: [] } },
           ).catch((e) =>
             logger.error(
               e,
@@ -131,7 +133,12 @@ async function validateRooms() {
     });
   }
 
-  const rooms = await RoomModel.find({});
+  const now = Date.now();
+  const rooms = await RoomModel.find({
+    updatedAt: {
+      $lt: new Date(now - 60_000),
+    },
+  });
   await Promise.all(rooms.map(validateRoom));
 }
 

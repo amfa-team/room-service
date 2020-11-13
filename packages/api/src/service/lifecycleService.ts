@@ -170,11 +170,12 @@ export async function disconnectParticipant(
         (p) => p !== participant.id,
       );
       await oldRoom.save();
-      await disconnectTwilioParticipant({
-        roomSid: oldRoomId,
-        participantSid: participant.id,
-      });
     }
+
+    await disconnectTwilioParticipant({
+      roomSid: oldRoomId,
+      participantSid: participant.id,
+    });
 
     if (autoSave) {
       await participant.save();

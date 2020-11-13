@@ -25,8 +25,7 @@ export function setup() {
   initSentry({
     dsn: process.env.SENTRY_DNS,
     environment: process.env.SENTRY_ENVIRONMENT,
-    enabled: true, // !process.env.IS_OFFLINE,
-    debug: true,
+    enabled: !process.env.IS_OFFLINE,
   });
 }
 

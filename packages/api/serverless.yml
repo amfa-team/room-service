@@ -89,6 +89,7 @@ functions:
           method: post
   cron:
     handler: src/handler.cron
+    timeout: 300
     events:
       - schedule: rate(5 minutes)
 
