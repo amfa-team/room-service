@@ -1,5 +1,7 @@
+import classnames from "classnames";
 import { motion, useAnimation } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
+import type { ReactElement } from "react";
 import type { IRoom } from "../../entities/Room";
 import useParticipants from "../../hooks/useParticipants";
 import { useSelectedParticipant } from "../../hooks/useSelectedParticipant";
@@ -33,6 +35,46 @@ const itemAnimation = {
     scale: 1,
   },
 };
+
+function ControlMenu(): ReactElement {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  return (
+    <>
+      <i
+        className={`${styles.mainMenuIcons} ${styles.iconM}`}
+        onClick={toggleMenu}
+      />
+      <div
+        className={classnames(styles.list, {
+          [styles.dNone]: !isMenuOpen,
+        })}
+      >
+        <i
+          className={classnames(styles.mainMenuIcons, styles.iconCtrl, {
+            [styles.iconCtrlOpen]: isMenuOpen,
+          })}
+        />
+        <i
+          className={classnames(styles.mainMenuIcons, styles.iconPrfle, {
+            [styles.iconPrfleOpen]: isMenuOpen,
+          })}
+        />
+        <i
+          className={classnames(styles.mainMenuIcons, styles.iconAbout, {
+            [styles.iconAboutOpen]: isMenuOpen,
+          })}
+        />
+        <i
+          className={classnames(styles.mainMenuIcons, styles.iconHome, {
+            [styles.iconHomeOpen]: isMenuOpen,
+          })}
+        />
+      </div>
+    </>
+  );
+}
 
 export interface ParticipantListProps {
   room: IRoom;
@@ -83,6 +125,7 @@ export default function ParticipantList(
           variants={itemAnimation}
           animate={controlsChildren}
         >
+          <ControlMenu />
           <Participant
             participant={localParticipant}
             isLocalParticipant
@@ -98,6 +141,7 @@ export default function ParticipantList(
             variants={itemAnimation}
             animate={controlsChildren}
           >
+            <ControlMenu />
             <Participant
               participant={participant}
               isSelected={participant === selectedParticipant}
