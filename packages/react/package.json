@@ -15,6 +15,7 @@
     "abortcontroller-polyfill": "^1.5.0",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
+    "framer-motion": "^2.9.4",
     "react-table": "^7.6.1",
     "twilio-video": "^2.7.3",
     "uuid": "^8.3.1",

@@ -101,6 +101,12 @@ export async function handleHttpErrorResponse(
   if (e instanceof InvalidRequestError) {
     return {
       statusCode: e.code,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH",
+        "Access-Control-Allow-Headers":
+          "Content-Type,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-User-Id",
+      },
       body: JSON.stringify({
         success: false,
         error: e.message,
@@ -114,6 +120,9 @@ export async function handleHttpErrorResponse(
     statusCode: 500,
     headers: {
       "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH",
+      "Access-Control-Allow-Headers":
+        "Content-Type,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-User-Id",
     },
     body: JSON.stringify({
       success: false,
@@ -127,6 +136,9 @@ export function handleSuccessResponse(data: unknown): APIGatewayProxyResult {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH",
+      "Access-Control-Allow-Headers":
+        "Content-Type,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-User-Id",
     },
     body: JSON.stringify({
       success: true,
