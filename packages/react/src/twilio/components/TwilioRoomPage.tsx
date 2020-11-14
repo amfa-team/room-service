@@ -2,8 +2,8 @@ import React, { useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useJoin, useToken } from "../../api/useApi";
 import Controls from "../../components/Controls/Controls";
-import { LoadingFallback } from "../../components/Loading/Loading";
 import ParticipantList from "../../components/ParticipantList/ParticipantList";
+import ParticipantListLoading from "../../components/ParticipantListLoading/ParticipantListLoading";
 import type { IRoom } from "../../entities/Room";
 import type { IUser } from "../../entities/User";
 import { useConnectTwilioRoom } from "../hooks/useTwilioRoom";
@@ -19,13 +19,8 @@ interface TwilioRoomPageProps extends TwilioRoomPagePropsContainer {
 }
 
 function TwilioRoomPage(props: TwilioRoomPageProps) {
-  const { isLoading, data } = useConnectTwilioRoom(props.token);
-  const { join, isJoining } = useJoin(
-    props.user.id,
-    props.spaceId,
-    true,
-    props.roomName,
-  );
+  const { data } = useConnectTwilioRoom(props.token);
+  const { join } = useJoin(props.user.id, props.spaceId, true, props.roomName);
   const history = useHistory();
 
   const onShuffleClicked = useCallback(async () => {
@@ -33,8 +28,9 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
     history.push(`./${roomName}`);
   }, [join, history]);
 
-  if (isJoining || isLoading || data === null) {
-    return <LoadingFallback />;
+  // isJoining || isLoading ||
+  if (data === null) {
+    return <ParticipantListLoading />;
   }
 
   // Room type from twilio is badly written ==> need PR on @types/twilio-video
@@ -43,7 +39,7 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
 
   return (
     <div>
-      <div>{props.roomName}</div>
+      {/* <div>{props.roomName}</div> */}
       <ParticipantList room={room} onShuffle={onShuffleClicked} />
       <Controls localParticipant={room.localParticipant} />
     </div>

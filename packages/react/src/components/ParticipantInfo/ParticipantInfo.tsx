@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { motion } from "framer-motion";
 import React from "react";
 // import AudioLevelIndicator from "../AudioLevelIndicator/AudioLevelIndicator";
 import type { IParticipant } from "../../entities/Participant";
@@ -37,7 +38,15 @@ export default function ParticipantInfo({
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 1.5, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+        delay: 0.3,
+      }}
       className={classnames(styles.container, {
         [styles.hideParticipant]: hideParticipant,
         [styles.cursorPointer]: Boolean(onClick),
@@ -75,7 +84,7 @@ export default function ParticipantInfo({
         )}
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

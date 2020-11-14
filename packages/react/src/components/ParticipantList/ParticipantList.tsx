@@ -57,9 +57,9 @@ export default function ParticipantList(
 
   const onShuffleButtonClicked = async () => {
     props.onShuffle();
+    await new Promise((resolve) => setTimeout(resolve, 400));
     const animationStart = controlsChildren.start("hidden");
     await controls.start("visible");
-    await controlsChildren.start("visible");
     return animationStart;
   };
 

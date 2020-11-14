@@ -39,7 +39,9 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
   height: 100%;
   width: 100%;
   background: transparent;
@@ -90,7 +92,6 @@
 }
 
 .identity {
-  background: rgba(0, 0, 0, 0.5);
   color: white;
   padding: 0.18em 0.3em;
   margin: 0;
@@ -98,11 +99,7 @@
   align-items: center;
 }
 .infoRowBottom {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  margin-bottom: 1rem;
 }
 
 .typography {
