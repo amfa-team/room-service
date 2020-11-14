@@ -1,18 +1,21 @@
 import { RawVideoTrackPublication } from "../Publication";
-import type { IVideoTrack } from "../VideoTrack";
-import { generateVideoTrack } from "./videoTracks.fixture";
+import type { RawLocalVideoTrack, RawRemoteVideoTrack } from "../VideoTrack";
 
-interface GenerateRawVideoPublicationOptions {
+interface GenerateRawVideoPublicationOptions<
+  T extends RawLocalVideoTrack | RawRemoteVideoTrack
+> {
   trackName?: string;
-  track?: IVideoTrack;
+  track: T;
 }
 
-export async function generateRawVideoPublication(
-  options?: GenerateRawVideoPublicationOptions,
-): Promise<RawVideoTrackPublication> {
-  const trackName = options?.trackName ?? "default-video";
-  const track = await (options?.track ?? generateVideoTrack());
-  const videoTrackPublication = new RawVideoTrackPublication(trackName, track);
+export function generateRawVideoPublication<
+  T extends RawLocalVideoTrack | RawRemoteVideoTrack
+>(options: GenerateRawVideoPublicationOptions<T>): RawVideoTrackPublication<T> {
+  const trackName = options.trackName ?? "default-video";
+  const videoTrackPublication = new RawVideoTrackPublication(
+    trackName,
+    options.track,
+  );
 
   return videoTrackPublication;
 }

@@ -1,10 +1,10 @@
-import type { RawParticipant } from "../Participant";
+import type { ILocalParticipant } from "../Participant";
 import { RawRoom, RoomState } from "../Room";
-import { generateRawParticipant } from "./participants.fixture";
+import { generateRawLocalParticipant } from "./participants.fixture";
 
 interface GenerateRawParticipantOptions {
   name?: string;
-  localParticipant?: RawParticipant;
+  localParticipant?: ILocalParticipant;
   state?: RoomState;
 }
 
@@ -14,7 +14,7 @@ export function generateRawRoom(
   const name = options?.name ?? "saloon";
   const localParticipant =
     options?.localParticipant ??
-    generateRawParticipant({ identity: "moroine" });
+    generateRawLocalParticipant({ identity: "moroine" });
   const state = options?.state ?? RoomState.connected;
   const room = new RawRoom(name, localParticipant, state);
 

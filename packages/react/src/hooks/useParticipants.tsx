@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import type { IParticipant } from "../entities/Participant";
+import type { IRemoteParticipant } from "../entities/Participant";
 import type { IRoom } from "../entities/Room";
 
-export default function useParticipants(room: IRoom): IParticipant[] {
+export default function useParticipants(room: IRoom): IRemoteParticipant[] {
   const [participants, setParticipants] = useState(
     Array.from(room.participants.values()),
   );
 
   useEffect(() => {
-    const participantConnected = (participant: IParticipant) =>
+    const participantConnected = (participant: IRemoteParticipant) =>
       setParticipants((prevParticipants) => [...prevParticipants, participant]);
-    const participantDisconnected = (participant: IParticipant) =>
+    const participantDisconnected = (participant: IRemoteParticipant) =>
       setParticipants((prevParticipants) =>
         prevParticipants.filter((p) => p !== participant),
       );

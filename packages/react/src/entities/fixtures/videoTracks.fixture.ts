@@ -1,4 +1,4 @@
-import { RawVideoTrack } from "../VideoTrack";
+import { RawLocalVideoTrack, RawRemoteVideoTrack } from "../VideoTrack";
 import video360p from "./assets/video.mp4";
 import video720p from "./assets/video_1280x720.mp4";
 
@@ -46,16 +46,29 @@ async function getMediaStream(src: VideoSrc): Promise<MediaStream> {
   return stream;
 }
 
-export async function generateVideoTrack(
+export async function generateLocalVideoTrack(
   options?: GenerateVideoTrackOptions,
-): Promise<RawVideoTrack> {
+): Promise<RawLocalVideoTrack> {
+  const src = options?.src ?? VideoSrc["360p-video"];
+  const name = options?.name ?? src;
+
+  const stream = await getMediaStream(src);
+
+  const track = new RawLocalVideoTrack(name, stream);
+
+  return track;
+}
+
+export async function generateRemoteVideoTrack(
+  options?: GenerateVideoTrackOptions,
+): Promise<RawRemoteVideoTrack> {
   const isSwitchedOff = options?.isSwitchedOff ?? false;
   const src = options?.src ?? VideoSrc["360p-video"];
   const name = options?.name ?? src;
 
   const stream = await getMediaStream(src);
 
-  const track = new RawVideoTrack(name, stream);
+  const track = new RawRemoteVideoTrack(name, stream);
   if (isSwitchedOff) {
     track.switchOff();
   }

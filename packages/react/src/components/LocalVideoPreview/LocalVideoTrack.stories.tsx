@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { generateVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
+import { generateLocalVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
 import type { IVideoTrack } from "../../entities/VideoTrack";
 import LocalVideoPreview from "./LocalVideoPreview";
 
@@ -15,7 +15,7 @@ export function NoVideo(): JSX.Element | null {
 export function WithVideo(): JSX.Element | null {
   const [track, setTrack] = useState<IVideoTrack | null>(null);
   useEffect(() => {
-    generateVideoTrack().then(setTrack).catch(console.error);
+    generateLocalVideoTrack().then(setTrack).catch(console.error);
   }, []);
 
   return <LocalVideoPreview videoTrack={track} identity="Moroine" />;
