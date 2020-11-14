@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import type { IParticipant, RawParticipant } from "./Participant";
+import type { ILocalParticipant, IRemoteParticipant } from "./Participant";
 import type { ITrackPublication } from "./Publication";
 
 export enum RoomState {
@@ -8,16 +8,18 @@ export enum RoomState {
   "disconnected" = "disconnected",
 }
 
-export type ParticipantConnectedListener = (participant: IParticipant) => void;
+export type ParticipantConnectedListener = (
+  participant: IRemoteParticipant,
+) => void;
 
 export type TrackPublishedListener = (publication: ITrackPublication) => void;
 
 export interface IRoom {
-  readonly localParticipant: IParticipant;
+  readonly localParticipant: ILocalParticipant;
 
   readonly name: string;
 
-  readonly participants: Map<string, IParticipant>;
+  readonly participants: Map<string, IRemoteParticipant>;
 
   readonly sid: string;
 
@@ -45,11 +47,11 @@ export interface IRoom {
 }
 
 export class RawRoom implements IRoom {
-  readonly localParticipant: IParticipant;
+  readonly localParticipant: ILocalParticipant;
 
   readonly name: string;
 
-  #participants: Map<string, IParticipant> = new Map();
+  #participants: Map<string, IRemoteParticipant> = new Map();
 
   readonly sid: string = uuid();
 
@@ -69,7 +71,7 @@ export class RawRoom implements IRoom {
 
   constructor(
     name: string,
-    localParticipant: RawParticipant,
+    localParticipant: ILocalParticipant,
     state: RoomState = RoomState.disconnected,
   ) {
     this.localParticipant = localParticipant;
@@ -81,7 +83,7 @@ export class RawRoom implements IRoom {
     return this.#participants;
   }
 
-  addParticipant(participant: IParticipant) {
+  addParticipant(participant: IRemoteParticipant) {
     this.#participants.set(participant.sid, participant);
 
     this.#participantConnectedListeners.forEach((listener) => {

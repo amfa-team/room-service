@@ -1,9 +1,18 @@
 import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
-import { generateRawParticipant } from "../../entities/fixtures/participants.fixture";
+import {
+  generateRawLocalParticipant,
+  generateRawRemoteParticipant,
+} from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
-import { generateVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
-import type { RawParticipant } from "../../entities/Participant";
+import {
+  generateLocalVideoTrack,
+  generateRemoteVideoTrack,
+} from "../../entities/fixtures/videoTracks.fixture";
+import type {
+  RawLocalParticipant,
+  RawRemoteParticipant,
+} from "../../entities/Participant";
 import Participant from "./Participant";
 
 export default {
@@ -15,20 +24,24 @@ export function NoVideo(): JSX.Element | null {
   return (
     <Participant
       onClick={action("onClick")}
-      participant={generateRawParticipant()}
+      participant={generateRawLocalParticipant()}
     />
   );
 }
 
 export function Local(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawParticipant | null>(null);
+  const [participant, setParticipant] = useState<RawLocalParticipant | null>(
+    null,
+  );
   useEffect(() => {
-    generateRawVideoPublication()
-      .then((videoTrackPublication) => {
+    generateLocalVideoTrack()
+      .then((videoTrack) => {
         setParticipant(
-          generateRawParticipant({
+          generateRawLocalParticipant({
             identity: "moroine",
-            videoTrackPublication,
+            videoTrackPublication: generateRawVideoPublication({
+              track: videoTrack,
+            }),
           }),
         );
       })
@@ -49,15 +62,19 @@ export function Local(): JSX.Element | null {
 }
 
 export function Selected(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawParticipant | null>(null);
+  const [participant, setParticipant] = useState<RawRemoteParticipant | null>(
+    null,
+  );
   useEffect(() => {
-    generateRawVideoPublication()
-      .then((videoTrackPublication) => {
+    generateRemoteVideoTrack()
+      .then((videoTrack) => {
         setParticipant(
-          generateRawParticipant({
+          generateRawRemoteParticipant({
             identity: "moroine",
-            videoTrackPublication,
             networkQualityLevel: 3,
+            videoTrackPublication: generateRawVideoPublication({
+              track: videoTrack,
+            }),
           }),
         );
       })
@@ -78,20 +95,21 @@ export function Selected(): JSX.Element | null {
 }
 
 export function ScreenShare(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawParticipant | null>(null);
+  const [participant, setParticipant] = useState<RawRemoteParticipant | null>(
+    null,
+  );
   useEffect(() => {
-    generateVideoTrack({
+    generateRemoteVideoTrack({
       name: "screen",
     })
-      .then(async (track) => {
-        return generateRawVideoPublication({ track });
-      })
-      .then((videoTrackPublication) => {
+      .then((videoTrack) => {
         setParticipant(
-          generateRawParticipant({
+          generateRawRemoteParticipant({
             identity: "moroine",
-            videoTrackPublication,
             networkQualityLevel: 3,
+            videoTrackPublication: generateRawVideoPublication({
+              track: videoTrack,
+            }),
           }),
         );
       })
@@ -106,15 +124,19 @@ export function ScreenShare(): JSX.Element | null {
 }
 
 export function Hide(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawParticipant | null>(null);
+  const [participant, setParticipant] = useState<RawRemoteParticipant | null>(
+    null,
+  );
   useEffect(() => {
-    generateRawVideoPublication()
-      .then((videoTrackPublication) => {
+    generateRemoteVideoTrack()
+      .then((videoTrack) => {
         setParticipant(
-          generateRawParticipant({
+          generateRawRemoteParticipant({
             identity: "moroine",
-            videoTrackPublication,
             networkQualityLevel: 2,
+            videoTrackPublication: generateRawVideoPublication({
+              track: videoTrack,
+            }),
           }),
         );
       })
@@ -135,9 +157,11 @@ export function Hide(): JSX.Element | null {
 }
 
 export function AsyncVideo(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawParticipant | null>(null);
+  const [participant, setParticipant] = useState<RawRemoteParticipant | null>(
+    null,
+  );
   useEffect(() => {
-    const p = generateRawParticipant({
+    const p = generateRawRemoteParticipant({
       identity: "moroine",
       networkQualityLevel: 0,
     });
@@ -154,9 +178,12 @@ export function AsyncVideo(): JSX.Element | null {
 
     let t2: NodeJS.Timeout | null = null;
 
-    generateRawVideoPublication()
-      .then((videoTrackPublication) => {
+    generateRemoteVideoTrack()
+      .then((videoTrack) => {
         let added = false;
+        const videoTrackPublication = generateRawVideoPublication({
+          track: videoTrack,
+        });
         t2 = setInterval(() => {
           if (added) {
             p.addVideoTrack(videoTrackPublication);

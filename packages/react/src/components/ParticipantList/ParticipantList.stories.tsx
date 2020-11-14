@@ -1,8 +1,9 @@
 import { action } from "@storybook/addon-actions";
 import React, { useEffect } from "react";
-import { generateRawParticipant } from "../../entities/fixtures/participants.fixture";
+import { generateRawRemoteParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
 import { generateRawRoom } from "../../entities/fixtures/rooms.fixture";
+import { generateRemoteVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
 import ParticipantList from "./ParticipantList";
 
 export default {
@@ -17,7 +18,7 @@ export function NoVideo(): JSX.Element | null {
 
 export function SingleParticipant(): JSX.Element | null {
   const room = generateRawRoom();
-  room.addParticipant(generateRawParticipant({ identity: "antoine" }));
+  room.addParticipant(generateRawRemoteParticipant({ identity: "antoine" }));
 
   return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
 }
@@ -25,15 +26,17 @@ export function SingleParticipant(): JSX.Element | null {
 export function TwoParticipant(): JSX.Element | null {
   const room = generateRawRoom();
 
-  room.addParticipant(generateRawParticipant({ identity: "antoine" }));
+  room.addParticipant(generateRawRemoteParticipant({ identity: "antoine" }));
 
   useEffect(() => {
-    generateRawVideoPublication()
-      .then((videoTrackPublication) => {
+    generateRemoteVideoTrack()
+      .then((videoTrack) => {
         room.addParticipant(
-          generateRawParticipant({
+          generateRawRemoteParticipant({
             identity: "moroine",
-            videoTrackPublication,
+            videoTrackPublication: generateRawVideoPublication({
+              track: videoTrack,
+            }),
           }),
         );
       })

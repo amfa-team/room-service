@@ -1,65 +1,100 @@
-import type { IAudioTrack, ITrack, IVideoTrack } from "./VideoTrack";
+import type {
+  IAudioTrack,
+  ILocalAudioTrack,
+  ILocalVideoTrack,
+  IRemoteAudioTrack,
+  IRemoteVideoTrack,
+  ITrack,
+  IVideoTrack,
+} from "./VideoTrack";
 
 export type SubscribedListener<T extends ITrack> = (track: T) => void;
 
-export interface IVideoTrackPublication {
+export interface IBaseVideoTrackPublication<T extends IVideoTrack> {
   readonly kind: "video";
 
   readonly trackName: string;
 
-  readonly track: IVideoTrack;
+  readonly track: T;
 
   on(
     event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<IVideoTrack>,
+    listener: SubscribedListener<T>,
   ): void;
 
   off(
     event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<IVideoTrack>,
+    listener: SubscribedListener<T>,
   ): void;
 }
 
-export interface IAudioTrackPublication {
+export interface IBaseAudioTrackPublication<T extends IAudioTrack> {
   readonly kind: "audio";
 
   readonly trackName: string;
 
-  readonly track: IAudioTrack;
+  readonly track: T;
 
   on(
     event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<IAudioTrack>,
+    listener: SubscribedListener<T>,
   ): void;
 
   off(
     event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<IAudioTrack>,
+    listener: SubscribedListener<T>,
   ): void;
 }
 
-export type ITrackPublication = IVideoTrackPublication | IAudioTrackPublication;
+export type IRemoteAudioTrackPublication = IBaseAudioTrackPublication<
+  IRemoteAudioTrack
+>;
+export type ILocalAudioTrackPublication = IBaseAudioTrackPublication<
+  ILocalAudioTrack
+>;
 
-export class RawVideoTrackPublication implements IVideoTrackPublication {
+export type IRemoteVideoTrackPublication = IBaseVideoTrackPublication<
+  IRemoteVideoTrack
+>;
+export type ILocalVideoTrackPublication = IBaseVideoTrackPublication<
+  ILocalVideoTrack
+>;
+
+export type IAudioTrackPublication =
+  | IRemoteAudioTrackPublication
+  | ILocalAudioTrackPublication;
+export type IVideoTrackPublication =
+  | IRemoteVideoTrackPublication
+  | ILocalVideoTrackPublication;
+
+export type IRemoteTrackPublication =
+  | IRemoteAudioTrackPublication
+  | IRemoteVideoTrackPublication;
+export type ILocalTrackPublication =
+  | ILocalAudioTrackPublication
+  | ILocalVideoTrackPublication;
+export type ITrackPublication =
+  | IRemoteTrackPublication
+  | ILocalTrackPublication;
+
+export class RawVideoTrackPublication<T extends IVideoTrack>
+  implements IBaseVideoTrackPublication<T> {
   readonly kind: "video" = "video";
 
   readonly trackName: string;
 
-  readonly track: IVideoTrack;
+  readonly track: T;
 
-  #subscribedListeners: Set<SubscribedListener<IVideoTrack>> = new Set();
+  #subscribedListeners: Set<SubscribedListener<T>> = new Set();
 
-  #unsubscribedListeners: Set<SubscribedListener<IVideoTrack>> = new Set();
+  #unsubscribedListeners: Set<SubscribedListener<T>> = new Set();
 
-  constructor(trackName: string, track: IVideoTrack) {
+  constructor(trackName: string, track: T) {
     this.trackName = trackName;
     this.track = track;
   }
 
-  on(
-    event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<IVideoTrack>,
-  ) {
+  on(event: "subscribed" | "unsubscribed", listener: SubscribedListener<T>) {
     if (event === "subscribed") {
       this.#subscribedListeners.add(listener);
     }
@@ -68,10 +103,7 @@ export class RawVideoTrackPublication implements IVideoTrackPublication {
     }
   }
 
-  off(
-    event: "subscribed" | "unsubscribed",
-    listener: SubscribedListener<IVideoTrack>,
-  ) {
+  off(event: "subscribed" | "unsubscribed", listener: SubscribedListener<T>) {
     if (event === "subscribed") {
       this.#subscribedListeners.delete(listener);
     }

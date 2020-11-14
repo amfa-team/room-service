@@ -1,20 +1,33 @@
+/* eslint-disable max-classes-per-file */
+
 import { v4 as uuid } from "uuid";
-import type { ITrackPublication, IVideoTrackPublication } from "./Publication";
+import type {
+  IAudioTrackPublication,
+  ILocalAudioTrackPublication,
+  ILocalVideoTrackPublication,
+  IRemoteAudioTrackPublication,
+  IRemoteVideoTrackPublication,
+  ITrackPublication,
+  IVideoTrackPublication,
+} from "./Publication";
 
 export type NetworkQualityLevelChangedListener = (level: number | null) => void;
 
 export type TrackPublishedListener = (publication: ITrackPublication) => void;
 
-export interface IParticipant {
+interface IBaseParticipant<
+  V extends IVideoTrackPublication,
+  A extends IAudioTrackPublication
+> {
   readonly sid: string;
 
   readonly networkQualityLevel: number | null;
 
   readonly identity: string;
 
-  readonly tracks: Map<string, ITrackPublication>;
+  readonly tracks: Map<string, V | A>;
 
-  readonly videoTracks: Map<string, IVideoTrackPublication>;
+  readonly videoTracks: Map<string, V>;
 
   on(
     event: "networkQualityLevelChanged",
@@ -37,16 +50,29 @@ export interface IParticipant {
   off(event: "reconnected" | "reconnecting", listener: () => void): void;
 }
 
-export class RawParticipant implements IParticipant {
+export type IRemoteParticipant = IBaseParticipant<
+  IRemoteVideoTrackPublication,
+  IRemoteAudioTrackPublication
+>;
+export type ILocalParticipant = IBaseParticipant<
+  ILocalVideoTrackPublication,
+  ILocalAudioTrackPublication
+>;
+export type IParticipant = IRemoteParticipant | ILocalParticipant;
+
+export class RawBaseParticipant<
+  V extends IVideoTrackPublication = IVideoTrackPublication,
+  A extends IAudioTrackPublication = IAudioTrackPublication
+> implements IBaseParticipant<V, A> {
   #networkQualityLevel: number | null = null;
 
   readonly sid: string = uuid();
 
   readonly identity: string;
 
-  readonly tracks: Map<string, ITrackPublication> = new Map();
+  readonly tracks: Map<string, V> = new Map();
 
-  readonly videoTracks: Map<string, IVideoTrackPublication> = new Map();
+  readonly videoTracks: Map<string, V> = new Map();
 
   constructor(identity: string) {
     this.identity = identity;
@@ -71,7 +97,7 @@ export class RawParticipant implements IParticipant {
     });
   }
 
-  addVideoTrack(trackPublication: IVideoTrackPublication): void {
+  addVideoTrack(trackPublication: V): void {
     this.videoTracks.set(trackPublication.track.id, trackPublication);
     this.tracks.set(trackPublication.track.id, trackPublication);
 
@@ -84,7 +110,7 @@ export class RawParticipant implements IParticipant {
     });
   }
 
-  removeVideoTrack(trackPublication: IVideoTrackPublication): void {
+  removeVideoTrack(trackPublication: V): void {
     this.videoTracks.delete(trackPublication.track.id);
     this.tracks.delete(trackPublication.track.id);
 
@@ -173,3 +199,17 @@ export class RawParticipant implements IParticipant {
     }
   }
 }
+
+export class RawLocalParticipant
+  extends RawBaseParticipant<
+    ILocalVideoTrackPublication,
+    ILocalAudioTrackPublication
+  >
+  implements ILocalParticipant {}
+
+export class RawRemoteParticipant
+  extends RawBaseParticipant<
+    IRemoteVideoTrackPublication,
+    IRemoteAudioTrackPublication
+  >
+  implements IRemoteParticipant {}

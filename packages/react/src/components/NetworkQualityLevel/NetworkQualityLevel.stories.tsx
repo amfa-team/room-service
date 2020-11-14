@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { generateRawParticipant } from "../../entities/fixtures/participants.fixture";
-import type { RawParticipant } from "../../entities/Participant";
+import { generateRawRemoteParticipant } from "../../entities/fixtures/participants.fixture";
+import type { RawRemoteParticipant } from "../../entities/Participant";
 import NetworkQualityLevel from "./NetworkQualityLevel";
 
 export default {
@@ -16,13 +16,13 @@ export default {
 };
 
 export function NoQuality(): JSX.Element | null {
-  return <NetworkQualityLevel participant={generateRawParticipant()} />;
+  return <NetworkQualityLevel participant={generateRawRemoteParticipant()} />;
 }
 
 export function ZeroQuality(): JSX.Element | null {
   return (
     <NetworkQualityLevel
-      participant={generateRawParticipant({
+      participant={generateRawRemoteParticipant({
         networkQualityLevel: 0,
       })}
     />
@@ -32,7 +32,7 @@ export function ZeroQuality(): JSX.Element | null {
 export function OneQuality(): JSX.Element | null {
   return (
     <NetworkQualityLevel
-      participant={generateRawParticipant({
+      participant={generateRawRemoteParticipant({
         networkQualityLevel: 1,
       })}
     />
@@ -42,7 +42,7 @@ export function OneQuality(): JSX.Element | null {
 export function TwoQuality(): JSX.Element | null {
   return (
     <NetworkQualityLevel
-      participant={generateRawParticipant({
+      participant={generateRawRemoteParticipant({
         networkQualityLevel: 2,
       })}
     />
@@ -52,7 +52,7 @@ export function TwoQuality(): JSX.Element | null {
 export function ThreeQuality(): JSX.Element | null {
   return (
     <NetworkQualityLevel
-      participant={generateRawParticipant({
+      participant={generateRawRemoteParticipant({
         networkQualityLevel: 3,
       })}
     />
@@ -62,7 +62,7 @@ export function ThreeQuality(): JSX.Element | null {
 export function FourQuality(): JSX.Element | null {
   return (
     <NetworkQualityLevel
-      participant={generateRawParticipant({
+      participant={generateRawRemoteParticipant({
         networkQualityLevel: 4,
       })}
     />
@@ -70,9 +70,11 @@ export function FourQuality(): JSX.Element | null {
 }
 
 export function Changing(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawParticipant | null>(null);
+  const [participant, setParticipant] = useState<RawRemoteParticipant | null>(
+    null,
+  );
   useEffect(() => {
-    const p = generateRawParticipant({
+    const p = generateRawRemoteParticipant({
       identity: "moroine",
       networkQualityLevel: 0,
     });

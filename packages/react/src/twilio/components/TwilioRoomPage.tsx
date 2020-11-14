@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useJoin, useToken } from "../../api/useApi";
+import Controls from "../../components/Controls/Controls";
 import { LoadingFallback } from "../../components/Loading/Loading";
 import ParticipantList from "../../components/ParticipantList/ParticipantList";
 import type { IRoom } from "../../entities/Room";
@@ -44,6 +45,7 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
     <div>
       <div>{props.roomName}</div>
       <ParticipantList room={room} onShuffle={onShuffleClicked} />
+      <Controls localParticipant={room.localParticipant} />
     </div>
   );
 }

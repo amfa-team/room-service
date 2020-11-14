@@ -6,7 +6,7 @@ function isTrackSwitchedOff(track: ITrack | null | undefined): boolean {
     return true;
   }
 
-  return track.isSwitchedOff ?? false;
+  return "isSwitchedOff" in track ? track.isSwitchedOff : false;
 }
 
 export default function useIsTrackSwitchedOff(
@@ -18,7 +18,7 @@ export default function useIsTrackSwitchedOff(
     // Reset the value if the 'track' variable changes
     setIsSwitchedOff(isTrackSwitchedOff(track));
 
-    if (track) {
+    if (track && "isSwitchedOff" in track) {
       const handleSwitchedOff = () => setIsSwitchedOff(true);
       const handleSwitchedOn = () => setIsSwitchedOff(false);
       track.on("switchedOff", handleSwitchedOff);

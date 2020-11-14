@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
-import { generateVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
+import { generateRemoteVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
 import type { IVideoTrack } from "../../entities/VideoTrack";
 import WaitingPage from "./WaitingPage";
 
@@ -18,7 +18,7 @@ export function NoVideo(): JSX.Element | null {
 export function WithVideo(): JSX.Element | null {
   const [track, setTrack] = useState<IVideoTrack | null>(null);
   useEffect(() => {
-    generateVideoTrack().then(setTrack).catch(console.error);
+    generateRemoteVideoTrack().then(setTrack).catch(console.error);
   }, []);
 
   return (
@@ -29,7 +29,7 @@ export function WithVideo(): JSX.Element | null {
 export function Disabled(): JSX.Element | null {
   const [track, setTrack] = useState<IVideoTrack | null>(null);
   useEffect(() => {
-    generateVideoTrack().then(setTrack).catch(console.error);
+    generateRemoteVideoTrack().then(setTrack).catch(console.error);
   }, []);
 
   return (
