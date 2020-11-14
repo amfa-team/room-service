@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { generateRawLocalParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
-import { generateLocalVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
+import { generateLocalVideoTrack } from "../../entities/fixtures/tracks.fixture";
 import type { RawLocalParticipant } from "../../entities/Participant";
 import Controls from "./Controls";
 

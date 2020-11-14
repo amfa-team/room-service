@@ -1,5 +1,5 @@
 import { RawVideoTrackPublication } from "../Publication";
-import type { RawLocalVideoTrack, RawRemoteVideoTrack } from "../VideoTrack";
+import type { RawLocalVideoTrack, RawRemoteVideoTrack } from "../Track";
 
 interface GenerateRawVideoPublicationOptions<
   T extends RawLocalVideoTrack | RawRemoteVideoTrack

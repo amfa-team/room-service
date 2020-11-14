@@ -1,4 +1,4 @@
-import type { ITrack } from "../entities/VideoTrack";
+import type { ITrack } from "../entities/Track";
 
 export default function useIsScreenShareTrack(
   track: ITrack | null | undefined,

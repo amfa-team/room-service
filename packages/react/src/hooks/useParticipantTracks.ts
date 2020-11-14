@@ -12,7 +12,7 @@ import type {
   IRemoteAudioTrack,
   IRemoteVideoTrack,
   IVideoTrack,
-} from "../entities/VideoTrack";
+} from "../entities/Track";
 
 export function useParticipantVideoTrack<T extends IParticipant>(
   participant: T | null,
@@ -100,7 +100,7 @@ export function useParticipantAudioTrack<T extends IParticipant>(
         }
       };
 
-      const [publication = null] = participant.videoTracks.values();
+      const [publication = null] = participant.audioTracks.values();
       if (publication) {
         trackPublished(publication);
       }

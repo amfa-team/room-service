@@ -1,7 +1,7 @@
 import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
-import { generateRemoteVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
-import type { IVideoTrack } from "../../entities/VideoTrack";
+import { generateRemoteVideoTrack } from "../../entities/fixtures/tracks.fixture";
+import type { IVideoTrack } from "../../entities/Track";
 import WaitingPage from "./WaitingPage";
 
 export default {

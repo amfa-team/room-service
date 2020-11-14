@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import type { ITrack } from "../entities/VideoTrack";
+import type { ITrack } from "../entities/Track";
 
 export default function useIsTrackEnabled(track: ITrack | null) {
-  const [isEnabled, setIsEnabled] = useState(track ? track.isEnabled : false);
+  const [isEnabled, setIsEnabled] = useState<boolean>(
+    track ? track.isEnabled : false,
+  );
 
   useEffect(() => {
     setIsEnabled(track ? track.isEnabled : false);

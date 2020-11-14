@@ -1,5 +1,5 @@
 import React from "react";
-import type { IVideoTrack } from "../../entities/VideoTrack";
+import type { IVideoTrack } from "../../entities/Track";
 import AvatarIcon from "../../icons/AvatarIcon";
 // import LocalAudioLevelIndicator from "../../../LocalAudioLevelIndicator/LocalAudioLevelIndicator";
 import VideoTrack from "../VideoTrack/VideoTrack";

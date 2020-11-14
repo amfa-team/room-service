@@ -29,6 +29,8 @@ interface IBaseParticipant<
 
   readonly videoTracks: Map<string, V>;
 
+  readonly audioTracks: Map<string, A>;
+
   on(
     event: "networkQualityLevelChanged",
     listener: NetworkQualityLevelChangedListener,
@@ -70,9 +72,11 @@ export class RawBaseParticipant<
 
   readonly identity: string;
 
-  readonly tracks: Map<string, V> = new Map();
+  readonly tracks: Map<string, V | A> = new Map();
 
   readonly videoTracks: Map<string, V> = new Map();
+
+  readonly audioTracks: Map<string, A> = new Map();
 
   constructor(identity: string) {
     this.identity = identity;
@@ -119,6 +123,32 @@ export class RawBaseParticipant<
         listener(trackPublication);
       } catch (e) {
         console.error("Participant.addVideoTrack: listener failed", e);
+      }
+    });
+  }
+
+  addAudioTrack(trackPublication: A): void {
+    this.audioTracks.set(trackPublication.track.id, trackPublication);
+    this.tracks.set(trackPublication.track.id, trackPublication);
+
+    this.#trackPublishedListeners.forEach((listener) => {
+      try {
+        listener(trackPublication);
+      } catch (e) {
+        console.error("Participant.addAudioTrack: listener failed", e);
+      }
+    });
+  }
+
+  removeAudioTrack(trackPublication: A): void {
+    this.audioTracks.delete(trackPublication.track.id);
+    this.tracks.delete(trackPublication.track.id);
+
+    this.#trackPublishedListeners.forEach((listener) => {
+      try {
+        listener(trackPublication);
+      } catch (e) {
+        console.error("Participant.removeAudioTrack: listener failed", e);
       }
     });
   }

@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React from "react";
-import type { IVideoTrack } from "../../entities/VideoTrack";
+import type { IVideoTrack } from "../../entities/Track";
 import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
 import classes from "./waitingPage.module.css";
 

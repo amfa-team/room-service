@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React, { useEffect, useRef } from "react";
-import type { IVideoTrack } from "../../entities/VideoTrack";
+import type { IVideoTrack } from "../../entities/Track";
 import style from "./videoTracks.module.css";
 
 interface VideoTrackProps {
