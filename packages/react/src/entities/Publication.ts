@@ -6,7 +6,7 @@ import type {
   IRemoteVideoTrack,
   ITrack,
   IVideoTrack,
-} from "./VideoTrack";
+} from "./Track";
 
 export type SubscribedListener<T extends ITrack> = (track: T) => void;
 

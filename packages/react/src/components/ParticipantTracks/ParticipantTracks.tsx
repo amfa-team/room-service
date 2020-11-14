@@ -1,6 +1,10 @@
 import React from "react";
 import type { IParticipant } from "../../entities/Participant";
-import { useParticipantVideoTrack } from "../../hooks/useParticipantTracks";
+import {
+  useParticipantAudioTrack,
+  useParticipantVideoTrack,
+} from "../../hooks/useParticipantTracks";
+import AudioTrack from "../AudioTrack/AudioTrack";
 import VideoTrack from "../VideoTrack/VideoTrack";
 
 interface ParticipantTracksProps {
@@ -13,10 +17,14 @@ export default function ParticipantTracks({
   isLocalParticipant,
 }: ParticipantTracksProps) {
   const video = useParticipantVideoTrack(participant);
+  const audio = useParticipantAudioTrack(participant);
 
-  return video ? (
-    <VideoTrack track={video} isLocal={isLocalParticipant} />
-  ) : null;
+  return (
+    <>
+      {video ? <VideoTrack track={video} isLocal={isLocalParticipant} /> : null}
+      {audio ? <AudioTrack track={audio} /> : null}
+    </>
+  );
 }
 
 ParticipantTracks.defaultProps = {

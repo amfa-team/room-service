@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ITrack } from "../entities/VideoTrack";
+import type { ITrack } from "../entities/Track";
 
 function isTrackSwitchedOff(track: ITrack | null | undefined): boolean {
   if (!track) {

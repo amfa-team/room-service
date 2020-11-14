@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { generateRawRemoteParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
 import { generateRawRoom } from "../../entities/fixtures/rooms.fixture";
-import { generateRemoteVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
+import { generateRemoteVideoTrack } from "../../entities/fixtures/tracks.fixture";
 import ParticipantList from "./ParticipantList";
 
 export default {

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   VideoSrc,
   generateRemoteVideoTrack,
-} from "../../entities/fixtures/videoTracks.fixture";
-import type { IVideoTrack } from "../../entities/VideoTrack";
+} from "../../entities/fixtures/tracks.fixture";
+import type { IVideoTrack } from "../../entities/Track";
 import VideoTrack from "./VideoTrack";
 
 export default {

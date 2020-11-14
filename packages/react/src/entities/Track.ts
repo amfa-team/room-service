@@ -248,3 +248,177 @@ export class RawLocalVideoTrack
     return this.rawEnable(enabled);
   }
 }
+
+abstract class RawBaseAudioTrack implements IBaseAudioTrack {
+  readonly kind = "audio";
+
+  #attachments: Set<HTMLAudioElement> = new Set();
+
+  #stream: MediaStream;
+
+  readonly name: string;
+
+  readonly id: string = uuid();
+
+  #enabledEvents: Set<() => void> = new Set();
+
+  #disabledEvents: Set<() => void> = new Set();
+
+  #isEnabled: boolean = true;
+
+  constructor(name: string, stream: MediaStream) {
+    this.name = name;
+    this.#stream = stream;
+  }
+
+  attach(element: HTMLAudioElement): HTMLAudioElement {
+    this.#attachments.add(element);
+
+    // eslint-disable-next-line no-param-reassign
+    element.srcObject = this.#stream;
+
+    return element;
+  }
+
+  detach(element: HTMLAudioElement): HTMLAudioElement[] {
+    this.#attachments.delete(element);
+
+    return Array.from(this.#attachments.values());
+  }
+
+  get mediaStreamTrack(): MediaStreamTrack | null {
+    return this.#stream.getAudioTracks()[0];
+  }
+
+  get isEnabled() {
+    return this.#isEnabled;
+  }
+
+  rawDisable() {
+    this.#isEnabled = false;
+
+    this.#disabledEvents.forEach((listener) => {
+      try {
+        listener();
+      } catch (e) {
+        console.error("RawBaseAudioTrack.disabledEvents: fail", e);
+      }
+    });
+
+    return this;
+  }
+
+  rawEnable(enabled = true) {
+    if (!enabled) {
+      return this.rawDisable();
+    }
+
+    this.#isEnabled = true;
+
+    this.#enabledEvents.forEach((listener) => {
+      try {
+        listener();
+      } catch (e) {
+        console.error("RawBaseAudioTrack.enableEvents: fail", e);
+      }
+    });
+
+    return this;
+  }
+
+  on(event: "enabled" | "disabled", listener: () => void) {
+    if (event === "enabled") {
+      this.#enabledEvents.add(listener);
+    }
+    if (event === "disabled") {
+      this.#disabledEvents.add(listener);
+    }
+  }
+
+  off(event: "enabled" | "disabled", listener: () => void) {
+    if (event === "enabled") {
+      this.#enabledEvents.delete(listener);
+    }
+    if (event === "disabled") {
+      this.#disabledEvents.delete(listener);
+    }
+  }
+}
+
+export class RawRemoteAudioTrack
+  extends RawBaseAudioTrack
+  implements IRemoteAudioTrack {
+  #switchOffEvents: Set<() => void> = new Set();
+
+  #switchOnEvents: Set<() => void> = new Set();
+
+  #isSwitchedOff = false;
+
+  get isSwitchedOff() {
+    return this.#isSwitchedOff;
+  }
+
+  switchOff() {
+    this.#isSwitchedOff = true;
+
+    this.#switchOffEvents.forEach((listener) => {
+      try {
+        listener();
+      } catch (e) {
+        console.error("AudioTracks.switchOffEvents: fail", e);
+      }
+    });
+  }
+
+  switchOn() {
+    this.#isSwitchedOff = false;
+
+    this.#switchOnEvents.forEach((listener) => {
+      try {
+        listener();
+      } catch (e) {
+        console.error("AudioTracks.switchOnEvents: fail", e);
+      }
+    });
+  }
+
+  on(
+    event: "switchedOff" | "switchedOn" | "enabled" | "disabled",
+    listener: () => void,
+  ) {
+    super.on(event as "enabled" | "disabled", listener);
+
+    if (event === "switchedOn") {
+      this.#switchOnEvents.add(listener);
+    }
+    if (event === "switchedOff") {
+      this.#switchOffEvents.add(listener);
+    }
+  }
+
+  off(
+    event: "switchedOff" | "switchedOn" | "enabled" | "disabled",
+    listener: () => void,
+  ) {
+    super.off(event as "enabled" | "disabled", listener);
+
+    if (event === "switchedOn") {
+      this.#switchOnEvents.delete(listener);
+    }
+    if (event === "switchedOff") {
+      this.#switchOffEvents.delete(listener);
+    }
+  }
+}
+
+export class RawLocalAudioTrack
+  extends RawBaseAudioTrack
+  implements ILocalAudioTrack {
+  disable() {
+    return this.rawDisable();
+  }
+
+  enable(enabled = true) {
+    return this.rawEnable(enabled);
+  }
+}

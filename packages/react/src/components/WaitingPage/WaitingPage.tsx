@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React, { useState } from "react";
-import type { IVideoTrack } from "../../entities/VideoTrack";
+import type { IVideoTrack } from "../../entities/Track";
 import SettingsIcon from "../../icons/SettingsIcon";
 import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
 import styles from "./waitingPage.module.css";

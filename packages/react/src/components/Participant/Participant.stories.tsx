@@ -8,7 +8,7 @@ import { generateRawVideoPublication } from "../../entities/fixtures/publication
 import {
   generateLocalVideoTrack,
   generateRemoteVideoTrack,
-} from "../../entities/fixtures/videoTracks.fixture";
+} from "../../entities/fixtures/tracks.fixture";
 import type {
   RawLocalParticipant,
   RawRemoteParticipant,

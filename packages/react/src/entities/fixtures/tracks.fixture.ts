@@ -1,4 +1,9 @@
-import { RawLocalVideoTrack, RawRemoteVideoTrack } from "../VideoTrack";
+import {
+  RawLocalAudioTrack,
+  RawLocalVideoTrack,
+  RawRemoteAudioTrack,
+  RawRemoteVideoTrack,
+} from "../Track";
 import video360p from "./assets/video.mp4";
 import video720p from "./assets/video_1280x720.mp4";
 
@@ -8,13 +13,13 @@ export enum VideoSrc {
   "camera" = "camera",
 }
 
-export interface GenerateVideoTrackOptions {
+export interface GenerateTrackOptions {
   name?: string;
   isSwitchedOff?: boolean;
   src?: VideoSrc;
 }
 
-async function getMediaStream(src: VideoSrc): Promise<MediaStream> {
+async function getVideoMediaStream(src: VideoSrc): Promise<MediaStream> {
   const video = document.createElement("video");
   switch (src) {
     case VideoSrc["360p-video"]:
@@ -34,7 +39,6 @@ async function getMediaStream(src: VideoSrc): Promise<MediaStream> {
     default:
   }
 
-  video.src = video360p;
   video.muted = true;
   video.loop = true;
   video.play();
@@ -46,13 +50,22 @@ async function getMediaStream(src: VideoSrc): Promise<MediaStream> {
   return stream;
 }
 
+async function getAudioMediaStream(): Promise<MediaStream> {
+  const stream: MediaStream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+    video: false,
+  });
+
+  return stream;
+}
+
 export async function generateLocalVideoTrack(
-  options?: GenerateVideoTrackOptions,
+  options?: GenerateTrackOptions,
 ): Promise<RawLocalVideoTrack> {
   const src = options?.src ?? VideoSrc["360p-video"];
   const name = options?.name ?? src;
 
-  const stream = await getMediaStream(src);
+  const stream = await getVideoMediaStream(src);
 
   const track = new RawLocalVideoTrack(name, stream);
 
@@ -60,15 +73,44 @@ export async function generateLocalVideoTrack(
 }
 
 export async function generateRemoteVideoTrack(
-  options?: GenerateVideoTrackOptions,
+  options?: GenerateTrackOptions,
 ): Promise<RawRemoteVideoTrack> {
   const isSwitchedOff = options?.isSwitchedOff ?? false;
   const src = options?.src ?? VideoSrc["360p-video"];
   const name = options?.name ?? src;
 
-  const stream = await getMediaStream(src);
+  const stream = await getVideoMediaStream(src);
 
   const track = new RawRemoteVideoTrack(name, stream);
+  if (isSwitchedOff) {
+    track.switchOff();
+  }
+
+  return track;
+}
+
+export async function generateLocalAudioTrack(
+  options?: GenerateTrackOptions,
+): Promise<RawLocalAudioTrack> {
+  const src = options?.src ?? VideoSrc["360p-video"];
+  const name = options?.name ?? src;
+
+  const stream = await getVideoMediaStream(src);
+
+  const track = new RawLocalAudioTrack(name, stream);
+
+  return track;
+}
+
+export async function generateRemoteAudioTrack(
+  options?: GenerateTrackOptions,
+): Promise<RawRemoteAudioTrack> {
+  const isSwitchedOff = options?.isSwitchedOff ?? false;
+  const name = options?.name ?? "mic";
+
+  const stream = await getAudioMediaStream();
+
+  const track = new RawRemoteAudioTrack(name, stream);
   if (isSwitchedOff) {
     track.switchOff();
   }

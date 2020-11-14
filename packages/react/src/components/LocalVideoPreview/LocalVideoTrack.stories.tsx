@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { generateLocalVideoTrack } from "../../entities/fixtures/videoTracks.fixture";
-import type { IVideoTrack } from "../../entities/VideoTrack";
+import { generateLocalVideoTrack } from "../../entities/fixtures/tracks.fixture";
+import type { IVideoTrack } from "../../entities/Track";
 import LocalVideoPreview from "./LocalVideoPreview";
 
 export default {
