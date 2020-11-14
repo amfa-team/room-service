@@ -9,7 +9,6 @@
   width: 650px;
   height: 650px;
   display: grid;
-  overflow: hidden;
   margin: 0;
   list-style: none;
   grid-template-columns: repeat(2, 1fr);
