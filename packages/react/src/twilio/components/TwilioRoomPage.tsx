@@ -28,7 +28,6 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
     history.push(`./${roomName}`);
   }, [join, history]);
 
-  // isJoining || isLoading ||
   if (data === null) {
     return <ParticipantListLoading />;
   }
@@ -39,7 +38,6 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
 
   return (
     <div>
-      {/* <div>{props.roomName}</div> */}
       <ParticipantList room={room} onShuffle={onShuffleClicked} />
       <Controls localParticipant={room.localParticipant} />
     </div>

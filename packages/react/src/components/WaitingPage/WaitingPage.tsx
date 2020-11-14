@@ -1,8 +1,8 @@
 import classnames from "classnames";
-import React from "react";
+import React, { useState } from "react";
 import type { IVideoTrack } from "../../entities/VideoTrack";
 import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
-import classes from "./waitingPage.module.css";
+import styles from "./waitingPage.module.css";
 
 interface WaitingPageProps {
   identity: string;
@@ -13,19 +13,51 @@ interface WaitingPageProps {
 }
 
 export default function WaitingPage(props: WaitingPageProps) {
+  const [driversSetting, setDriversSetting] = useState(false);
+
+  const toggleDriversSetting = () => setDriversSetting(!driversSetting);
   return (
-    <div className={classes.root}>
-      <div className={classes.localPreviewContainer}>
-        <LocalVideoPreview
-          videoTrack={props.videoTrack}
-          identity={props.identity}
-        />
+    <div className={styles.container}>
+      <div className={styles.settingContainer}>
+        <div className={styles.settingBubble}>
+          <span
+            className={`icon close-icon ${styles.closeIcon}`}
+            style={{ marginRight: "12px" }}
+            onClick={() => toggleDriversSetting()}
+          >
+            &nbsp;
+          </span>
+          {driversSetting && (
+            <div className={styles.settingDriversBubble}>
+              Setting drivers here
+            </div>
+          )}
+          {!driversSetting && (
+            <div className={styles.settingVideoBubble}>
+              <LocalVideoPreview
+                videoTrack={props.videoTrack}
+                identity={props.identity}
+              />
+            </div>
+          )}
+          <span
+            className={`icon close-icon ${styles.closeIcon}`}
+            style={{ marginLeft: "12px" }}
+          >
+            &nbsp;
+          </span>
+        </div>
+        <span
+          className={`icon close-icon ${styles.closeIcon} ${styles.camIcon}`}
+        >
+          &nbsp;
+        </span>
       </div>
       {props.roomFull && <div>room is full</div>}
-      <div className={classes.joinContainer}>
+      <div className={styles.joinContainer}>
         <button
-          className={classnames(classes.join, {
-            [classes.disabled]: props.disabled,
+          className={classnames(styles.join, {
+            [styles.disabled]: props.disabled,
           })}
           type="button"
           onClick={props.join}

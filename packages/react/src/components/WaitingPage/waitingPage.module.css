@@ -1,15 +1,62 @@
-.root {
-  display: grid;
-  grid-template-rows: auto 100px;
-  width: 100%;
+.container {
   height: 100%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.localPreviewContainer {
+.settingContainer {
+  flex-grow: 1;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  justify-items: center;
+  width: 100%;
+}
+
+.settingBubble {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: #efebeb;
+  border-radius: 100%;
+}
+
+.settingVideoBubble {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background: blueviolet;
+  overflow: hidden;
+}
+.settingDriversBubble {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background: blueviolet;
+}
+
+.closeIcon {
+  height: 35px;
+  width: 35px;
+  background-size: contain;
+}
+
+.camIcon {
+  position: relative;
+  top: -35px;
 }
 
 .joinContainer {
@@ -20,10 +67,13 @@
 
 .join {
   color: #ffffff;
-  background-color: blueviolet;
-  width: 200px;
+  background-color: #0ee997;
+  width: 400px;
   height: 50px;
   border: 0;
+  position: relative;
+  top: 20px;
+  border-radius: 5px;
 }
 
 .disabled {
