@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import React, { useState } from "react";
 import type { IVideoTrack } from "../../entities/VideoTrack";
+import SettingsIcon from "../../icons/SettingsIcon";
 import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
 import styles from "./waitingPage.module.css";
 
@@ -21,12 +22,13 @@ export default function WaitingPage(props: WaitingPageProps) {
       <div className={styles.settingContainer}>
         <div className={styles.settingBubble}>
           <span
-            className={`icon close-icon ${styles.closeIcon}`}
+            className={`${styles.closeIcon}`}
             style={{ marginRight: "12px" }}
             onClick={() => toggleDriversSetting()}
           >
-            &nbsp;
+            <SettingsIcon />
           </span>
+
           {driversSetting && (
             <div className={styles.settingDriversBubble}>
               Setting drivers here

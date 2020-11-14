@@ -29,6 +29,70 @@
   overflow: hidden;
 }
 
+.mainMenuIcons {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 100px;
+  margin-top: 0px;
+  font-size: 20px;
+  color: #fff;
+  width: 40px;
+  height: 40px !important;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  -webkit-transition: all 0.4s linear;
+  -moz-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+  z-index: 99;
+  background-color: #ececec;
+  box-shadow: 0px 0px 0px 0px #c7c7c7, 0px 0px 0px 6px #fdfdfd,
+    0px 0px 0px 0px #dfdfdf, 0px 0px 5px 6px #dfdfdf;
+}
+
+.list {
+  position: absolute;
+  margin-top: -42px;
+}
+
+.dNone {
+  opacity: 0;
+}
+
+.iconM {
+  transform: rotate(225deg) translate(130px) rotate(-225deg);
+  background-color: #e3aba5;
+}
+
+.iconCtrl {
+  transform: rotate(225deg) translate(130px) rotate(-225deg);
+}
+.iconPrfle {
+  transform: rotate(225deg) translate(130px) rotate(-225deg);
+}
+.iconAbout {
+  transform: rotate(225deg) translate(130px) rotate(-225deg);
+}
+.iconHome {
+  transform: rotate(225deg) translate(130px) rotate(-225deg);
+}
+
+.iconCtrlOpen {
+  transform: rotate(255deg) translate(140px) rotate(-255deg);
+}
+.iconPrfleOpen {
+  transform: rotate(285deg) translate(145px) rotate(-285deg);
+}
+.iconAboutOpen {
+  transform: rotate(315deg) translate(160px) rotate(-315deg);
+}
+.iconHomeOpen {
+  transform: rotate(340deg) translate(170px) rotate(-345deg);
+}
+
 .emptySeatContainer {
   position: relative;
   display: flex;
