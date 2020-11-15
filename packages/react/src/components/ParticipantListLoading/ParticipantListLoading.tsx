@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
+import { useDictionary } from "../../i18n/dictionary";
 import DotLoader from "../DotLoader/DotLoader";
 import styles from "./ParticipantListLoading.module.css";
 
@@ -29,10 +30,12 @@ const itemAnimation = {
 };
 
 export default function ParticipantListLoading(): JSX.Element | null {
+  const dictionary = useDictionary("participantList");
+
   return (
     <div className={styles.container}>
       <div className={styles.shuffleCTA}>
-        <span>Shuffle</span>
+        <span>{dictionary.shuffle}</span>
       </div>
       <motion.ul
         className={styles.participantsContainer}

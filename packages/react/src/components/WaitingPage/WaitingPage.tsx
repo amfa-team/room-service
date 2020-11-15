@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import React, { useState } from "react";
 import type { IVideoTrack } from "../../entities/Track";
+import { useDictionary } from "../../i18n/dictionary";
 import SettingsIcon from "../../icons/SettingsIcon";
 import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
 import styles from "./waitingPage.module.css";
@@ -14,6 +15,7 @@ interface WaitingPageProps {
 }
 
 export default function WaitingPage(props: WaitingPageProps) {
+  const dictionary = useDictionary("waitingPage");
   const [driversSetting, setDriversSetting] = useState(false);
 
   const toggleDriversSetting = () => setDriversSetting(!driversSetting);
@@ -55,7 +57,6 @@ export default function WaitingPage(props: WaitingPageProps) {
           &nbsp;
         </span>
       </div>
-      {props.roomFull && <div>room is full</div>}
       <div className={styles.joinContainer}>
         <button
           className={classnames(styles.join, {
@@ -65,8 +66,9 @@ export default function WaitingPage(props: WaitingPageProps) {
           onClick={props.join}
           disabled={props.disabled}
         >
-          Join
+          {dictionary.join}
         </button>
+        {props.roomFull && <span>{dictionary.roomFull}</span>}
       </div>
     </div>
   );

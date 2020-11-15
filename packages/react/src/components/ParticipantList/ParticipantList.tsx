@@ -5,6 +5,7 @@ import type { ReactElement } from "react";
 import type { IRoom } from "../../entities/Room";
 import useParticipants from "../../hooks/useParticipants";
 import { useSelectedParticipant } from "../../hooks/useSelectedParticipant";
+import { useDictionary } from "../../i18n/dictionary";
 import EmptySeat from "../../icons/EmptySeat";
 import Participant from "../Participant/Participant";
 import styles from "./participantList.module.css";
@@ -84,6 +85,7 @@ export interface ParticipantListProps {
 export default function ParticipantList(
   props: ParticipantListProps,
 ): JSX.Element | null {
+  const dictionary = useDictionary("participantList");
   const {
     room,
     room: { localParticipant },
@@ -117,7 +119,7 @@ export default function ParticipantList(
         whileTap={{ scale: 0.8 }}
         onClick={async () => onShuffleButtonClicked()}
       >
-        <span>Shuffle</span>
+        <span>{dictionary.shuffle}</span>
       </motion.div>
       <ul className={styles.participantsContainer}>
         <motion.li
@@ -164,7 +166,7 @@ export default function ParticipantList(
                 <div className={styles.emptySeatInnerContainer}>
                   <div className={styles.emptySeatAvatarContainer}>
                     <EmptySeat />
-                    Available seat
+                    {dictionary.availableSeat}
                   </div>
                 </div>
               </div>

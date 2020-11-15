@@ -5,29 +5,40 @@ import {
   useParticipantAudioTrack,
   useParticipantVideoTrack,
 } from "../../hooks/useParticipantTracks";
+import type { ControlsDictionary } from "../../i18n/dictionary";
+import { useDictionary } from "../../i18n/dictionary";
 import classes from "./controls.module.css";
 
 interface ControlsProps {
   localParticipant: ILocalParticipant | null;
 }
 
-function getAudioLabel(hasAudioTrack: boolean, isAudioEnabled: boolean) {
+function getAudioLabel(
+  hasAudioTrack: boolean,
+  isAudioEnabled: boolean,
+  dictionary: ControlsDictionary,
+) {
   if (!hasAudioTrack) {
-    return "No Audio";
+    return dictionary.noAudioTrack;
   }
 
-  return isAudioEnabled ? "Mute" : "Unmute";
+  return isAudioEnabled ? dictionary.mute : dictionary.unmute;
 }
 
-function getVideoLabel(hasVideoTrack: boolean, isVideoEnabled: boolean) {
+function getVideoLabel(
+  hasVideoTrack: boolean,
+  isVideoEnabled: boolean,
+  dictionary: ControlsDictionary,
+) {
   if (!hasVideoTrack) {
-    return "No Video";
+    return dictionary.noVideoTrack;
   }
 
-  return isVideoEnabled ? "Stop Video" : "Start Video";
+  return isVideoEnabled ? dictionary.stopVideo : dictionary.startVideo;
 }
 
 export default function Controls(props: ControlsProps) {
+  const dictionary = useDictionary("controls");
   const { localParticipant } = props;
   const videoTrack = useParticipantVideoTrack(localParticipant);
   const audioTrack = useParticipantAudioTrack(localParticipant);
@@ -47,10 +58,10 @@ export default function Controls(props: ControlsProps) {
   return (
     <footer className={classes.container}>
       <button type="button" disabled={!hasAudioTrack} onClick={onToggleAudio}>
-        {getAudioLabel(hasAudioTrack, isAudioEnabled)}
+        {getAudioLabel(hasAudioTrack, isAudioEnabled, dictionary)}
       </button>
       <button type="button" disabled={!hasVideoTrack} onClick={onToggleVideo}>
-        {getVideoLabel(hasVideoTrack, isVideoEnabled)}
+        {getVideoLabel(hasVideoTrack, isVideoEnabled, dictionary)}
       </button>
     </footer>
   );
