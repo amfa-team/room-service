@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useJoin } from "../../api/useApi";
 import WaitingPage from "../../components/WaitingPage/WaitingPage";
 import type { IUser } from "../../entities/User";
@@ -9,12 +8,12 @@ interface TwilioWaitingPageProps {
   user: IUser;
   spaceId: string;
   roomName: string | null;
+  onRoomChanged: (roomName: string) => void;
 }
 
 export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
-  const { spaceId, user, roomName } = props;
+  const { spaceId, user, roomName, onRoomChanged } = props;
   const { isAcquiringLocalTracks, videoTrack } = useTwilioLocalTracks();
-  const history = useHistory();
   const [roomFull, setRoomFull] = useState(false);
 
   const { join, isJoining } = useJoin(
@@ -27,12 +26,10 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
     const r = await join();
     if (r === null) {
       setRoomFull(true);
-    } else if (roomName === null) {
-      history.push(`./${r}`);
     } else if (roomName !== r) {
-      history.push(`../${r}`);
+      onRoomChanged(r);
     }
-  }, [join, history, roomName]);
+  }, [join, roomName, onRoomChanged]);
 
   useEffect(() => {
     setRoomFull(false);

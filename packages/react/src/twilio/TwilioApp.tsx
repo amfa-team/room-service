@@ -1,8 +1,7 @@
 import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import type { ApiSettings } from "../api/api";
-import { useSetApiSettings } from "../api/useApi";
+import { useSetApiSettings, useToken } from "../api/useApi";
 import type { ISpace } from "../entities/Space";
 import type { IUser } from "../entities/User";
 import TwilioRoomPage from "./components/TwilioRoomPage";
@@ -12,25 +11,37 @@ export interface TwilioAppProps {
   user: IUser;
   space: ISpace;
   settings: ApiSettings;
+  roomName: string | null;
+  onRoomChanged: (roomName: string) => void;
 }
 
 function TwilioApp(props: TwilioAppProps) {
-  const { path } = useRouteMatch();
+  const token = useToken();
   const isSet = useSetApiSettings(props.settings);
 
   if (!isSet) {
     return null;
   }
 
+  if (!token || props.roomName === null) {
+    return (
+      <TwilioWaitingPage
+        user={props.user}
+        spaceId={props.space.id}
+        roomName={props.roomName}
+        onRoomChanged={props.onRoomChanged}
+      />
+    );
+  }
+
   return (
-    <Switch>
-      <Route path={`${path}:roomName`}>
-        <TwilioRoomPage user={props.user} spaceId={props.space.id} />
-      </Route>
-      <Route exact path={path}>
-        <TwilioWaitingPage user={props.user} spaceId={props.space.id} />
-      </Route>
-    </Switch>
+    <TwilioRoomPage
+      token={token}
+      user={props.user}
+      spaceId={props.space.id}
+      roomName={props.roomName}
+      onRoomChanged={props.onRoomChanged}
+    />
   );
 }
 
