@@ -1,7 +1,10 @@
 import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
-import { generateRemoteVideoTrack } from "../../entities/fixtures/tracks.fixture";
-import type { IVideoTrack } from "../../entities/Track";
+import {
+  generateLocalAudioTrack,
+  generateRemoteVideoTrack,
+} from "../../entities/fixtures/tracks.fixture";
+import type { IAudioTrack, IVideoTrack } from "../../entities/Track";
 import WaitingPage from "./WaitingPage";
 
 export default {
@@ -10,19 +13,54 @@ export default {
 };
 
 export function NoVideo(): JSX.Element | null {
-  return (
-    <WaitingPage identity="Moroine" videoTrack={null} join={action("join")} />
-  );
-}
-
-export function WithVideo(): JSX.Element | null {
-  const [track, setTrack] = useState<IVideoTrack | null>(null);
+  const [audioTrack, setAudioTrack] = useState<IAudioTrack | null>(null);
   useEffect(() => {
-    generateRemoteVideoTrack().then(setTrack).catch(console.error);
+    generateLocalAudioTrack().then(setAudioTrack).catch(console.error);
   }, []);
 
   return (
-    <WaitingPage identity="Moroine" videoTrack={track} join={action("join")} />
+    <WaitingPage
+      identity="Moroine"
+      videoTrack={null}
+      join={action("join")}
+      audioTrack={audioTrack}
+    />
+  );
+}
+
+export function WithVideoAndAudio(): JSX.Element | null {
+  const [audioTrack, setAudioTrack] = useState<IAudioTrack | null>(null);
+  useEffect(() => {
+    generateLocalAudioTrack().then(setAudioTrack).catch(console.error);
+  }, []);
+  const [videoTrack, setVideoTrack] = useState<IVideoTrack | null>(null);
+  useEffect(() => {
+    generateRemoteVideoTrack().then(setVideoTrack).catch(console.error);
+  }, []);
+
+  return (
+    <WaitingPage
+      identity="Moroine"
+      videoTrack={videoTrack}
+      join={action("join")}
+      audioTrack={audioTrack}
+    />
+  );
+}
+
+export function NoAudio(): JSX.Element | null {
+  const [videoTrack, setVideoTrack] = useState<IVideoTrack | null>(null);
+  useEffect(() => {
+    generateRemoteVideoTrack().then(setVideoTrack).catch(console.error);
+  }, []);
+
+  return (
+    <WaitingPage
+      identity="Moroine"
+      videoTrack={videoTrack}
+      join={action("join")}
+      audioTrack={null}
+    />
   );
 }
 
@@ -37,6 +75,7 @@ export function Disabled(): JSX.Element | null {
       identity="Moroine"
       videoTrack={track}
       join={action("join")}
+      audioTrack={null}
       disabled
     />
   );

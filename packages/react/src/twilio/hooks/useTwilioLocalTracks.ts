@@ -36,17 +36,11 @@ export default function useTwilioLocalTracks() {
     setAudioError(null);
 
     setIsAcquiringLocalTracks(true);
-    Video.createLocalTracks({
-      video: false,
-      audio: true,
-    })
-      .then((tracks) => {
-        const at = tracks.find(
-          (track) => track.kind === "audio",
-        ) as LocalAudioTrack | null;
+    Video.createLocalAudioTrack()
+      .then((track) => {
         setAudioTrack((previous) => {
           previous?.stop();
-          return at;
+          return track;
         });
       })
       .catch((e) => setAudioError(e))
@@ -59,20 +53,14 @@ export default function useTwilioLocalTracks() {
     setVideoError(null);
 
     setIsAcquiringLocalTracks(true);
-    Video.createLocalTracks({
-      video: {
-        ...(DEFAULT_VIDEO_CONSTRAINTS as Record<string, unknown>),
-        name: `camera-${Date.now()}`,
-      },
-      audio: false,
+    Video.createLocalVideoTrack({
+      ...(DEFAULT_VIDEO_CONSTRAINTS as Record<string, unknown>),
+      name: `camera-${Date.now()}`,
     })
-      .then((tracks) => {
-        const vt = tracks.find(
-          (track) => track.kind === "video",
-        ) as LocalVideoTrack | null;
+      .then((track) => {
         setVideoTrack((previous) => {
           previous?.stop();
-          return vt;
+          return track;
         });
       })
       .catch((e) => setVideoError(e))

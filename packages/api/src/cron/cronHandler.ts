@@ -126,9 +126,6 @@ async function validateRooms() {
         size: { $size: "$participants" },
       },
     },
-    {
-      timestamps: false,
-    },
   ]);
   if (modifiedCount > 0) {
     logger.error(new Error("cronHandler.validateRooms: invalid data"), null, {
