@@ -4,6 +4,7 @@ import React from "react";
 // import AudioLevelIndicator from "../AudioLevelIndicator/AudioLevelIndicator";
 import type { IParticipant } from "../../entities/Participant";
 import useIsScreenShareTrack from "../../hooks/useIsScreenShareTrack";
+import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting";
 import { useParticipantVideoTrack } from "../../hooks/useParticipantTracks";
@@ -32,6 +33,7 @@ export default function ParticipantInfo({
 }: ParticipantInfoProps) {
   const videoTrack = useParticipantVideoTrack(participant);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
+  const isVideoEnabled = useIsTrackEnabled(videoTrack);
   const isScreenShare = useIsScreenShareTrack(videoTrack);
 
   // const audioTrack = useTrack(audioPublication);
@@ -72,7 +74,7 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={styles.innerContainer}>
-        {isVideoSwitchedOff && (
+        {(isVideoSwitchedOff || !isVideoEnabled) && (
           <div className={styles.avatarContainer}>
             <AvatarIcon />
           </div>

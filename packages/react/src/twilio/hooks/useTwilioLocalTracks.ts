@@ -24,54 +24,66 @@ export default function useTwilioLocalTracks() {
   const [audioTrack, setAudioTrack] = useRecoilState(audioTrackAtom);
   const [videoTrack, setVideoTrack] = useRecoilState(videoTrackAtom);
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
-  const [mediaError, setMediaError] = useState<Error | null>(null);
+  const [audioError, setAudioError] = useState<Error | null>(null);
+  const [videoError, setVideoError] = useState<Error | null>(null);
 
   const hasAudio = useHasAudioInputDevices();
   const hasVideo = useHasVideoInputDevices();
 
   useEffect(() => {
-    if (!hasAudio && !hasVideo) return;
-    if (audioTrack || videoTrack) return;
+    if (!hasAudio) return;
 
-    setMediaError(null);
+    setAudioError(null);
 
     setIsAcquiringLocalTracks(true);
     Video.createLocalTracks({
-      video: hasVideo && {
+      video: false,
+      audio: true,
+    })
+      .then((tracks) => {
+        const at = tracks.find(
+          (track) => track.kind === "audio",
+        ) as LocalAudioTrack | null;
+        setAudioTrack((previous) => {
+          previous?.stop();
+          return at;
+        });
+      })
+      .catch((e) => setAudioError(e))
+      .finally(() => setIsAcquiringLocalTracks(false));
+  }, [hasAudio, setAudioTrack]);
+
+  useEffect(() => {
+    if (!hasVideo) return;
+
+    setVideoError(null);
+
+    setIsAcquiringLocalTracks(true);
+    Video.createLocalTracks({
+      video: {
         ...(DEFAULT_VIDEO_CONSTRAINTS as Record<string, unknown>),
         name: `camera-${Date.now()}`,
       },
-      audio: hasAudio,
+      audio: false,
     })
       .then((tracks) => {
         const vt = tracks.find(
           (track) => track.kind === "video",
         ) as LocalVideoTrack | null;
-        const at = tracks.find(
-          (track) => track.kind === "audio",
-        ) as LocalAudioTrack | null;
-        if (vt) {
-          setVideoTrack(vt);
-        }
-        if (at) {
-          setAudioTrack(at);
-        }
+        setVideoTrack((previous) => {
+          previous?.stop();
+          return vt;
+        });
       })
-      .catch((e) => setMediaError(e))
+      .catch((e) => setVideoError(e))
       .finally(() => setIsAcquiringLocalTracks(false));
-  }, [
-    hasAudio,
-    hasVideo,
-    audioTrack,
-    videoTrack,
-    setAudioTrack,
-    setVideoTrack,
-  ]);
+  }, [hasVideo, setVideoTrack]);
 
   return {
     audioTrack,
     videoTrack,
     isAcquiringLocalTracks,
-    mediaError,
+    videoError,
+    audioError,
   };
 }

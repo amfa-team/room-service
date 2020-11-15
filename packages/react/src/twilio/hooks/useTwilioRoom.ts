@@ -11,7 +11,10 @@ const twilioRoom = atom<Room | null>({
 });
 
 async function connect(token: string): Promise<Room> {
-  const newRoom = await Video.connect(token);
+  const newRoom = await Video.connect(token, {
+    audio: false,
+    video: false,
+  });
   const disconnect = () => newRoom.disconnect();
 
   newRoom.once("disconnected", () => {
