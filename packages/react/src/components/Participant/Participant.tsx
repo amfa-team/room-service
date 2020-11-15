@@ -5,25 +5,18 @@ import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
 
 interface ParticipantProps {
   participant: IParticipant;
-  onClick: () => void;
-  isSelected: boolean;
   isLocalParticipant: boolean;
   hideParticipant: boolean;
 }
 
 export default function Participant({
   participant,
-  onClick,
-  isSelected,
   isLocalParticipant,
   hideParticipant,
 }: ParticipantProps) {
   return (
     <ParticipantInfo
       participant={participant}
-      onClick={onClick}
-      isSelected={isSelected}
-      isLocalParticipant={isLocalParticipant}
       hideParticipant={hideParticipant}
     >
       <ParticipantTracks
@@ -35,7 +28,6 @@ export default function Participant({
 }
 
 Participant.defaultProps = {
-  isSelected: false,
   isLocalParticipant: false,
   hideParticipant: false,
 };

@@ -43,7 +43,6 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
 
   return (
     <WaitingPage
-      identity={user.username}
       audioTrack={audioTrack}
       videoTrack={videoTrack}
       join={onJoinClicked}

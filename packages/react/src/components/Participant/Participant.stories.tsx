@@ -1,4 +1,3 @@
-import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
 import {
   generateRawLocalParticipant,
@@ -21,12 +20,7 @@ export default {
 };
 
 export function NoVideo(): JSX.Element | null {
-  return (
-    <Participant
-      onClick={action("onClick")}
-      participant={generateRawLocalParticipant()}
-    />
-  );
+  return <Participant participant={generateRawLocalParticipant()} />;
 }
 
 export function Local(): JSX.Element | null {
@@ -52,46 +46,7 @@ export function Local(): JSX.Element | null {
     return null;
   }
 
-  return (
-    <Participant
-      onClick={action("onClick")}
-      participant={participant}
-      isLocalParticipant
-    />
-  );
-}
-
-export function Selected(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawRemoteParticipant | null>(
-    null,
-  );
-  useEffect(() => {
-    generateRemoteVideoTrack()
-      .then((videoTrack) => {
-        setParticipant(
-          generateRawRemoteParticipant({
-            identity: "moroine",
-            networkQualityLevel: 3,
-            videoTrackPublication: generateRawVideoPublication({
-              track: videoTrack,
-            }),
-          }),
-        );
-      })
-      .catch(console.error);
-  }, []);
-
-  if (!participant) {
-    return null;
-  }
-
-  return (
-    <Participant
-      onClick={action("onClick")}
-      participant={participant}
-      isSelected
-    />
-  );
+  return <Participant participant={participant} isLocalParticipant />;
 }
 
 export function ScreenShare(): JSX.Element | null {
@@ -120,7 +75,7 @@ export function ScreenShare(): JSX.Element | null {
     return null;
   }
 
-  return <Participant onClick={action("onClick")} participant={participant} />;
+  return <Participant participant={participant} />;
 }
 
 export function Hide(): JSX.Element | null {
@@ -147,13 +102,7 @@ export function Hide(): JSX.Element | null {
     return null;
   }
 
-  return (
-    <Participant
-      onClick={action("onClick")}
-      participant={participant}
-      hideParticipant
-    />
-  );
+  return <Participant participant={participant} hideParticipant />;
 }
 
 export function AsyncVideo(): JSX.Element | null {
@@ -207,5 +156,5 @@ export function AsyncVideo(): JSX.Element | null {
     return null;
   }
 
-  return <Participant onClick={action("onClick")} participant={participant} />;
+  return <Participant participant={participant} />;
 }

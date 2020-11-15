@@ -1,44 +1,37 @@
 import classnames from "classnames";
 import { motion } from "framer-motion";
 import React from "react";
-// import AudioLevelIndicator from "../AudioLevelIndicator/AudioLevelIndicator";
 import type { IParticipant } from "../../entities/Participant";
-import useIsScreenShareTrack from "../../hooks/useIsScreenShareTrack";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting";
-import { useParticipantVideoTrack } from "../../hooks/useParticipantTracks";
+import {
+  useParticipantAudioTrack,
+  useParticipantVideoTrack,
+} from "../../hooks/useParticipantTracks";
 import { useDictionary } from "../../i18n/dictionary";
 import AvatarIcon from "../../icons/AvatarIcon";
-import ScreenShareIcon from "../../icons/ScreenShareIcon";
+import { AudioLevelIndicator } from "../AudioLevelIndicator/AudioLevelIndicator";
 import NetworkQualityLevel from "../NetworkQualityLevel/NetworkQualityLevel";
 import styles from "./participantInfo.module.css";
-import PinIcon from "./PinIcon/PinIcon";
 
 interface ParticipantInfoProps {
   participant: IParticipant;
   children: React.ReactNode;
-  onClick: () => void;
-  isSelected: boolean;
-  isLocalParticipant: boolean;
   hideParticipant: boolean;
 }
 
 export default function ParticipantInfo({
   participant,
-  onClick,
-  isSelected,
   children,
-  isLocalParticipant,
   hideParticipant,
 }: ParticipantInfoProps) {
   const dictionary = useDictionary("participantInfo");
   const videoTrack = useParticipantVideoTrack(participant);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
   const isVideoEnabled = useIsTrackEnabled(videoTrack);
-  const isScreenShare = useIsScreenShareTrack(videoTrack);
 
-  // const audioTrack = useTrack(audioPublication);
+  const audioTrack = useParticipantAudioTrack(participant);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   return (
@@ -53,27 +46,15 @@ export default function ParticipantInfo({
       }}
       className={classnames(styles.container, {
         [styles.hideParticipant]: hideParticipant,
-        [styles.cursorPointer]: Boolean(onClick),
       })}
-      onClick={onClick}
     >
       <div className={styles.infoContainer}>
         <NetworkQualityLevel participant={participant} />
         <div className={styles.infoRowBottom}>
-          {isScreenShare && (
-            <span className={styles.screenShareIconContainer}>
-              <ScreenShareIcon />
-            </span>
-          )}
           <span className={styles.identity}>
-            {/* <AudioLevelIndicator audioTrack={audioTrack} /> */}
-            <span className={styles.typography}>
-              {participant.identity}
-              {isLocalParticipant && dictionary.youSuffix}
-            </span>
+            <AudioLevelIndicator audioTrack={audioTrack} />
           </span>
         </div>
-        <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={styles.innerContainer}>
         {(isVideoSwitchedOff || !isVideoEnabled) && (
@@ -93,7 +74,5 @@ export default function ParticipantInfo({
 }
 
 ParticipantInfo.defaultProps = {
-  isSelected: false,
-  isLocalParticipant: false,
   hideParticipant: false,
 };

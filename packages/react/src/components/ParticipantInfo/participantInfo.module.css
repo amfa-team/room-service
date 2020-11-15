@@ -10,10 +10,10 @@
   margin-left: -40%;
 }
 
-/* .container video {
+.container video {
   filter: none;
   object-fit: contain !important;
-} */
+}
 
 @media m-sm {
   .container {
@@ -99,7 +99,7 @@
   align-items: center;
 }
 .infoRowBottom {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .typography {
