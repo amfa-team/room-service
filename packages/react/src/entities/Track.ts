@@ -172,7 +172,8 @@ abstract class RawBaseVideoTrack implements IBaseVideoTrack {
   }
 }
 
-export class RawRemoteVideoTrack extends RawBaseVideoTrack
+export class RawRemoteVideoTrack
+  extends RawBaseVideoTrack
   implements IRemoteVideoTrack {
   #switchOffEvents: Set<() => void> = new Set();
 
@@ -237,7 +238,8 @@ export class RawRemoteVideoTrack extends RawBaseVideoTrack
   }
 }
 
-export class RawLocalVideoTrack extends RawBaseVideoTrack
+export class RawLocalVideoTrack
+  extends RawBaseVideoTrack
   implements ILocalVideoTrack {
   disable() {
     return this.rawDisable();
@@ -367,7 +369,8 @@ abstract class RawBaseAudioTrack implements IBaseAudioTrack {
   }
 }
 
-export class RawRemoteAudioTrack extends RawBaseAudioTrack
+export class RawRemoteAudioTrack
+  extends RawBaseAudioTrack
   implements IRemoteAudioTrack {
   #switchOffEvents: Set<() => void> = new Set();
 
@@ -432,7 +435,8 @@ export class RawRemoteAudioTrack extends RawBaseAudioTrack
   }
 }
 
-export class RawLocalAudioTrack extends RawBaseAudioTrack
+export class RawLocalAudioTrack
+  extends RawBaseAudioTrack
   implements ILocalAudioTrack {
   disable() {
     return this.rawDisable();
