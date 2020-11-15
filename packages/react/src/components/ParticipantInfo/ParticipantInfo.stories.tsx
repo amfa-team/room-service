@@ -1,18 +1,8 @@
-import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
-import {
-  generateRawLocalParticipant,
-  generateRawRemoteParticipant,
-} from "../../entities/fixtures/participants.fixture";
+import { generateRawRemoteParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
-import {
-  generateLocalVideoTrack,
-  generateRemoteVideoTrack,
-} from "../../entities/fixtures/tracks.fixture";
-import type {
-  RawLocalParticipant,
-  RawRemoteParticipant,
-} from "../../entities/Participant";
+import { generateRemoteVideoTrack } from "../../entities/fixtures/tracks.fixture";
+import type { RawRemoteParticipant } from "../../entities/Participant";
 import ParticipantInfo from "./ParticipantInfo";
 
 export default {
@@ -22,83 +12,7 @@ export default {
 
 export function NoVideo(): JSX.Element | null {
   return (
-    <ParticipantInfo
-      onClick={action("onClick")}
-      participant={generateRawRemoteParticipant()}
-    >
-      <div
-        style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
-      />
-    </ParticipantInfo>
-  );
-}
-
-export function Local(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawLocalParticipant | null>(
-    null,
-  );
-  useEffect(() => {
-    generateLocalVideoTrack()
-      .then((videoTrack) => {
-        setParticipant(
-          generateRawLocalParticipant({
-            identity: "moroine",
-            videoTrackPublication: generateRawVideoPublication({
-              track: videoTrack,
-            }),
-          }),
-        );
-      })
-      .catch(console.error);
-  }, []);
-
-  if (!participant) {
-    return null;
-  }
-
-  return (
-    <ParticipantInfo
-      onClick={action("onClick")}
-      participant={participant}
-      isLocalParticipant
-    >
-      <div
-        style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
-      />
-    </ParticipantInfo>
-  );
-}
-
-export function Selected(): JSX.Element | null {
-  const [participant, setParticipant] = useState<RawRemoteParticipant | null>(
-    null,
-  );
-  useEffect(() => {
-    generateRemoteVideoTrack()
-      .then((videoTrack) => {
-        setParticipant(
-          generateRawRemoteParticipant({
-            identity: "moroine",
-            networkQualityLevel: 3,
-            videoTrackPublication: generateRawVideoPublication({
-              track: videoTrack,
-            }),
-          }),
-        );
-      })
-      .catch(console.error);
-  }, []);
-
-  if (!participant) {
-    return null;
-  }
-
-  return (
-    <ParticipantInfo
-      onClick={action("onClick")}
-      participant={participant}
-      isSelected
-    >
+    <ParticipantInfo participant={generateRawRemoteParticipant()}>
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -133,7 +47,7 @@ export function ScreenShare(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo onClick={action("onClick")} participant={participant}>
+    <ParticipantInfo participant={participant}>
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -166,11 +80,7 @@ export function Hide(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo
-      onClick={action("onClick")}
-      participant={participant}
-      hideParticipant
-    >
+    <ParticipantInfo participant={participant} hideParticipant>
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -230,7 +140,7 @@ export function AsyncVideo(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo onClick={action("onClick")} participant={participant}>
+    <ParticipantInfo participant={participant}>
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />

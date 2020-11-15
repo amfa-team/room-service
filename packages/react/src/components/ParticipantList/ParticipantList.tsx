@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import type { ReactElement } from "react";
 import type { IRoom } from "../../entities/Room";
 import useParticipants from "../../hooks/useParticipants";
-import { useSelectedParticipant } from "../../hooks/useSelectedParticipant";
 import { useDictionary } from "../../i18n/dictionary";
 import EmptySeat from "../../icons/EmptySeat";
 import Participant from "../Participant/Participant";
@@ -91,10 +90,6 @@ export default function ParticipantList(
     room: { localParticipant },
   } = props;
   const participants = useParticipants(room);
-  const [
-    selectedParticipant,
-    setSelectedParticipant,
-  ] = useSelectedParticipant();
 
   const controls = useAnimation();
   const controlsChildren = useAnimation();
@@ -128,13 +123,7 @@ export default function ParticipantList(
           animate={controlsChildren}
         >
           <ControlMenu />
-          <Participant
-            participant={localParticipant}
-            isLocalParticipant
-            onClick={() => {
-              setSelectedParticipant(localParticipant);
-            }}
-          />
+          <Participant participant={localParticipant} isLocalParticipant />
         </motion.li>
         {participants.map((participant) => (
           <motion.li
@@ -144,13 +133,7 @@ export default function ParticipantList(
             animate={controlsChildren}
           >
             <ControlMenu />
-            <Participant
-              participant={participant}
-              isSelected={participant === selectedParticipant}
-              onClick={() => {
-                setSelectedParticipant(participant);
-              }}
-            />
+            <Participant participant={participant} />
           </motion.li>
         ))}
         {["0", "1", "2"]

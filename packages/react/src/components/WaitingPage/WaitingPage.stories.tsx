@@ -20,7 +20,6 @@ export function NoVideo(): JSX.Element | null {
 
   return (
     <WaitingPage
-      identity="Moroine"
       videoTrack={null}
       join={action("join")}
       audioTrack={audioTrack}
@@ -40,7 +39,6 @@ export function WithVideoAndAudio(): JSX.Element | null {
 
   return (
     <WaitingPage
-      identity="Moroine"
       videoTrack={videoTrack}
       join={action("join")}
       audioTrack={audioTrack}
@@ -56,7 +54,6 @@ export function NoAudio(): JSX.Element | null {
 
   return (
     <WaitingPage
-      identity="Moroine"
       videoTrack={videoTrack}
       join={action("join")}
       audioTrack={null}
@@ -72,7 +69,6 @@ export function Disabled(): JSX.Element | null {
 
   return (
     <WaitingPage
-      identity="Moroine"
       videoTrack={track}
       join={action("join")}
       audioTrack={null}

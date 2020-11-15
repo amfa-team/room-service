@@ -13,9 +13,9 @@
       true,
       {
         "browsers": [
-          "Chrome >= 55",
-          "Edge >= 11",
-          "Firefox >= 60",
+          "Chrome >= 70",
+          "Edge >= 18",
+          "Firefox >= 64",
           "Safari >= 12"
         ],
         "ignorePartialSupport": true

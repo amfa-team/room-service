@@ -10,9 +10,9 @@ interface IBaseTrack {
   readonly mediaStreamTrack: MediaStreamTrack | null;
   readonly isEnabled: boolean;
 
-  on(event: "enabled" | "disabled", listener: () => void): void;
+  on(event: "enabled" | "disabled" | "stopped", listener: () => void): void;
 
-  off(event: "enabled" | "disabled", listener: () => void): void;
+  off(event: "enabled" | "disabled" | "stopped", listener: () => void): void;
 }
 
 export interface IBaseAudioTrack extends IBaseTrack {
@@ -25,18 +25,19 @@ export interface IBaseAudioTrack extends IBaseTrack {
 export interface ILocalAudioTrack extends IBaseAudioTrack {
   disable(): this;
   enable(enabled?: boolean): this;
+  stop(): this;
 }
 
 export interface IRemoteAudioTrack extends IBaseAudioTrack {
   readonly isSwitchedOff: boolean;
 
   on(
-    event: "enabled" | "disabled" | "switchedOff" | "switchedOn",
+    event: "enabled" | "disabled" | "switchedOff" | "switchedOn" | "stopped",
     listener: () => void,
   ): void;
 
   off(
-    event: "enabled" | "disabled" | "switchedOff" | "switchedOn",
+    event: "enabled" | "disabled" | "switchedOff" | "switchedOn" | "stopped",
     listener: () => void,
   ): void;
 }
@@ -57,12 +58,12 @@ export interface IRemoteVideoTrack extends IBaseVideoTrack {
   readonly isSwitchedOff: boolean;
 
   on(
-    event: "enabled" | "disabled" | "switchedOff" | "switchedOn",
+    event: "enabled" | "disabled" | "switchedOff" | "switchedOn" | "stopped",
     listener: () => void,
   ): void;
 
   off(
-    event: "enabled" | "disabled" | "switchedOff" | "switchedOn",
+    event: "enabled" | "disabled" | "switchedOff" | "switchedOn" | "stopped",
     listener: () => void,
   ): void;
 }
@@ -171,8 +172,7 @@ abstract class RawBaseVideoTrack implements IBaseVideoTrack {
   }
 }
 
-export class RawRemoteVideoTrack
-  extends RawBaseVideoTrack
+export class RawRemoteVideoTrack extends RawBaseVideoTrack
   implements IRemoteVideoTrack {
   #switchOffEvents: Set<() => void> = new Set();
 
@@ -237,8 +237,7 @@ export class RawRemoteVideoTrack
   }
 }
 
-export class RawLocalVideoTrack
-  extends RawBaseVideoTrack
+export class RawLocalVideoTrack extends RawBaseVideoTrack
   implements ILocalVideoTrack {
   disable() {
     return this.rawDisable();
@@ -263,6 +262,8 @@ abstract class RawBaseAudioTrack implements IBaseAudioTrack {
   #enabledEvents: Set<() => void> = new Set();
 
   #disabledEvents: Set<() => void> = new Set();
+
+  #stoppedEvents: Set<() => void> = new Set();
 
   #isEnabled: boolean = true;
 
@@ -326,27 +327,47 @@ abstract class RawBaseAudioTrack implements IBaseAudioTrack {
     return this;
   }
 
-  on(event: "enabled" | "disabled", listener: () => void) {
+  rawStop() {
+    this.rawDisable();
+    this.mediaStreamTrack?.stop();
+
+    this.#stoppedEvents.forEach((listener) => {
+      try {
+        listener();
+      } catch (e) {
+        console.error("RawBaseAudioTrack.stoppedEvents: fail", e);
+      }
+    });
+
+    return this;
+  }
+
+  on(event: "enabled" | "disabled" | "stopped", listener: () => void) {
     if (event === "enabled") {
       this.#enabledEvents.add(listener);
     }
     if (event === "disabled") {
       this.#disabledEvents.add(listener);
     }
+    if (event === "stopped") {
+      this.#stoppedEvents.add(listener);
+    }
   }
 
-  off(event: "enabled" | "disabled", listener: () => void) {
+  off(event: "enabled" | "disabled" | "stopped", listener: () => void) {
     if (event === "enabled") {
       this.#enabledEvents.delete(listener);
     }
     if (event === "disabled") {
       this.#disabledEvents.delete(listener);
     }
+    if (event === "stopped") {
+      this.#stoppedEvents.delete(listener);
+    }
   }
 }
 
-export class RawRemoteAudioTrack
-  extends RawBaseAudioTrack
+export class RawRemoteAudioTrack extends RawBaseAudioTrack
   implements IRemoteAudioTrack {
   #switchOffEvents: Set<() => void> = new Set();
 
@@ -383,10 +404,10 @@ export class RawRemoteAudioTrack
   }
 
   on(
-    event: "switchedOff" | "switchedOn" | "enabled" | "disabled",
+    event: "switchedOff" | "switchedOn" | "enabled" | "disabled" | "stopped",
     listener: () => void,
   ) {
-    super.on(event as "enabled" | "disabled", listener);
+    super.on(event as "enabled" | "disabled" | "stopped", listener);
 
     if (event === "switchedOn") {
       this.#switchOnEvents.add(listener);
@@ -397,10 +418,10 @@ export class RawRemoteAudioTrack
   }
 
   off(
-    event: "switchedOff" | "switchedOn" | "enabled" | "disabled",
+    event: "switchedOff" | "switchedOn" | "enabled" | "disabled" | "stopped",
     listener: () => void,
   ) {
-    super.off(event as "enabled" | "disabled", listener);
+    super.off(event as "enabled" | "disabled" | "stopped", listener);
 
     if (event === "switchedOn") {
       this.#switchOnEvents.delete(listener);
@@ -411,8 +432,7 @@ export class RawRemoteAudioTrack
   }
 }
 
-export class RawLocalAudioTrack
-  extends RawBaseAudioTrack
+export class RawLocalAudioTrack extends RawBaseAudioTrack
   implements ILocalAudioTrack {
   disable() {
     return this.rawDisable();
@@ -420,5 +440,9 @@ export class RawLocalAudioTrack
 
   enable(enabled = true) {
     return this.rawEnable(enabled);
+  }
+
+  stop() {
+    return this.rawStop();
   }
 }

@@ -8,7 +8,6 @@ import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
 import styles from "./waitingPage.module.css";
 
 interface WaitingPageProps {
-  identity: string;
   videoTrack: IVideoTrack | null;
   audioTrack: IAudioTrack | null;
   join: () => void;
@@ -46,7 +45,7 @@ export default function WaitingPage(props: WaitingPageProps) {
             <div className={styles.settingVideoBubble}>
               <LocalVideoPreview
                 videoTrack={props.videoTrack}
-                identity={props.identity}
+                audioTrack={props.audioTrack}
               />
             </div>
           )}

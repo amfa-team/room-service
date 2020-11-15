@@ -17,6 +17,6 @@
         }
       }
     },
-    "targets": ["Chrome >= 55", "Edge >= 11", "Firefox >= 60", "Safari >= 12"]
+    "targets": ["Chrome >= 70", "Edge >= 18", "Firefox >= 64", "Safari >= 12"]
   }
 }
