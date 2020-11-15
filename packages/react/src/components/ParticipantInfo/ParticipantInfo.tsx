@@ -8,6 +8,7 @@ import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting";
 import { useParticipantVideoTrack } from "../../hooks/useParticipantTracks";
+import { useDictionary } from "../../i18n/dictionary";
 import AvatarIcon from "../../icons/AvatarIcon";
 import ScreenShareIcon from "../../icons/ScreenShareIcon";
 import NetworkQualityLevel from "../NetworkQualityLevel/NetworkQualityLevel";
@@ -31,6 +32,7 @@ export default function ParticipantInfo({
   isLocalParticipant,
   hideParticipant,
 }: ParticipantInfoProps) {
+  const dictionary = useDictionary("participantInfo");
   const videoTrack = useParticipantVideoTrack(participant);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
   const isVideoEnabled = useIsTrackEnabled(videoTrack);
@@ -67,7 +69,7 @@ export default function ParticipantInfo({
             {/* <AudioLevelIndicator audioTrack={audioTrack} /> */}
             <span className={styles.typography}>
               {participant.identity}
-              {isLocalParticipant && " (You)"}
+              {isLocalParticipant && dictionary.youSuffix}
             </span>
           </span>
         </div>
@@ -81,7 +83,7 @@ export default function ParticipantInfo({
         )}
         {isParticipantReconnecting && (
           <div className={styles.reconnectingContainer}>
-            <p className={styles.typography}>Reconnecting...</p>
+            <p className={styles.typography}>{dictionary.reconnecting}</p>
           </div>
         )}
         {children}
