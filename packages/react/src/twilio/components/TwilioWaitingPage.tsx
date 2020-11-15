@@ -13,7 +13,13 @@ interface TwilioWaitingPageProps {
 
 export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
   const { spaceId, user, roomName, onRoomChanged } = props;
-  const { isAcquiringLocalTracks, videoTrack } = useTwilioLocalTracks();
+  const {
+    isAcquiringLocalTracks,
+    videoTrack,
+    videoError,
+    audioTrack,
+    audioError,
+  } = useTwilioLocalTracks();
   const [roomFull, setRoomFull] = useState(false);
 
   const { join, isJoining } = useJoin(
@@ -38,10 +44,13 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
   return (
     <WaitingPage
       identity={user.username}
+      audioTrack={audioTrack}
       videoTrack={videoTrack}
       join={onJoinClicked}
       disabled={isAcquiringLocalTracks || isJoining}
       roomFull={roomFull}
+      audioError={audioError}
+      videoError={videoError}
     />
   );
 }

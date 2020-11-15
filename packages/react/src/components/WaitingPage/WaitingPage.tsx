@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import React, { useState } from "react";
-import type { IVideoTrack } from "../../entities/Track";
+import type { IAudioTrack, IVideoTrack } from "../../entities/Track";
+import { useMediaErrorMessage } from "../../hooks/useMediaErrorMessage";
 import { useDictionary } from "../../i18n/dictionary";
 import SettingsIcon from "../../icons/SettingsIcon";
 import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
@@ -9,13 +10,18 @@ import styles from "./waitingPage.module.css";
 interface WaitingPageProps {
   identity: string;
   videoTrack: IVideoTrack | null;
+  audioTrack: IAudioTrack | null;
   join: () => void;
-  disabled?: boolean;
-  roomFull?: boolean;
+  disabled: boolean;
+  roomFull: boolean;
+  videoError: Error | null;
+  audioError: Error | null;
 }
 
 export default function WaitingPage(props: WaitingPageProps) {
   const dictionary = useDictionary("waitingPage");
+  const videoErrorMessage = useMediaErrorMessage(props.videoError, "video");
+  const audioErrorMessage = useMediaErrorMessage(props.audioError, "audio");
   const [driversSetting, setDriversSetting] = useState(false);
 
   const toggleDriversSetting = () => setDriversSetting(!driversSetting);
@@ -60,15 +66,17 @@ export default function WaitingPage(props: WaitingPageProps) {
       <div className={styles.joinContainer}>
         <button
           className={classnames(styles.join, {
-            [styles.disabled]: props.disabled,
+            [styles.disabled]: props.disabled || props.audioTrack === null,
           })}
           type="button"
           onClick={props.join}
-          disabled={props.disabled}
+          disabled={props.disabled || props.audioTrack === null}
         >
           {dictionary.join}
         </button>
-        {props.roomFull && <span>{dictionary.roomFull}</span>}
+        {props.roomFull && <p>{dictionary.roomFull}</p>}
+        {videoErrorMessage && <p>{videoErrorMessage}</p>}
+        {audioErrorMessage && <p>{audioErrorMessage}</p>}
       </div>
     </div>
   );
@@ -77,4 +85,6 @@ export default function WaitingPage(props: WaitingPageProps) {
 WaitingPage.defaultProps = {
   disabled: false,
   roomFull: false,
+  videoError: null,
+  audioError: null,
 };
