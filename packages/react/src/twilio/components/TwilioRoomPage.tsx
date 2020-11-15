@@ -1,32 +1,31 @@
 import React, { useCallback } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { useJoin, useToken } from "../../api/useApi";
+import { useJoin } from "../../api/useApi";
 import Controls from "../../components/Controls/Controls";
 import ParticipantList from "../../components/ParticipantList/ParticipantList";
 import ParticipantListLoading from "../../components/ParticipantListLoading/ParticipantListLoading";
 import type { IRoom } from "../../entities/Room";
 import type { IUser } from "../../entities/User";
 import { useConnectTwilioRoom } from "../hooks/useTwilioRoom";
-import TwilioWaitingPage from "./TwilioWaitingPage";
 
-interface TwilioRoomPagePropsContainer {
+interface TwilioRoomPageProps {
   user: IUser;
   spaceId: string;
-}
-interface TwilioRoomPageProps extends TwilioRoomPagePropsContainer {
   token: string;
   roomName: string;
+  onRoomChanged: (roomName: string) => void;
 }
 
-function TwilioRoomPage(props: TwilioRoomPageProps) {
-  const { data } = useConnectTwilioRoom(props.token);
-  const { join } = useJoin(props.user.id, props.spaceId, true, props.roomName);
-  const history = useHistory();
+export default function TwilioRoomPage(props: TwilioRoomPageProps) {
+  const { token, onRoomChanged, spaceId, user, roomName } = props;
+  const { data } = useConnectTwilioRoom(token);
+  const { join } = useJoin(user.id, spaceId, true, roomName);
 
   const onShuffleClicked = useCallback(async () => {
-    const roomName = await join();
-    history.push(`./${roomName}`);
-  }, [join, history]);
+    const r = await join();
+    if (r !== null) {
+      onRoomChanged(r);
+    }
+  }, [join, onRoomChanged]);
 
   if (data === null) {
     return <ParticipantListLoading />;
@@ -41,31 +40,5 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
       <ParticipantList room={room} onShuffle={onShuffleClicked} />
       <Controls localParticipant={room.localParticipant} />
     </div>
-  );
-}
-
-export default function TwilioRoomPageContainer(
-  props: TwilioRoomPagePropsContainer,
-) {
-  const token = useToken();
-  const params = useParams<{ roomName: string }>();
-
-  if (!token) {
-    return (
-      <TwilioWaitingPage
-        user={props.user}
-        spaceId={props.spaceId}
-        roomName={params.roomName}
-      />
-    );
-  }
-
-  return (
-    <TwilioRoomPage
-      token={token}
-      user={props.user}
-      spaceId={props.spaceId}
-      roomName={params.roomName}
-    />
   );
 }

@@ -1,6 +1,9 @@
 import { v4 as uuid } from "uuid";
-import type { ILocalParticipant, IRemoteParticipant } from "./Participant";
-import type { ITrackPublication } from "./Publication";
+import type {
+  ILocalParticipant,
+  IRemoteParticipant,
+  TrackPublishedListener,
+} from "./Participant";
 
 export enum RoomState {
   "connected" = "connected",
@@ -11,8 +14,6 @@ export enum RoomState {
 export type ParticipantConnectedListener = (
   participant: IRemoteParticipant,
 ) => void;
-
-export type TrackPublishedListener = (publication: ITrackPublication) => void;
 
 export interface IRoom {
   readonly localParticipant: ILocalParticipant;

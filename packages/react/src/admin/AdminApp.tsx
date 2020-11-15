@@ -1,35 +1,37 @@
 import React from "react";
-import { NavLink, Route, Switch, useRouteMatch } from "react-router-dom";
 import type { AdminApiSettings } from "../api/api";
 import AdminParticipant from "./AdminParticipant/AdminParticipant";
 import AdminRoom from "./AdminRoom/AdminRoom";
 
+type AdminPages = {
+  room: string;
+  participant: string;
+};
+
 interface AdminAppProps {
   settings: AdminApiSettings;
+  links: AdminPages;
+  currentPage: string | null;
 }
 
 export default function AdminApp(props: AdminAppProps) {
-  const { url } = useRouteMatch();
   return (
     <div>
       <ul>
         <li>
-          <NavLink to={`${url}/room`}>Rooms</NavLink>
+          <a href={props.links.room}>Rooms</a>
         </li>
         <li>
-          <NavLink to={`${url}/participant`}>Participants</NavLink>
+          <a href={props.links.participant}>Participants</a>
         </li>
       </ul>
 
       <hr />
-      <Switch>
-        <Route exact path={`${url}/room`}>
-          <AdminRoom settings={props.settings} />
-        </Route>
-        <Route exact path={`${url}/participant`}>
-          <AdminParticipant settings={props.settings} />
-        </Route>
-      </Switch>
+
+      {props.currentPage === "room" && <AdminRoom settings={props.settings} />}
+      {props.currentPage === "participant" && (
+        <AdminParticipant settings={props.settings} />
+      )}
     </div>
   );
 }

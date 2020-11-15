@@ -104,17 +104,3 @@ export function useJoin(
 export function useToken() {
   return useRecoilValue(tokenAtom);
 }
-
-// export function useHelloMessage(): string {
-//   const settings = useApiSettings();
-//   const { message } = useRecoilValue(helloQuery(settings));
-
-//   return message;
-// }
-
-// export function useHelloYouMessage(): string {
-//   const settings = useApiSettings();
-//   const { message } = useRecoilValue(helloYouQuery(settings));
-
-//   return message;
-// }
