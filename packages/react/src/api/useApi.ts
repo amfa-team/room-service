@@ -42,7 +42,7 @@ export function useApiSettings(): ApiSettings {
 }
 
 export function useJoin(
-  participantId: string,
+  userJwtToken: string,
   spaceId: string,
   change: boolean,
   roomName: string | null,
@@ -66,7 +66,7 @@ export function useJoin(
           settings,
           "join",
           {
-            participantId,
+            participantToken: userJwtToken,
             spaceId,
             change,
             roomName,
@@ -93,7 +93,7 @@ export function useJoin(
     return () => {
       abortController.abort();
     };
-  }, [settings, participantId, spaceId, setToken, setRoom, change, roomName]);
+  }, [settings, userJwtToken, spaceId, setToken, setRoom, change, roomName]);
 
   return {
     join,

@@ -4,11 +4,10 @@ import Controls from "../../components/Controls/Controls";
 import ParticipantList from "../../components/ParticipantList/ParticipantList";
 import ParticipantListLoading from "../../components/ParticipantListLoading/ParticipantListLoading";
 import type { IRoom } from "../../entities/Room";
-import type { IUser } from "../../entities/User";
 import { useConnectTwilioRoom } from "../hooks/useTwilioRoom";
 
 interface TwilioRoomPageProps {
-  user: IUser;
+  userJwtToken: string;
   spaceId: string;
   token: string;
   roomName: string;
@@ -16,9 +15,9 @@ interface TwilioRoomPageProps {
 }
 
 export default function TwilioRoomPage(props: TwilioRoomPageProps) {
-  const { token, onRoomChanged, spaceId, user, roomName } = props;
+  const { token, onRoomChanged, spaceId, userJwtToken, roomName } = props;
   const { data } = useConnectTwilioRoom(token);
-  const { join } = useJoin(user.id, spaceId, true, roomName);
+  const { join } = useJoin(userJwtToken, spaceId, true, roomName);
 
   const onShuffleClicked = useCallback(async () => {
     const r = await join();

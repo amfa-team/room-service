@@ -1,10 +1,11 @@
-import type { ISpace, IUser } from "@amfa-team/room-service";
+import type { ISpace } from "@amfa-team/room-service";
 import { TwilioApp } from "@amfa-team/room-service";
+import { useToken } from "@amfa-team/user-service";
 import React, { useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import Connect from "./Connect";
 
 interface RoomProps {
-  user: IUser;
   space: ISpace;
   endpoint: string;
 }
@@ -109,6 +110,7 @@ export default function Room(props: RoomProps) {
     lang: "en" | "fr";
   }>();
   const history = useHistory();
+  const jwtToken = useToken();
   const onRoomChanged = useCallback(
     (name: string) => {
       history.push(`/${lang}/${name}`);
@@ -116,9 +118,13 @@ export default function Room(props: RoomProps) {
     [history, lang],
   );
 
+  if (jwtToken === null) {
+    return <Connect />;
+  }
+
   return (
     <TwilioApp
-      user={props.user}
+      userJwtToken={jwtToken}
       space={props.space}
       settings={{ endpoint: props.endpoint }}
       onRoomChanged={onRoomChanged}

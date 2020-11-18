@@ -27,6 +27,7 @@ provider:
     TWILIO_AUTH_TOKEN: "${env:TWILIO_AUTH_TOKEN}"
     SECRET: "${env:SECRET}"
     API_ENDPOINT: "${env:API_ENDPOINT}"
+    USER_SERVICE_API_SECRET: "${env:USER_SERVICE_API_SECRET}"
     NGROK: "${env:NGROK}"
 
 package:

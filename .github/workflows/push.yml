@@ -16,9 +16,8 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-test-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-test-
             ${{ runner.os }}-
       - run: yarn install
   lint_and_build:
@@ -32,21 +31,13 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-test-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-test-
             ${{ runner.os }}-
       - run: yarn install
-      - uses: TickX/var-to-dotenv@v1.1.1
-        with:
-          key: "SENTRY_DNS"
-          value: ${{secrets.SENTRY_EXAMPLE_DNS}}
-          envPath: "packages/example/.env"
-      - uses: TickX/var-to-dotenv@v1.1.1
-        with:
-          key: "API_ENDPOINT"
-          value: ${{secrets.API_ENDPOINT_STAGING}}
-          envPath: "packages/example/.env"
+      - run: echo "SENTRY_DNS=${{secrets.SENTRY_EXAMPLE_DNS}}" >> packages/example/.env
+      - run: echo "API_ENDPOINT=${{secrets.API_ENDPOINT_STAGING}}" >> packages/example/.env
+      - run: echo "USER_API_ENDPOINT=${{secrets.USER_API_ENDPOINT_STAGING}}" >> packages/example/.env
       - run: yarn build
       - run: yarn lint
   stylelint:
@@ -60,9 +51,8 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-test-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-test-
             ${{ runner.os }}-
       - run: yarn install
       - run: yarn lint:style
@@ -77,9 +67,8 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-test-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-test-
             ${{ runner.os }}-
       - run: yarn install
       - run: yarn prettier:check

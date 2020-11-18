@@ -28,7 +28,7 @@ export type PostRoute<I, O> = {
 
 export interface JoinData {
   spaceId: string;
-  participantId: string;
+  participantToken: string;
   change: boolean;
   roomName: string | null;
 }
