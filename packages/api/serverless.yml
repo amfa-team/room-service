@@ -1,5 +1,4 @@
-service:
-  name: room-service-api
+service: room-service-api
 
 plugins:
   - serverless-dotenv-plugin
@@ -106,7 +105,7 @@ custom:
           region: "eu"
 
   serverless-offline:
-    # useChildProcesses: true
+    useChildProcesses: true
     httpPort: 4000
 
   webpack:

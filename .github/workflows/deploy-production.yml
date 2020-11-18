@@ -77,7 +77,7 @@ jobs:
         run: yarn build
       - name: deploy
         working-directory: ./packages/example
-        run: yarn aws:profile:set --stage production && yarn deploy:prod
+        run: yarn aws:profile:set --stage production && yarn deploy:production
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -106,7 +106,7 @@ jobs:
       - run: yarn install
       - name: serverless deploy
         working-directory: ./packages/api
-        run: yarn aws:profile:set --stage production && yarn deploy:prod
+        run: yarn aws:profile:set --stage production && yarn deploy:production
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
