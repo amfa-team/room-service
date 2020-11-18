@@ -20,6 +20,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-
       - run: yarn install
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   lint_and_build:
     runs-on: ubuntu-latest
     needs: setup
@@ -34,6 +37,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
       - run: echo "SENTRY_DNS=${{secrets.SENTRY_EXAMPLE_DNS}}" >> packages/example/.env
       - run: echo "API_ENDPOINT=${{secrets.API_ENDPOINT_STAGING}}" >> packages/example/.env
@@ -54,6 +60,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
       - run: yarn lint:style
   prettier:
@@ -70,5 +79,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
       - run: yarn prettier:check
