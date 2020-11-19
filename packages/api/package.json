@@ -16,6 +16,7 @@
     "@types/mongoose": "^5.7.37",
     "babel-loader": "^8.1.0",
     "serverless": "^2.11.0",
+    "serverless-domain-manager": "^5.1.0",
     "serverless-dotenv-plugin": "^3.1.0",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-ngrok-tunnel": "^0.0.3",
