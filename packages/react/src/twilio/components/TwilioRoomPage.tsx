@@ -17,14 +17,14 @@ interface TwilioRoomPageProps {
 export default function TwilioRoomPage(props: TwilioRoomPageProps) {
   const { token, onRoomChanged, spaceId, userJwtToken, roomName } = props;
   const { data } = useConnectTwilioRoom(token);
-  const { join } = useJoin(userJwtToken, spaceId, true, roomName);
+  const { join } = useJoin(spaceId, true, roomName);
 
   const onShuffleClicked = useCallback(async () => {
-    const r = await join();
+    const r = await join(userJwtToken);
     if (r !== null) {
       onRoomChanged(r);
     }
-  }, [join, onRoomChanged]);
+  }, [join, onRoomChanged, userJwtToken]);
 
   if (data === null) {
     return <ParticipantListLoading />;

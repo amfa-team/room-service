@@ -1,5 +1,9 @@
+import {
+  useToken as useJwtToken,
+  useSetApiSettings as useSetUserApiSettings,
+} from "@amfa-team/user-service";
+import type { ApiSettings as UserApiSettings } from "@amfa-team/user-service";
 import React from "react";
-import { RecoilRoot } from "recoil";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
 import type { ISpace } from "../entities/Space";
@@ -9,9 +13,9 @@ import TwilioRoomPage from "./components/TwilioRoomPage";
 import TwilioWaitingPage from "./components/TwilioWaitingPage";
 
 export interface TwilioAppProps {
-  userJwtToken: string;
   space: ISpace;
   settings: ApiSettings;
+  userSettings: UserApiSettings;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
   dictionary: Dictionary;
@@ -19,17 +23,11 @@ export interface TwilioAppProps {
 
 function TwilioApp(props: TwilioAppProps) {
   const token = useToken();
-  const isSet = useSetApiSettings(props.settings);
-  useSetDictionary(props.dictionary);
+  const jwtToken = useJwtToken();
 
-  if (!isSet) {
-    return null;
-  }
-
-  if (!token || props.roomName === null) {
+  if (!token || props.roomName === null || jwtToken === null) {
     return (
       <TwilioWaitingPage
-        userJwtToken={props.userJwtToken}
         spaceId={props.space.id}
         roomName={props.roomName}
         onRoomChanged={props.onRoomChanged}
@@ -40,7 +38,7 @@ function TwilioApp(props: TwilioAppProps) {
   return (
     <TwilioRoomPage
       token={token}
-      userJwtToken={props.userJwtToken}
+      userJwtToken={jwtToken}
       spaceId={props.space.id}
       roomName={props.roomName}
       onRoomChanged={props.onRoomChanged}
@@ -49,9 +47,13 @@ function TwilioApp(props: TwilioAppProps) {
 }
 
 export default function TwilioAppContainer(props: TwilioAppProps) {
-  return (
-    <RecoilRoot>
-      <TwilioApp {...props} />
-    </RecoilRoot>
-  );
+  const userSettingsSet = useSetUserApiSettings(props.userSettings);
+  const apiSettings = useSetApiSettings(props.settings);
+  useSetDictionary(props.dictionary);
+
+  if (!apiSettings || !userSettingsSet) {
+    return null;
+  }
+
+  return <TwilioApp {...props} />;
 }
