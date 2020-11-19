@@ -42,7 +42,6 @@ export function useApiSettings(): ApiSettings {
 }
 
 export function useJoin(
-  participantId: string,
   spaceId: string,
   change: boolean,
   roomName: string | null,
@@ -51,22 +50,22 @@ export function useJoin(
   const setRoom = useSetRecoilState(roomAtom);
   const setToken = useSetRecoilState(tokenAtom);
   const [isJoining, setIsJoining] = useState(false);
-  const [join, setJoin] = useState<() => Promise<string | null>>(
-    async () => null,
-  );
+  const [join, setJoin] = useState<
+    (jwtToken: string) => Promise<string | null>
+  >(async () => null);
 
   useEffect(() => {
     setIsJoining(false);
     const abortController = new AbortController();
 
-    const j = async () => {
+    const j = async (jwtToken: string) => {
       setIsJoining(true);
       try {
         const data = await apiPost(
           settings,
           "join",
           {
-            participantId,
+            participantToken: jwtToken,
             spaceId,
             change,
             roomName,
@@ -93,7 +92,7 @@ export function useJoin(
     return () => {
       abortController.abort();
     };
-  }, [settings, participantId, spaceId, setToken, setRoom, change, roomName]);
+  }, [settings, spaceId, setToken, setRoom, change, roomName]);
 
   return {
     join,

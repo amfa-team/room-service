@@ -1,18 +1,22 @@
+import { useConnect, useToken as useJwtToken } from "@amfa-team/user-service";
 import React, { useCallback, useEffect, useState } from "react";
 import { useJoin } from "../../api/useApi";
 import WaitingPage from "../../components/WaitingPage/WaitingPage";
-import type { IUser } from "../../entities/User";
 import useTwilioLocalTracks from "../hooks/useTwilioLocalTracks";
 
 interface TwilioWaitingPageProps {
-  user: IUser;
   spaceId: string;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
 }
 
+type Step = "setup" | "connect" | "join" | "ready";
+
 export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
-  const { spaceId, user, roomName, onRoomChanged } = props;
+  const { spaceId, roomName, onRoomChanged } = props;
+  const [step, setStep] = useState<Step>("setup");
+  const jwtToken = useJwtToken();
+  const { connect } = useConnect();
   const {
     isAcquiringLocalTracks,
     videoTrack,
@@ -21,32 +25,72 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
     audioError,
   } = useTwilioLocalTracks();
   const [roomFull, setRoomFull] = useState(false);
-
-  const { join, isJoining } = useJoin(
-    user.id,
-    spaceId,
-    roomFull,
-    props.roomName,
-  );
-  const onJoinClicked = useCallback(async () => {
-    const r = await join();
-    if (r === null) {
-      setRoomFull(true);
-    } else if (roomName !== r) {
-      onRoomChanged(r);
-    }
-  }, [join, roomName, onRoomChanged]);
+  const { join } = useJoin(spaceId, roomFull, props.roomName);
+  const onJoinClicked = useCallback(() => {
+    setStep("connect");
+  }, []);
 
   useEffect(() => {
+    // Restart
+    setStep("setup");
     setRoomFull(false);
-  }, [props.roomName]);
+  }, [roomName]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (step === "connect") {
+      connect()
+        .then((result) => {
+          if (!abortController.signal.aborted) {
+            setStep(result === null ? "setup" : "join");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          if (!abortController.signal.aborted) {
+            setStep("setup");
+          }
+        });
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  }, [step, connect]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (step === "join" && jwtToken !== null) {
+      join(jwtToken)
+        .then((r) => {
+          if (!abortController.signal.aborted) {
+            if (r === null) {
+              setRoomFull(true);
+            } else if (roomName !== r) {
+              onRoomChanged(r);
+            }
+            setStep("ready");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          if (!abortController.signal.aborted) {
+            setStep("setup");
+          }
+        });
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  }, [step, join, roomName, onRoomChanged, jwtToken]);
 
   return (
     <WaitingPage
       audioTrack={audioTrack}
       videoTrack={videoTrack}
       join={onJoinClicked}
-      disabled={isAcquiringLocalTracks || isJoining}
+      disabled={isAcquiringLocalTracks || step !== "setup"}
       roomFull={roomFull}
       audioError={audioError}
       videoError={videoError}

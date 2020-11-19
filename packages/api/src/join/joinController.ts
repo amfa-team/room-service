@@ -5,12 +5,13 @@ import {
   getParticipantRoom,
   joinRoom,
 } from "../service/lifecycleService";
+import { parseUserServiceToken } from "../service/user/userService";
 import { getParticipantTwilioToken } from "../twilio/client";
 
 export const joinDecoder = JsonDecoder.object(
   {
     spaceId: JsonDecoder.string,
-    participantId: JsonDecoder.string,
+    participantToken: JsonDecoder.string,
     change: JsonDecoder.boolean,
     roomName: JsonDecoder.oneOf(
       [JsonDecoder.string, JsonDecoder.isExactly(null)],
@@ -21,7 +22,9 @@ export const joinDecoder = JsonDecoder.object(
 );
 
 export async function handleJoin(data: JoinData): Promise<null | JoinPayload> {
-  let participant = await findOrCreateParticipant(data.participantId);
+  let participant = await findOrCreateParticipant(
+    parseUserServiceToken(data.participantToken).id,
+  );
   let room = await getParticipantRoom(participant);
 
   if (data.change || !room || (data.roomName && room.name !== data.roomName)) {

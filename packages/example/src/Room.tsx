@@ -1,10 +1,9 @@
-import type { ISpace, IUser } from "@amfa-team/room-service";
+import type { ISpace } from "@amfa-team/room-service";
 import { TwilioApp } from "@amfa-team/room-service";
 import React, { useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 interface RoomProps {
-  user: IUser;
   space: ISpace;
   endpoint: string;
 }
@@ -103,6 +102,9 @@ const frDictionary = {
   },
 };
 
+const userApiEndpoint = process.env.USER_API_ENDPOINT ?? "";
+const userSettings = { endpoint: userApiEndpoint };
+
 export default function Room(props: RoomProps) {
   const { lang, roomName } = useParams<{
     roomName?: string;
@@ -118,7 +120,7 @@ export default function Room(props: RoomProps) {
 
   return (
     <TwilioApp
-      user={props.user}
+      userSettings={userSettings}
       space={props.space}
       settings={{ endpoint: props.endpoint }}
       onRoomChanged={onRoomChanged}

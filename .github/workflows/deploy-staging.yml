@@ -16,11 +16,12 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-staging-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-deploy-staging-
             ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
   deploy-react:
     runs-on: ubuntu-latest
@@ -33,11 +34,12 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-staging-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-deploy-staging-
             ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
       - name: publish sdk
         working-directory: ./packages/react
@@ -57,22 +59,16 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-staging-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}--${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-deploy-staging-
             ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
-      - uses: TickX/var-to-dotenv@v1.1.1
-        with:
-          key: "SENTRY_DNS"
-          value: ${{secrets.SENTRY_EXAMPLE_DNS}}
-          envPath: "packages/example/.env"
-      - uses: TickX/var-to-dotenv@v1.1.1
-        with:
-          key: "API_ENDPOINT"
-          value: ${{secrets.API_ENDPOINT_STAGING}}
-          envPath: "packages/example/.env"
+      - run: echo "SENTRY_DNS=${{secrets.SENTRY_EXAMPLE_DNS}}" >> packages/example/.env
+      - run: echo "API_ENDPOINT=${{secrets.API_ENDPOINT_STAGING}}" >> packages/example/.env
+      - run: echo "USER_API_ENDPOINT=${{secrets.USER_API_ENDPOINT_STAGING}}" >> packages/example/.env
       - name: build
         run: yarn build
       - name: deploy
@@ -98,11 +94,12 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-staging-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-deploy-staging-
             ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
       - name: serverless deploy
         working-directory: ./packages/api
@@ -119,3 +116,4 @@ jobs:
           API_ENDPOINT: ${{ secrets.API_ENDPOINT_STAGING }}
           SECRET: ${{ secrets.API_SECRET_STAGING }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          USER_SERVICE_API_SECRET: ${{ secrets.USER_SERVICE_API_SECRET_STAGING }}
