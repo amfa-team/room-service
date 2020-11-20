@@ -10,17 +10,6 @@
     d "1"
     es5-ext "^0.10.47"
 
-"@amfa-team/user-service@^1.0.0-beta.4":
-  version "1.0.0-beta.4"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.0.0-beta.4/19befb8168e80254dfc3e3c686025c009f7bb5d33ce7c639b52ea5fcf7500026#a24480a52e3e8529fda572821d2c4069ead509d6"
-  integrity sha512-8Y3LsZu5LkRYWvzfqNvgAdJUuB9oKy6Wj3TNV9DFVKzsf5DAv6zjJKP1TDjzKjwgS6eg0iwznQYUCDnAoOhi3Q==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    abortcontroller-polyfill "^1.5.0"
-    core-js "^3.7.0"
-    jwt-decode "^3.1.2"
-    whatwg-fetch "^3.5.0"
-
 "@amfa-team/user-service@^1.0.0-beta.7":
   version "1.0.0-beta.7"
   resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.0.0-beta.7/f69ed8aa080b4400d8d5268a1cbd6ec5f4c5f1d0c52e95863a8d5f350f482f9a#4f211fc207068681eb53ede04bb0f3e5992e0a55"
