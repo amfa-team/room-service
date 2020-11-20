@@ -1,8 +1,4 @@
-import {
-  useToken as useJwtToken,
-  useSetApiSettings as useSetUserApiSettings,
-} from "@amfa-team/user-service";
-import type { ApiSettings as UserApiSettings } from "@amfa-team/user-service";
+import { useToken as useJwtToken } from "@amfa-team/user-service";
 import React from "react";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
@@ -15,7 +11,6 @@ import TwilioWaitingPage from "./components/TwilioWaitingPage";
 export interface TwilioAppProps {
   space: ISpace;
   settings: ApiSettings;
-  userSettings: UserApiSettings;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
   dictionary: Dictionary;
@@ -47,11 +42,10 @@ function TwilioApp(props: TwilioAppProps) {
 }
 
 export default function TwilioAppContainer(props: TwilioAppProps) {
-  const userSettingsSet = useSetUserApiSettings(props.userSettings);
-  const apiSettings = useSetApiSettings(props.settings);
+  const ready = useSetApiSettings(props.settings);
   useSetDictionary(props.dictionary);
 
-  if (!apiSettings || !userSettingsSet) {
+  if (!ready) {
     return null;
   }
 

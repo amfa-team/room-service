@@ -102,9 +102,6 @@ const frDictionary = {
   },
 };
 
-const userApiEndpoint = process.env.USER_API_ENDPOINT ?? "";
-const userSettings = { endpoint: userApiEndpoint };
-
 export default function Room(props: RoomProps) {
   const { lang, roomName } = useParams<{
     roomName?: string;
@@ -120,7 +117,6 @@ export default function Room(props: RoomProps) {
 
   return (
     <TwilioApp
-      userSettings={userSettings}
       space={props.space}
       settings={{ endpoint: props.endpoint }}
       onRoomChanged={onRoomChanged}

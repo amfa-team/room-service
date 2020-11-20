@@ -39,7 +39,7 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
   useEffect(() => {
     const abortController = new AbortController();
     if (step === "connect") {
-      connect()
+      connect(null)
         .then((result) => {
           if (!abortController.signal.aborted) {
             setStep(result === null ? "setup" : "join");
