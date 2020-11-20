@@ -1,3 +1,10 @@
+# [1.0.0-beta.56](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.55...v1.0.0-beta.56) (2020-11-20)
+
+
+### Features
+
+* support user-service with safe mode in dev ([dd73c4b](https://github.com/amfa-team/room-service/commit/dd73c4bc6f27e2a8c1188c6f4b477a8b39942cd9))
+
 # [1.0.0-beta.55](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.54...v1.0.0-beta.55) (2020-11-20)
 
 
