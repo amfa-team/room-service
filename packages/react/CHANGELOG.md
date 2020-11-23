@@ -1,3 +1,10 @@
+# [1.0.0-beta.57](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.56...v1.0.0-beta.57) (2020-11-23)
+
+
+### Features
+
+* add blame ([05df0a8](https://github.com/amfa-team/room-service/commit/05df0a86a229684ae12dcef52ecc25c55aa4bc08))
+
 # [1.0.0-beta.56](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.55...v1.0.0-beta.56) (2020-11-20)
 
 
