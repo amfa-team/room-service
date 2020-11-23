@@ -10,15 +10,16 @@
     d "1"
     es5-ext "^0.10.47"
 
-"@amfa-team/user-service@^1.0.0-beta.10":
-  version "1.0.0-beta.10"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.0.0-beta.10/8ce9d325563c44d579f7e3b633a3057f10415607ab7060a7a44a85704eb6af0e#3a2eae2237f404aabd4f9a360d40cf3a807ee3fa"
-  integrity sha512-xzkgT4rR2TDmnbHvfhrG226XzRc26MPnHhcCgM2l4bBjyrAy8QcbJLYmw/Fc7x/s18GX8soLSZJk4ihbt8W0NA==
+"@amfa-team/user-service@^1.0.0-beta.13":
+  version "1.0.0-beta.13"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.0.0-beta.13/d693480f180ebbfaf51719221fcf7c13319f2caf61650ad1873491cf6e5b952b#d47e526a862157e84cdb25d08435561e12a22f2d"
+  integrity sha512-9ZCZdrgukWoqmwMpxn6ZhBTQqVr6U8dRB59M3Kz7Dn9E9kOgYj4YBkrq0gpoFS39rfNbCnQEZZ1C1Rw2o5xdEg==
   dependencies:
     "@babel/runtime" "^7.12.5"
     abortcontroller-polyfill "^1.5.0"
     core-js "^3.7.0"
     jwt-decode "^3.1.2"
+    react-table "^7.6.2"
     whatwg-fetch "^3.5.0"
 
 "@babel/code-frame@7.8.3":
@@ -16871,6 +16872,11 @@ react-table@^7.6.1:
   version "7.6.1"
   resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.6.1.tgz#33ad2bfc58de619678694c5452597544f4864266"
   integrity sha512-XQyvombPoFbNiDHWAXdxbN78kFpsT1/aJuRSupFfBhO3FJtEVIIq2xbV1NvLzrd1YwfCYRm07ln5OHlfz0SXBg==
+
+react-table@^7.6.2:
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.6.2.tgz#b60932fa6d457c2bca0da49815cd6a8fe9451f77"
+  integrity sha512-urwNZTieb+xg/+BITUIrqdH5jZfJlw7rKVAAq25iXpBPwbQojLCEKJuGycLbVwn8fzU+Ovly3y8HHNaLNrPCvQ==
 
 react-textarea-autosize@^8.1.1:
   version "8.2.0"
