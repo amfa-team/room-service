@@ -52,6 +52,36 @@ const enDictionary = {
       "Cannot Find Camera: The browser cannot access the camera. Please make sure all input devices are connected and enabled.",
     unknown: "Error Acquiring Camera: An unknown error occurred",
   },
+  blamePage: {
+    blameBtn: "Report",
+    form: {
+      submit: "Report",
+      cancel: "Cancel",
+      notice: "Any invalid report might be terrible!",
+      reasons: {
+        negativeAttitude: {
+          name: "Negative Attitude: Griefing/Giving Up ",
+          desc:
+            "This category is reserved for unhelpful or self-centered attitudes that go against the principles of a team-based game",
+        },
+        verbalAbuse: {
+          name: "Verbal Abuse: Harassment, Offensive Language",
+          desc:
+            "This category aims at punishing language that is directly targeted at another player in order to hurt, insult, or intimidate them.",
+        },
+        afk: {
+          name: "Leaving the Game/AFK",
+          desc:
+            "This category aims at punishing behavior that includes logging out before a match ends as well as standing idle for long periods of time and refusing to participate.",
+        },
+        cheating: {
+          name: "Cheating: Unapproved Third Party Program",
+          desc:
+            "This category aims at punishing behavior that uses unapproved third party programs to gain a competitive advantage in the game.mv",
+        },
+      },
+    },
+  },
 };
 
 const frDictionary = {
@@ -99,6 +129,32 @@ const frDictionary = {
       "Cannot Find Camera: The browser cannot access the camera. Please make sure all input devices are connected and enabled.",
     unknown:
       "Erreur lors de l'acquisition de la caméra: une erreur inconnue s'est produite",
+  },
+  blamePage: {
+    blameBtn: "Signaler",
+    form: {
+      submit: "Signaler",
+      cancel: "Annuler",
+      notice: "Tout signalement invalid sera terrible",
+      reasons: {
+        negativeAttitude: {
+          name: "Attitue Negative",
+          desc: "Bla bla bla",
+        },
+        verbalAbuse: {
+          name: "Verbal Abuse: Harassment, Offensive Language",
+          desc: "Bla bla bla",
+        },
+        afk: {
+          name: "AFK",
+          desc: "Bla bla bla",
+        },
+        cheating: {
+          name: "Triche",
+          desc: "Bla bla bla",
+        },
+      },
+    },
   },
 };
 

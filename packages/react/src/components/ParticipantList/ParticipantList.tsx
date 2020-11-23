@@ -1,7 +1,9 @@
+import { BlameAction } from "@amfa-team/user-service";
 import classnames from "classnames";
 import { motion, useAnimation } from "framer-motion";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { ReactElement } from "react";
+import type { IParticipant } from "../../entities";
 import type { IRoom } from "../../entities/Room";
 import useParticipants from "../../hooks/useParticipants";
 import { useDictionary } from "../../i18n/dictionary";
@@ -36,10 +38,31 @@ const itemAnimation = {
   },
 };
 
-function ControlMenu(): ReactElement {
+interface ControlMenuProps {
+  participant: IParticipant;
+  participants: IParticipant[];
+  isLocalParticipant: boolean;
+}
+
+// TODO: This should have its own file
+function ControlMenu({
+  participant,
+  participants,
+  isLocalParticipant,
+}: ControlMenuProps): ReactElement {
+  const dictionary = useDictionary("blamePage");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const witnesses = useMemo(
+    () =>
+      participants
+        .filter((p) => p.identity !== participant.identity)
+        .map((p) => p.identity),
+    [participants, participant],
+  );
+
   return (
     <>
       <i
@@ -51,11 +74,26 @@ function ControlMenu(): ReactElement {
           [styles.dNone]: !isMenuOpen,
         })}
       >
-        <i
-          className={classnames(styles.mainMenuIcons, styles.iconCtrl, {
-            [styles.iconCtrlOpen]: isMenuOpen,
-          })}
-        />
+        {!isLocalParticipant && (
+          <div
+            className={classnames(styles.mainMenuIcons, styles.iconCtrl, {
+              [styles.iconCtrlOpen]: isMenuOpen,
+            })}
+          >
+            <BlameAction
+              accusedId={participant.identity}
+              witnesses={witnesses}
+              dictionary={dictionary}
+            />
+          </div>
+        )}
+        {isLocalParticipant && (
+          <i
+            className={classnames(styles.mainMenuIcons, styles.iconCtrl, {
+              [styles.iconCtrlOpen]: isMenuOpen,
+            })}
+          />
+        )}
         <i
           className={classnames(styles.mainMenuIcons, styles.iconPrfle, {
             [styles.iconPrfleOpen]: isMenuOpen,
@@ -75,6 +113,9 @@ function ControlMenu(): ReactElement {
     </>
   );
 }
+ControlMenu.defaultProps = {
+  isLocalParticipant: false,
+};
 
 export interface ParticipantListProps {
   room: IRoom;
@@ -122,7 +163,11 @@ export default function ParticipantList(
           variants={itemAnimation}
           animate={controlsChildren}
         >
-          <ControlMenu />
+          <ControlMenu
+            participant={localParticipant}
+            participants={participants}
+            isLocalParticipant
+          />
           <Participant participant={localParticipant} isLocalParticipant />
         </motion.li>
         {participants.map((participant) => (
@@ -132,7 +177,10 @@ export default function ParticipantList(
             variants={itemAnimation}
             animate={controlsChildren}
           >
-            <ControlMenu />
+            <ControlMenu
+              participant={participant}
+              participants={participants}
+            />
             <Participant participant={participant} />
           </motion.li>
         ))}
