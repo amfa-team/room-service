@@ -33,9 +33,9 @@ export async function checkBan(requestContext: APIGatewayEventRequestContext) {
 
   const result = await res.json();
 
-  console.log({ result });
+  const banned = result?.payload?.banned === true;
 
-  if (!(result?.success && result?.payload === false)) {
+  if (banned) {
     throw new ForbiddenError();
   }
 }

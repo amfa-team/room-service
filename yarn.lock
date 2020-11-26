@@ -10,10 +10,10 @@
     d "1"
     es5-ext "^0.10.47"
 
-"@amfa-team/user-service@^1.0.0-beta.13":
-  version "1.0.0-beta.13"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.0.0-beta.13/d693480f180ebbfaf51719221fcf7c13319f2caf61650ad1873491cf6e5b952b#d47e526a862157e84cdb25d08435561e12a22f2d"
-  integrity sha512-9ZCZdrgukWoqmwMpxn6ZhBTQqVr6U8dRB59M3Kz7Dn9E9kOgYj4YBkrq0gpoFS39rfNbCnQEZZ1C1Rw2o5xdEg==
+"@amfa-team/user-service@^1.0.0-beta.16":
+  version "1.0.0-beta.16"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.0.0-beta.16/f8ef9ac32ffa6fb3e4ef8a2525549e23cac2483510ff5ac67b5991c7108efb2f#be8a7fa8fd02e83b6cf976b902e93a1c6aa9ac0b"
+  integrity sha512-62zfRq6AmXEDsSIIQx0M7IpTK5ZbOT8HRN2MhKoe1iF/EWGkooW1F2HNbADkpAVu+w1vGOZgr70QbizHhTtOpA==
   dependencies:
     "@babel/runtime" "^7.12.5"
     abortcontroller-polyfill "^1.5.0"
