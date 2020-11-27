@@ -1,3 +1,11 @@
+# [1.0.0-beta.58](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.57...v1.0.0-beta.58) (2020-11-27)
+
+
+### Features
+
+* deny access to banned users ([6946905](https://github.com/amfa-team/room-service/commit/694690519284b2d4d6b62035f60f5a5b0597a1b2))
+* ensure user is not banned ([9a6eaa1](https://github.com/amfa-team/room-service/commit/9a6eaa1d3a6420ca505399b8b8a12992561275ea))
+
 # [1.0.0-beta.57](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.56...v1.0.0-beta.57) (2020-11-23)
 
 
