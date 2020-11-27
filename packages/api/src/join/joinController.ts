@@ -1,11 +1,12 @@
 import type { JoinData, JoinPayload } from "@amfa-team/types";
+import type { APIGatewayEventRequestContext } from "aws-lambda";
 import { JsonDecoder } from "ts.data.json";
 import {
   findOrCreateParticipant,
   getParticipantRoom,
   joinRoom,
 } from "../service/lifecycleService";
-import { parseUserServiceToken } from "../service/user/userService";
+import { checkBan, parseUserServiceToken } from "../service/user/userService";
 import { getParticipantTwilioToken } from "../twilio/client";
 
 export const joinDecoder = JsonDecoder.object(
@@ -21,7 +22,12 @@ export const joinDecoder = JsonDecoder.object(
   "joinDecoder",
 );
 
-export async function handleJoin(data: JoinData): Promise<null | JoinPayload> {
+export async function handleJoin(
+  data: JoinData,
+  _headers: Record<string, string | null>,
+  requestContext: APIGatewayEventRequestContext,
+): Promise<null | JoinPayload> {
+  await checkBan(requestContext);
   let participant = await findOrCreateParticipant(
     parseUserServiceToken(data.participantToken).id,
   );

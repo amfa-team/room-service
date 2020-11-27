@@ -1,7 +1,12 @@
-import { useConnect, useToken as useJwtToken } from "@amfa-team/user-service";
+import {
+  UserModalPage,
+  useConnect,
+  useToken as useJwtToken,
+} from "@amfa-team/user-service";
 import React, { useCallback, useEffect, useState } from "react";
 import { useJoin } from "../../api/useApi";
 import WaitingPage from "../../components/WaitingPage/WaitingPage";
+import { useDictionary } from "../../i18n/dictionary";
 import useTwilioLocalTracks from "../hooks/useTwilioLocalTracks";
 
 interface TwilioWaitingPageProps {
@@ -13,6 +18,7 @@ interface TwilioWaitingPageProps {
 type Step = "setup" | "connect" | "join" | "ready";
 
 export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
+  const userDictionary = useDictionary("userDictionary");
   const { spaceId, roomName, onRoomChanged } = props;
   const [step, setStep] = useState<Step>("setup");
   const jwtToken = useJwtToken();
@@ -86,15 +92,18 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
   }, [step, join, roomName, onRoomChanged, jwtToken]);
 
   return (
-    <WaitingPage
-      audioTrack={audioTrack}
-      videoTrack={videoTrack}
-      join={onJoinClicked}
-      disabled={isAcquiringLocalTracks || step !== "setup"}
-      roomFull={roomFull}
-      audioError={audioError}
-      videoError={videoError}
-    />
+    <>
+      <UserModalPage dictionary={userDictionary} />
+      <WaitingPage
+        audioTrack={audioTrack}
+        videoTrack={videoTrack}
+        join={onJoinClicked}
+        disabled={isAcquiringLocalTracks || step !== "setup"}
+        roomFull={roomFull}
+        audioError={audioError}
+        videoError={videoError}
+      />
+    </>
   );
 }
 

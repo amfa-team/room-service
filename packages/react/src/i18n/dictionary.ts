@@ -1,5 +1,11 @@
-import type { BlamePageDictionary } from "@amfa-team/user-service/lib/i18n/dictionary";
-import { defaultBlamePageDictionary } from "@amfa-team/user-service/lib/i18n/dictionary";
+import type {
+  BlameActionDictionary,
+  ModelPageDictionary,
+} from "@amfa-team/user-service/lib/i18n/dictionary";
+import {
+  defaultBlameActionDictionary,
+  defaultModelPageDictionary,
+} from "@amfa-team/user-service/lib/i18n/dictionary";
 import { useEffect } from "react";
 import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -40,6 +46,8 @@ export interface MediaErrorDictionary {
   unknown: string;
 }
 
+interface UserDictionary extends ModelPageDictionary, BlameActionDictionary {}
+
 export interface Dictionary {
   waitingPage: WaitingPageDictionary;
   controls: ControlsDictionary;
@@ -48,7 +56,7 @@ export interface Dictionary {
   participantList: ParticipantListDictionary;
   audioError: MediaErrorDictionary;
   videoError: MediaErrorDictionary;
-  blamePage: BlamePageDictionary;
+  userDictionary: UserDictionary;
 }
 
 const defaultDictionary: Dictionary = {
@@ -95,7 +103,10 @@ const defaultDictionary: Dictionary = {
       "Cannot Find Camera: The browser cannot access the camera. Please make sure all input devices are connected and enabled.",
     unknown: "Error Acquiring Camera: An unknown error occurred",
   },
-  blamePage: defaultBlamePageDictionary,
+  userDictionary: {
+    ...defaultBlameActionDictionary,
+    ...defaultModelPageDictionary,
+  },
 };
 
 const dictionaryAtom = atom<Dictionary>({

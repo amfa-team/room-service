@@ -154,7 +154,11 @@ export async function handlePublicGET<P extends keyof GetRoutes>(
 ): Promise<APIGatewayProxyResult> {
   try {
     await init(context);
-    const payload = await handler(event.queryStringParameters, event.headers);
+    const payload = await handler(
+      event.queryStringParameters,
+      event.headers,
+      event.requestContext,
+    );
     return handleSuccessResponse(payload);
   } catch (e) {
     return handleHttpErrorResponse(e, event);
@@ -174,7 +178,7 @@ export async function handlePublicPOST<P extends keyof PublicPostRoutes>(
     await init(context);
 
     const { data } = await parseHttpPublicRequest(event, decoder, jsonParse);
-    const payload = await handler(data, event.headers);
+    const payload = await handler(data, event.headers, event.requestContext);
     const response = await handleSuccessResponse(payload);
 
     logger.info("io.handlePublicPOST: did");
@@ -194,7 +198,7 @@ export async function handleAdminPOST<P extends keyof AdminPostRoutes>(
   try {
     await init(context);
     const { data } = await parseHttpAdminRequest(event, decoder);
-    const payload = await handler(data, event.headers);
+    const payload = await handler(data, event.headers, event.requestContext);
     return handleSuccessResponse(payload);
   } catch (e) {
     return handleHttpErrorResponse(e, event);

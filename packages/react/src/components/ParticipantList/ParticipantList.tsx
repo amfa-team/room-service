@@ -50,7 +50,7 @@ function ControlMenu({
   participants,
   isLocalParticipant,
 }: ControlMenuProps): ReactElement {
-  const dictionary = useDictionary("blamePage");
+  const dictionary = useDictionary("userDictionary");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);

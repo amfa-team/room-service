@@ -1,4 +1,4 @@
-import { BlameModal } from "@amfa-team/user-service";
+import { UserModalPage } from "@amfa-team/user-service";
 import React, { useCallback } from "react";
 import { useJoin } from "../../api/useApi";
 import Controls from "../../components/Controls/Controls";
@@ -17,7 +17,7 @@ interface TwilioRoomPageProps {
 }
 
 export default function TwilioRoomPage(props: TwilioRoomPageProps) {
-  const blameDictionary = useDictionary("blamePage");
+  const userDictionary = useDictionary("userDictionary");
   const { token, onRoomChanged, spaceId, userJwtToken, roomName } = props;
   const { data } = useConnectTwilioRoom(token);
   const { join } = useJoin(spaceId, true, roomName);
@@ -39,7 +39,7 @@ export default function TwilioRoomPage(props: TwilioRoomPageProps) {
 
   return (
     <div>
-      <BlameModal dictionary={blameDictionary} />
+      <UserModalPage dictionary={userDictionary} />
       <ParticipantList room={room} onShuffle={onShuffleClicked} />
       <Controls localParticipant={room.localParticipant} />
     </div>

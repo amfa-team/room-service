@@ -52,9 +52,19 @@ const enDictionary = {
       "Cannot Find Camera: The browser cannot access the camera. Please make sure all input devices are connected and enabled.",
     unknown: "Error Acquiring Camera: An unknown error occurred",
   },
-  blamePage: {
-    blameBtn: "Report",
-    form: {
+  userDictionary: {
+    blameAction: "Report",
+    banDispute: {
+      title: "You cannot access the platform",
+      desc: "You have been ban after users reported abuse",
+      mailto: "Dispute the ban",
+      mail: {
+        subject: "Dispute Ban",
+        id: "Reference",
+        body: "I want to contest this man, it is not fair",
+      },
+    },
+    blame: {
       submit: "Report",
       cancel: "Cancel",
       notice: "Any invalid report might be terrible!",
@@ -130,9 +140,19 @@ const frDictionary = {
     unknown:
       "Erreur lors de l'acquisition de la caméra: une erreur inconnue s'est produite",
   },
-  blamePage: {
-    blameBtn: "Signaler",
-    form: {
+  userDictionary: {
+    blameAction: "Signaler",
+    banDispute: {
+      title: "Vous ne pouvez pas acceder",
+      desc: "Un utilisateur vous a signalé",
+      mailto: "Contestation",
+      mail: {
+        subject: "Contester",
+        id: "Reference",
+        body: "Je veux contester parce que c'est injust wesh!",
+      },
+    },
+    blame: {
       submit: "Signaler",
       cancel: "Annuler",
       notice: "Tout signalement invalid sera terrible",
