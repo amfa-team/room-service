@@ -1,3 +1,15 @@
+# [1.0.0-beta.59](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.58...v1.0.0-beta.59) (2020-11-29)
+
+
+### Bug Fixes
+
+* prettier ([47d246c](https://github.com/amfa-team/room-service/commit/47d246cd44bc814e83c8dc1da1ba818290174947))
+
+
+### Features
+
+* integrate design ([572a1b9](https://github.com/amfa-team/room-service/commit/572a1b92edea5720bf998abd1b7f8c9f013278d1))
+
 # [1.0.0-beta.58](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.57...v1.0.0-beta.58) (2020-11-27)
 
 
