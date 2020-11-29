@@ -66,9 +66,7 @@ export class RawRoom implements IRoom {
 
   #participantConnectedListeners: Set<ParticipantConnectedListener> = new Set();
 
-  #participantDisconnectedListeners: Set<
-    ParticipantConnectedListener
-  > = new Set();
+  #participantDisconnectedListeners: Set<ParticipantConnectedListener> = new Set();
 
   constructor(
     name: string,

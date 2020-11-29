@@ -195,9 +195,7 @@ export class RawBaseParticipant<
 
   #reconnectingListeners: Set<() => void> = new Set();
 
-  #networkQualityLevelChangedListeners: Set<
-    NetworkQualityLevelChangedListener
-  > = new Set();
+  #networkQualityLevelChangedListeners: Set<NetworkQualityLevelChangedListener> = new Set();
 
   on(
     event:
