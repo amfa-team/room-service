@@ -25,6 +25,8 @@ interface IBaseParticipant<
 
   readonly identity: string;
 
+  readonly state: "connected" | "reconnecting" | "disconnected";
+
   readonly tracks: Map<string, V | A>;
 
   readonly videoTracks: Map<string, V>;
@@ -68,6 +70,8 @@ export class RawBaseParticipant<
 > implements IBaseParticipant<V, A> {
   #networkQualityLevel: number | null = null;
 
+  #state: "connected" | "reconnecting" | "disconnected" = "connected";
+
   readonly sid: string = uuid();
 
   readonly identity: string;
@@ -86,6 +90,10 @@ export class RawBaseParticipant<
     return this.#networkQualityLevel;
   }
 
+  get state() {
+    return this.#state;
+  }
+
   setNetworkQualityLevel(level: number | null) {
     this.#networkQualityLevel = level;
 
@@ -99,6 +107,32 @@ export class RawBaseParticipant<
         );
       }
     });
+  }
+
+  setState(state: "connected" | "reconnecting" | "disconnected") {
+    this.#state = state;
+
+    if (state === "connected") {
+      this.#reconnectedListeners.forEach((listener) => {
+        try {
+          listener();
+        } catch (e) {
+          console.error("Participant.setState: listener failed", e);
+        }
+      });
+    }
+    if (state === "reconnecting") {
+      this.#reconnectingListeners.forEach((listener) => {
+        try {
+          listener();
+        } catch (e) {
+          console.error("Participant.setState: listener failed", e);
+        }
+      });
+    }
+    if (state === "disconnected") {
+      // TODO
+    }
   }
 
   addVideoTrack(trackPublication: V): void {

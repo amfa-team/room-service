@@ -1,5 +1,5 @@
 import type { Context } from "aws-lambda";
-import { connect as _connect } from "mongoose";
+import mongoose from "mongoose";
 import type { Mongoose } from "mongoose";
 import { logger } from "../io/logger";
 import { getEnv, getEnvName } from "../utils/env";
@@ -17,7 +17,7 @@ async function getClient(url: string): Promise<Mongoose> {
   }
 
   try {
-    cachedClient = _connect(url, {
+    cachedClient = mongoose.connect(url, {
       appname: `room-service-${getEnvName()}`,
       useNewUrlParser: true,
       useUnifiedTopology: true,

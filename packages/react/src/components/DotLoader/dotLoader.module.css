@@ -5,7 +5,7 @@
   width: 1.4em;
   height: 1.4em;
   border-radius: 1.4em;
-  background-color: #0a0a0a;
+  background-color: #fff;
   transform: scale(0);
   display: inline-block;
   animation: dotanim 1.5s infinite ease-in-out;

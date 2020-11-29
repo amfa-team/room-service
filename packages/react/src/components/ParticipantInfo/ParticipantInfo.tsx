@@ -1,5 +1,3 @@
-import classnames from "classnames";
-import { motion } from "framer-motion";
 import React from "react";
 import type { IParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
@@ -12,67 +10,103 @@ import {
 import { useDictionary } from "../../i18n/dictionary";
 import AvatarIcon from "../../icons/AvatarIcon";
 import { AudioLevelIndicator } from "../AudioLevelIndicator/AudioLevelIndicator";
+import DotLoader from "../DotLoader/DotLoader";
 import NetworkQualityLevel from "../NetworkQualityLevel/NetworkQualityLevel";
+import { ParticipantControls } from "./Controls/ParticipantControls";
 import styles from "./participantInfo.module.css";
+import { SquareDiv } from "./SquareDiv/SquareDiv";
 
-interface ParticipantInfoProps {
-  participant: IParticipant;
+interface ParticipantInfoInnerProps {
+  participant: IParticipant | null;
   children: React.ReactNode;
-  hideParticipant: boolean;
+  loading: boolean;
 }
-
-export default function ParticipantInfo({
+function ParticipantInfoInner({
   participant,
   children,
-  hideParticipant,
-}: ParticipantInfoProps) {
+  loading,
+}: ParticipantInfoInnerProps) {
   const dictionary = useDictionary("participantInfo");
   const videoTrack = useParticipantVideoTrack(participant);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
   const isVideoEnabled = useIsTrackEnabled(videoTrack);
 
+  if (loading) {
+    return (
+      <div className={styles.contentWrapper}>
+        <DotLoader />
+      </div>
+    );
+  }
+
+  if (isVideoSwitchedOff || !isVideoEnabled) {
+    return (
+      <div className={styles.contentWrapper}>
+        <div className={styles.avatar}>
+          <AvatarIcon />
+          {participant === null && (
+            <div className={styles.typo}>{dictionary.availableSeat}</div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return <div className={styles.contentWrapper}>{children}</div>;
+}
+
+interface ParticipantInfoProps extends ParticipantInfoInnerProps {
+  hideParticipant: boolean;
+  participants: IParticipant[];
+  isLocalParticipant: boolean;
+}
+
+export default function ParticipantInfo({
+  participant,
+  participants,
+  children,
+  hideParticipant,
+  isLocalParticipant,
+  loading,
+}: ParticipantInfoProps) {
+  const dictionary = useDictionary("participantInfo");
   const audioTrack = useParticipantAudioTrack(participant);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   return (
-    <motion.div
-      initial={{ scale: 1.5, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-        delay: 0.3,
-      }}
-      className={classnames(styles.container, {
-        [styles.hideParticipant]: hideParticipant,
-      })}
-    >
-      <div className={styles.infoContainer}>
-        <NetworkQualityLevel participant={participant} />
-        <div className={styles.infoRowBottom}>
-          <span className={styles.identity}>
-            <AudioLevelIndicator audioTrack={audioTrack} />
-          </span>
+    <SquareDiv hidden={hideParticipant}>
+      {!loading && participant && (
+        <div className={styles.overlayContainer}>
+          <ParticipantControls
+            isLocalParticipant={isLocalParticipant}
+            participant={participant}
+            participants={participants}
+          />
+          <NetworkQualityLevel participant={participant} />
+          <div className={styles.infoRowBottom}>
+            <span className={styles.identity}>
+              <AudioLevelIndicator audioTrack={audioTrack} />
+            </span>
+          </div>
         </div>
-      </div>
-      <div className={styles.innerContainer}>
-        {(isVideoSwitchedOff || !isVideoEnabled) && (
-          <div className={styles.avatarContainer}>
-            <AvatarIcon />
-          </div>
-        )}
+      )}
+      <div className={styles.circleContainer}>
         {isParticipantReconnecting && (
-          <div className={styles.reconnectingContainer}>
-            <p className={styles.typography}>{dictionary.reconnecting}</p>
+          <div className={styles.contentOverlay}>
+            <DotLoader />
+            <div className={styles.typo}>{dictionary.reconnecting}</div>
           </div>
         )}
-        {children}
+        <ParticipantInfoInner participant={participant} loading={loading}>
+          {children}
+        </ParticipantInfoInner>
       </div>
-    </motion.div>
+    </SquareDiv>
   );
 }
 
 ParticipantInfo.defaultProps = {
   hideParticipant: false,
+  loading: false,
+  isLocalParticipant: false,
 };

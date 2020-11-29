@@ -41,6 +41,8 @@ export default [
         plugins: [postCssValues],
       }),
       babel({
+        sourceMaps: true,
+        inputSourceMap: true,
         babelHelpers: "runtime",
         extensions,
         plugins: [["@babel/plugin-transform-runtime", { useESModules: true }]],

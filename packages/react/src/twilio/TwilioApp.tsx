@@ -2,9 +2,9 @@ import { useToken as useJwtToken } from "@amfa-team/user-service";
 import React from "react";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
+import { DictionaryProvider } from "../components/DictionaryProvider/DictionaryProvider";
 import type { ISpace } from "../entities/Space";
 import type { Dictionary } from "../i18n/dictionary";
-import { useSetDictionary } from "../i18n/dictionary";
 import TwilioRoomPage from "./components/TwilioRoomPage";
 import TwilioWaitingPage from "./components/TwilioWaitingPage";
 
@@ -43,11 +43,14 @@ function TwilioApp(props: TwilioAppProps) {
 
 export default function TwilioAppContainer(props: TwilioAppProps) {
   const ready = useSetApiSettings(props.settings);
-  useSetDictionary(props.dictionary);
 
   if (!ready) {
     return null;
   }
 
-  return <TwilioApp {...props} />;
+  return (
+    <DictionaryProvider dictionary={props.dictionary}>
+      <TwilioApp {...props} />
+    </DictionaryProvider>
+  );
 }

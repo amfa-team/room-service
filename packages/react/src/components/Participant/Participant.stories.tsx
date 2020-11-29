@@ -20,7 +20,12 @@ export default {
 };
 
 export function NoVideo(): JSX.Element | null {
-  return <Participant participant={generateRawLocalParticipant()} />;
+  return (
+    <Participant
+      participant={generateRawLocalParticipant()}
+      participants={[]}
+    />
+  );
 }
 
 export function Local(): JSX.Element | null {
@@ -46,7 +51,13 @@ export function Local(): JSX.Element | null {
     return null;
   }
 
-  return <Participant participant={participant} isLocalParticipant />;
+  return (
+    <Participant
+      participant={participant}
+      isLocalParticipant
+      participants={[]}
+    />
+  );
 }
 
 export function ScreenShare(): JSX.Element | null {
@@ -75,7 +86,7 @@ export function ScreenShare(): JSX.Element | null {
     return null;
   }
 
-  return <Participant participant={participant} />;
+  return <Participant participant={participant} participants={[]} />;
 }
 
 export function Hide(): JSX.Element | null {
@@ -102,7 +113,9 @@ export function Hide(): JSX.Element | null {
     return null;
   }
 
-  return <Participant participant={participant} hideParticipant />;
+  return (
+    <Participant participant={participant} hideParticipant participants={[]} />
+  );
 }
 
 export function AsyncVideo(): JSX.Element | null {
@@ -156,5 +169,20 @@ export function AsyncVideo(): JSX.Element | null {
     return null;
   }
 
-  return <Participant participant={participant} />;
+  return <Participant participant={participant} participants={[]} />;
+}
+
+export function SeatAvailable(): JSX.Element | null {
+  return <Participant participant={null} participants={[]} />;
+}
+
+export function Loading(): JSX.Element | null {
+  return <Participant participant={null} loading participants={[]} />;
+}
+
+export function Reconnecting(): JSX.Element | null {
+  const participant = generateRawRemoteParticipant();
+  participant.setState("reconnecting");
+
+  return <Participant participant={participant} participants={[]} />;
 }
