@@ -1,3 +1,10 @@
+# [1.0.0-beta.60](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.59...v1.0.0-beta.60) (2020-11-29)
+
+
+### Features
+
+* responsive rooms ([6316807](https://github.com/amfa-team/room-service/commit/631680706f9361ba5214ef788f10f4420f7f9b07))
+
 # [1.0.0-beta.59](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.58...v1.0.0-beta.59) (2020-11-29)
 
 
