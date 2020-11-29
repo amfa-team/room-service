@@ -24,6 +24,7 @@ export default function Participant({
       participants={participants}
       hideParticipant={hideParticipant}
       loading={loading}
+      isLocalParticipant={isLocalParticipant}
     >
       {participant && (
         <ParticipantTracks

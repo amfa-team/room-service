@@ -38,18 +38,18 @@ function getAnimation(from: number, to: number, steps: number) {
 }
 
 const p1 = {
-  opened: getAnimation(5 / 6, 2 / 3, 10),
-  closed: getAnimation(2 / 3, 5 / 6, 10),
+  opened: getAnimation(5 / 6, 3 / 6, 10),
+  closed: getAnimation(3 / 6, 5 / 6, 10),
 };
 
 const p2 = {
-  opened: getAnimation(5 / 6, 1 / 2, 10),
-  closed: getAnimation(1 / 2, 5 / 6, 10),
+  opened: getAnimation(5 / 6, 1 / 6, 10),
+  closed: getAnimation(1 / 6, 5 / 6, 10),
 };
 
 const p3 = {
-  opened: getAnimation(5 / 6, 1 / 3, 10),
-  closed: getAnimation(1 / 3, 5 / 6, 10),
+  opened: getAnimation(5 / 6, -1 / 6, 10),
+  closed: getAnimation(-1 / 6, 5 / 6, 10),
 };
 
 const renderAnimation = {

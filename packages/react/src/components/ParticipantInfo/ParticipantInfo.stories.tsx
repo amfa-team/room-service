@@ -4,15 +4,16 @@ import { generateRawVideoPublication } from "../../entities/fixtures/publication
 import { generateRemoteVideoTrack } from "../../entities/fixtures/tracks.fixture";
 import type { RawRemoteParticipant } from "../../entities/Participant";
 import ParticipantInfo from "./ParticipantInfo";
+import { SquareDiv } from "./SquareDiv/SquareDiv";
 
 export default {
   title: "ParticipantInfo",
   component: ParticipantInfo,
   decorators: [
     (Story: React.FC) => (
-      <div style={{ marginLeft: "10%", marginTop: "5%", width: "80%" }}>
+      <SquareDiv>
         <Story />
-      </div>
+      </SquareDiv>
     ),
   ],
 };

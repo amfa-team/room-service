@@ -2,11 +2,21 @@ import classnames from "classnames";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import React from "react";
+import ReactResizeDetector from "react-resize-detector";
 import classes from "./squareDiv.module.css";
 
 interface SquareDivProps {
   hidden: boolean;
   children: JSX.Element | JSX.Element[] | ReactNode;
+}
+
+interface RenderProps {
+  // eslint-disable-next-line react/no-unused-prop-types
+  height: number;
+  // eslint-disable-next-line react/no-unused-prop-types
+  width: number;
+  // eslint-disable-next-line react/no-unused-prop-types
+  targetRef: React.Ref<HTMLDivElement>;
 }
 
 const initial = { scale: 1.5, opacity: 0 };
@@ -20,16 +30,35 @@ const transition = {
 
 export function SquareDiv(props: SquareDivProps) {
   return (
-    <motion.div
-      initial={initial}
-      animate={animate}
-      transition={transition}
-      className={classnames(classes.root, {
-        [classes.hidden]: props.hidden,
-      })}
+    <ReactResizeDetector
+      handleWidth
+      handleHeight
+      refreshMode="debounce"
+      refreshOptions={{ leading: true, trailing: true }}
+      refreshRate={50}
     >
-      <div className={classes.content}>{props.children}</div>
-    </motion.div>
+      {({ width, height, targetRef }: RenderProps) => {
+        const size = Math.min(height, width);
+        return (
+          <motion.div
+            initial={initial}
+            animate={animate}
+            transition={transition}
+            className={classnames(classes.root, {
+              [classes.hidden]: props.hidden,
+            })}
+            ref={targetRef}
+          >
+            <div
+              className={classes.content}
+              style={{ height: size, width: size }}
+            >
+              {props.children}
+            </div>
+          </motion.div>
+        );
+      }}
+    </ReactResizeDetector>
   );
 }
 SquareDiv.defaultProps = {

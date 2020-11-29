@@ -6,7 +6,15 @@ export default {
   component: SquareDiv,
   decorators: [
     (Story: React.FC) => (
-      <div style={{ marginLeft: "10%", marginTop: "5%", width: "80%" }}>
+      <div
+        style={{
+          marginLeft: "5%",
+          marginTop: "5%",
+          width: "90%",
+          height: "90%",
+          position: "relative",
+        }}
+      >
         <Story />
       </div>
     ),

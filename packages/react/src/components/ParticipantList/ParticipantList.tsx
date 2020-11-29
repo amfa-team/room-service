@@ -6,6 +6,7 @@ import type { IRoom } from "../../entities/Room";
 import useParticipants from "../../hooks/useParticipants";
 import { useDictionary } from "../../i18n/dictionary";
 import Participant from "../Participant/Participant";
+import { SquareDiv } from "../ParticipantInfo/SquareDiv/SquareDiv";
 import styles from "./participantList.module.css";
 
 const containerAnimation = {
@@ -58,44 +59,46 @@ export default function ParticipantList(
   const loading = room === null || isJoining;
 
   return (
-    <motion.div className={styles.container} animate={containerAnimation}>
-      <motion.div
-        className={classnames(styles.shuffleCTA, {
-          [styles.shuffleDisabled]: loading,
-        })}
-        whileTap={loading ? {} : shuffleTapAnimation}
-        onClick={onShuffleButtonClicked}
-        initial="disabled"
-        animate={loading ? "disabled" : "enabled"}
-        variants={shuffleVariants}
-      >
-        <span>{dictionary.shuffle}</span>
-      </motion.div>
-      <Participant
-        participants={participants}
-        participant={localParticipant}
-        isLocalParticipant
-        loading={loading}
-      />
-      {participants.map((participant) => (
+    <SquareDiv>
+      <motion.div className={styles.container} animate={containerAnimation}>
+        <motion.div
+          className={classnames(styles.shuffleCTA, {
+            [styles.shuffleDisabled]: loading,
+          })}
+          whileTap={loading ? {} : shuffleTapAnimation}
+          onClick={onShuffleButtonClicked}
+          initial="disabled"
+          animate={loading ? "disabled" : "enabled"}
+          variants={shuffleVariants}
+        >
+          <span>{dictionary.shuffle}</span>
+        </motion.div>
         <Participant
-          key={participant.sid}
-          participant={participant}
           participants={participants}
+          participant={localParticipant}
+          isLocalParticipant
           loading={loading}
         />
-      ))}
-      {["0", "1", "2"]
-        .filter((d) => !Object.keys(participants).includes(d))
-        .map((index) => (
+        {participants.map((participant) => (
           <Participant
-            key={index}
+            key={participant.sid}
+            participant={participant}
             participants={participants}
-            participant={null}
             loading={loading}
           />
         ))}
-    </motion.div>
+        {["0", "1", "2"]
+          .filter((d) => !Object.keys(participants).includes(d))
+          .map((index) => (
+            <Participant
+              key={index}
+              participants={participants}
+              participant={null}
+              loading={loading}
+            />
+          ))}
+      </motion.div>
+    </SquareDiv>
   );
 }
 ParticipantList.defaultProps = {

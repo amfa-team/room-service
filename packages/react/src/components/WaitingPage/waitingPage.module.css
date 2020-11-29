@@ -15,6 +15,12 @@
   width: 100%;
 }
 
+.video {
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+
 .settingBubble {
   width: 500px;
   height: 500px;
@@ -24,39 +30,6 @@
   justify-content: center;
   background: #efebeb;
   border-radius: 100%;
-}
-
-.settingVideoBubble {
-  width: 80%;
-  height: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  background: blueviolet;
-  overflow: hidden;
-}
-.settingDriversBubble {
-  width: 80%;
-  height: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  background: blueviolet;
-}
-
-.closeIcon {
-  height: 24px;
-  width: 24px;
-  background-size: contain;
-}
-
-.camIcon {
-  position: relative;
-  top: -35px;
 }
 
 .joinContainer {
