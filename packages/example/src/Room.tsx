@@ -1,5 +1,6 @@
 import type { ISpace } from "@amfa-team/room-service";
 import { TwilioApp } from "@amfa-team/room-service";
+import { UserModalPage } from "@amfa-team/user-service";
 import React, { useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
@@ -28,11 +29,11 @@ const enDictionary = {
   },
   participantInfo: {
     youSuffix: " (You)",
+    availableSeat: "Available seat",
     reconnecting: "Reconnecting...",
   },
   participantList: {
     shuffle: "Shuffle",
-    availableSeat: "Available seat",
   },
   audioError: {
     systemPermissionDenied:
@@ -53,42 +54,58 @@ const enDictionary = {
     unknown: "Error Acquiring Camera: An unknown error occurred",
   },
   userDictionary: {
-    blameAction: "Report",
-    banDispute: {
-      title: "You cannot access the platform",
-      desc: "You have been ban after users reported abuse",
-      mailto: "Dispute the ban",
+    blame: {
+      title: "Report",
+      desc:
+        "You want to report an abusive behavior of this user ? Please describe why :",
+      reasons: {
+        verbalAbuse: "Insults",
+        negativeAttitude: "Toxic behavior (troll, provocations, ...)",
+        violent:
+          "The user is threatening someone or promoting violence and/or terrorism.",
+        hate:
+          "Hate speech and discrimination (homophobia, racism, antisemitism, ...)",
+        porn:
+          "Innapropriate sexual or pornographic behavior (nudity, sharing porn content,...)",
+      },
+      notice:
+        "By clicking, i acknowledge that this report can be used by Side By Side team to take potential actions (bans). We would like to remind you that diffamation is a an offense and abusive report can also be subject to sanctions.",
+      submit: "Report",
+    },
+    ban: {
+      title: "You’ve been reported too many times.",
+      desc:
+        "Your behavior caused too many reports from other users, which made you temporary banned from the service.\nTo know more or ask a deban, please contact us.",
+      mailto: "Contact us",
       mail: {
-        subject: "Dispute Ban",
+        subject: "Contest ban",
         id: "Reference",
-        body: "I want to contest this man, it is not fair",
+        body:
+          "Hello,\nI contact you about the temporary ban on your platform...",
       },
     },
-    blame: {
-      submit: "Report",
-      cancel: "Cancel",
-      notice: "Any invalid report might be terrible!",
-      reasons: {
-        negativeAttitude: {
-          name: "Negative Attitude: Griefing/Giving Up ",
-          desc:
-            "This category is reserved for unhelpful or self-centered attitudes that go against the principles of a team-based game",
-        },
-        verbalAbuse: {
-          name: "Verbal Abuse: Harassment, Offensive Language",
-          desc:
-            "This category aims at punishing language that is directly targeted at another player in order to hurt, insult, or intimidate them.",
-        },
-        afk: {
-          name: "Leaving the Game/AFK",
-          desc:
-            "This category aims at punishing behavior that includes logging out before a match ends as well as standing idle for long periods of time and refusing to participate.",
-        },
-        cheating: {
-          name: "Cheating: Unapproved Third Party Program",
-          desc:
-            "This category aims at punishing behavior that uses unapproved third party programs to gain a competitive advantage in the game.mv",
-        },
+    register: {
+      title: "Sign up",
+      email: {
+        label: "Email",
+        error: "Error: This email is not valid",
+      },
+      dob: {
+        label: "Birthdate",
+        error: "Error: Birthdate is not valid",
+      },
+      commercial:
+        "I agree to be contacted by email for special offers and advertising purposes.",
+      submit: "Create account",
+      notice: "By joining you accept the terms and policy of SideBySide.live",
+      success: {
+        title: "Thanks !",
+        desc: "You’re now registered on Side By Side.",
+      },
+      error: {
+        title: "Oops !",
+        desc:
+          "An unexpected error occured, please try again or contact support.",
       },
     },
   },
@@ -115,10 +132,10 @@ const frDictionary = {
   participantInfo: {
     youSuffix: " (Vous)",
     reconnecting: "Reconnection...",
+    availableSeat: "Siège disponible",
   },
   participantList: {
     shuffle: "Changer",
-    availableSeat: "Siège disponible",
   },
   audioError: {
     systemPermissionDenied:
@@ -141,38 +158,59 @@ const frDictionary = {
       "Erreur lors de l'acquisition de la caméra: une erreur inconnue s'est produite",
   },
   userDictionary: {
-    blameAction: "Signaler",
-    banDispute: {
-      title: "Vous ne pouvez pas acceder",
-      desc: "Un utilisateur vous a signalé",
-      mailto: "Contestation",
+    blame: {
+      title: "Signalement",
+      desc:
+        "Vous souhaitez signaler le comportement de cette personne ? Veuillez choisir une ou plusieurs des raisons suivantes:",
+      reasons: {
+        verbalAbuse: "La personne profère des insultes gratuites",
+        negativeAttitude:
+          "La personne a un comportement agaçant (troll, provocations, moqueries, ...)",
+        violent:
+          "La personne tient des propos violents ou faisant l'apologie de la violence et/ou du terrorisme",
+        hate:
+          "La personne tient des propos haineux ou discriminatoires (homophobie, racisme, antisémitisme, ...)",
+        porn:
+          "La personne a un comporement de nature sexuel ou pronographique (nudité, partage de contenu pornographique...)",
+      },
+      notice:
+        "En cliquant, j'accepte que ce signalement soit utilisé par les équipes de Side By Side pour permettre d'éventuelles sanctions. Nous vous rappelons en revanche que la diffamation est un délit et que tout signalement abusif pourra faire également l'objet de sanctions.",
+      submit: "Je signale",
+    },
+    ban: {
+      title: "Vous avez été signalé à plusieurs reprises.",
+      desc:
+        "Votre comportement a fait l’objet de plusieurs signalements de la part d’autres utilisateurs, provoquant votre exclusion temporaire des services.\nPour en savoir plus, ou demander faire une réclamation  vous pouvez nous contacter.",
+      mailto: "Contacter",
       mail: {
-        subject: "Contester",
-        id: "Reference",
-        body: "Je veux contester parce que c'est injust wesh!",
+        subject: "Contestation exclusion",
+        id: "Référence",
+        body: "Bonjour,\nje vous contacte suite à mon exclusion du service...",
       },
     },
-    blame: {
-      submit: "Signaler",
-      cancel: "Annuler",
-      notice: "Tout signalement invalid sera terrible",
-      reasons: {
-        negativeAttitude: {
-          name: "Attitue Negative",
-          desc: "Bla bla bla",
-        },
-        verbalAbuse: {
-          name: "Verbal Abuse: Harassment, Offensive Language",
-          desc: "Bla bla bla",
-        },
-        afk: {
-          name: "AFK",
-          desc: "Bla bla bla",
-        },
-        cheating: {
-          name: "Triche",
-          desc: "Bla bla bla",
-        },
+    register: {
+      title: "Inscription",
+      email: {
+        label: "Adresse email",
+        error: "Erreur: Adresse email invalide",
+      },
+      dob: {
+        label: "Date de naissance",
+        error: "Erreur: Date de naissance invalide",
+      },
+      commercial:
+        "J'accepte d'être contacté par email, notamment pour la promotion personnalisée d'espaces sur le site",
+      submit: "Je m'inscris",
+      notice:
+        "En confirmant, j'accepte les CGU, la politique de confidentialité et la Charte de Bonne Conduite",
+      success: {
+        title: "Merci !",
+        desc: "Vous êtes maintenant inscrit sur Side By Side.",
+      },
+      error: {
+        title: "Oups !",
+        desc:
+          "Une erreur est survenue, veuillez réessayer ou contacter le support.",
       },
     },
   },
@@ -192,12 +230,21 @@ export default function Room(props: RoomProps) {
   );
 
   return (
-    <TwilioApp
-      space={props.space}
-      settings={{ endpoint: props.endpoint }}
-      onRoomChanged={onRoomChanged}
-      roomName={roomName ?? null}
-      dictionary={lang === "fr" ? frDictionary : enDictionary}
-    />
+    <>
+      <UserModalPage
+        dictionary={
+          lang === "fr"
+            ? frDictionary.userDictionary
+            : enDictionary.userDictionary
+        }
+      />
+      <TwilioApp
+        space={props.space}
+        settings={{ endpoint: props.endpoint }}
+        onRoomChanged={onRoomChanged}
+        roomName={roomName ?? null}
+        dictionary={lang === "fr" ? frDictionary : enDictionary}
+      />
+    </>
   );
 }

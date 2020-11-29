@@ -60,8 +60,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,md,json,html}": "prettier --write",
+    "*.{js,jsx,ts,tsx}": "eslint --cache .",
     "*.{css}": "stylelint",
-    "*.{js,jsx,ts,tsx}": "eslint --cache ."
+    "*.{js,jsx,ts,tsx,css,md,json,html}": "prettier --write"
   }
 }

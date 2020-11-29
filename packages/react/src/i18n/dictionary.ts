@@ -1,11 +1,3 @@
-import type {
-  BlameActionDictionary,
-  ModelPageDictionary,
-} from "@amfa-team/user-service/lib/i18n/dictionary";
-import {
-  defaultBlameActionDictionary,
-  defaultModelPageDictionary,
-} from "@amfa-team/user-service/lib/i18n/dictionary";
 import { useEffect } from "react";
 import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -27,11 +19,11 @@ export interface LoadingDictionary {
 export interface ParticipantInfoDictionary {
   youSuffix: string;
   reconnecting: string;
+  availableSeat: string;
 }
 
 export interface ParticipantListDictionary {
   shuffle: string;
-  availableSeat: string;
 }
 
 export interface WaitingPageDictionary {
@@ -46,31 +38,19 @@ export interface MediaErrorDictionary {
   unknown: string;
 }
 
-interface UserDictionary extends ModelPageDictionary, BlameActionDictionary {}
-
 export interface Dictionary {
   waitingPage: WaitingPageDictionary;
-  controls: ControlsDictionary;
   loading: LoadingDictionary;
   participantInfo: ParticipantInfoDictionary;
   participantList: ParticipantListDictionary;
   audioError: MediaErrorDictionary;
   videoError: MediaErrorDictionary;
-  userDictionary: UserDictionary;
 }
 
 const defaultDictionary: Dictionary = {
   waitingPage: {
     roomFull: "Room is full, click on Join to go in another room",
     join: "Join",
-  },
-  controls: {
-    noAudioTrack: "No Audio",
-    mute: "Mute",
-    unmute: "Unmute",
-    noVideoTrack: "No Video",
-    stopVideo: "Stop Video",
-    startVideo: "Start Video",
   },
   loading: {
     loading: "Loading...",
@@ -79,11 +59,11 @@ const defaultDictionary: Dictionary = {
   },
   participantInfo: {
     youSuffix: " (You)",
+    availableSeat: "Available seat",
     reconnecting: "Reconnecting...",
   },
   participantList: {
     shuffle: "Shuffle",
-    availableSeat: "Available seat",
   },
   audioError: {
     systemPermissionDenied:
@@ -102,10 +82,6 @@ const defaultDictionary: Dictionary = {
     notFound:
       "Cannot Find Camera: The browser cannot access the camera. Please make sure all input devices are connected and enabled.",
     unknown: "Error Acquiring Camera: An unknown error occurred",
-  },
-  userDictionary: {
-    ...defaultBlameActionDictionary,
-    ...defaultModelPageDictionary,
   },
 };
 

@@ -1,4 +1,6 @@
+import React from "react";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
+import { RecoilRoot } from "recoil";
 
 const customViewports = Object.keys(MINIMAL_VIEWPORTS).reduce((acc, key) => {
   acc[`${key}Rotated`] = {
@@ -21,3 +23,11 @@ export const parameters = {
   layout: "fullscreen",
   viewport: { viewports },
 };
+
+export const decorators = [
+  (Story) => (
+    <RecoilRoot>
+      <Story />
+    </RecoilRoot>
+  ),
+];

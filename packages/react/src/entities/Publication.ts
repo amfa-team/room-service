@@ -46,19 +46,11 @@ export interface IBaseAudioTrackPublication<T extends IAudioTrack> {
   ): void;
 }
 
-export type IRemoteAudioTrackPublication = IBaseAudioTrackPublication<
-  IRemoteAudioTrack
->;
-export type ILocalAudioTrackPublication = IBaseAudioTrackPublication<
-  ILocalAudioTrack
->;
+export type IRemoteAudioTrackPublication = IBaseAudioTrackPublication<IRemoteAudioTrack>;
+export type ILocalAudioTrackPublication = IBaseAudioTrackPublication<ILocalAudioTrack>;
 
-export type IRemoteVideoTrackPublication = IBaseVideoTrackPublication<
-  IRemoteVideoTrack
->;
-export type ILocalVideoTrackPublication = IBaseVideoTrackPublication<
-  ILocalVideoTrack
->;
+export type IRemoteVideoTrackPublication = IBaseVideoTrackPublication<IRemoteVideoTrack>;
+export type ILocalVideoTrackPublication = IBaseVideoTrackPublication<ILocalVideoTrack>;
 
 export type IAudioTrackPublication =
   | IRemoteAudioTrackPublication

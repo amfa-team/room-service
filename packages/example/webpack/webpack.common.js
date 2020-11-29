@@ -51,15 +51,8 @@ const config = {
       // this way we will get the source file exactly as we see it in our code editor.
       {
         enforce: "pre",
-        test: /\.js$/,
-        loader: "source-map-loader",
-        exclude: "/node_modules/",
-      },
-      {
-        enforce: "pre",
-        test: /\.tsx?$/,
+        test: /\.(js|mjs|jsx|ts|tsx|css)$/,
         use: "source-map-loader",
-        exclude: "/node_modules/",
       },
       {
         test: /\.ts(x?)$/,

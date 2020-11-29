@@ -8,11 +8,21 @@ import ParticipantInfo from "./ParticipantInfo";
 export default {
   title: "ParticipantInfo",
   component: ParticipantInfo,
+  decorators: [
+    (Story: React.FC) => (
+      <div style={{ marginLeft: "10%", marginTop: "5%", width: "80%" }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export function NoVideo(): JSX.Element | null {
   return (
-    <ParticipantInfo participant={generateRawRemoteParticipant()}>
+    <ParticipantInfo
+      participant={generateRawRemoteParticipant()}
+      participants={[]}
+    >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -47,7 +57,7 @@ export function ScreenShare(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo participant={participant}>
+    <ParticipantInfo participant={participant} participants={[]}>
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -80,7 +90,11 @@ export function Hide(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo participant={participant} hideParticipant>
+    <ParticipantInfo
+      participant={participant}
+      participants={[]}
+      hideParticipant
+    >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -140,7 +154,40 @@ export function AsyncVideo(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo participant={participant}>
+    <ParticipantInfo participant={participant} participants={[]}>
+      <div
+        style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
+      />
+    </ParticipantInfo>
+  );
+}
+
+export function SeatAvailable(): JSX.Element | null {
+  return (
+    <ParticipantInfo participant={null} participants={[]}>
+      <div
+        style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
+      />
+    </ParticipantInfo>
+  );
+}
+
+export function Loading(): JSX.Element | null {
+  return (
+    <ParticipantInfo participant={null} participants={[]} loading>
+      <div
+        style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
+      />
+    </ParticipantInfo>
+  );
+}
+
+export function Reconnecting(): JSX.Element | null {
+  const participant = generateRawRemoteParticipant();
+  participant.setState("reconnecting");
+
+  return (
+    <ParticipantInfo participant={participant} participants={[]}>
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />

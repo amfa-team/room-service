@@ -4,23 +4,23 @@ import { generateRawRemoteParticipant } from "../../entities/fixtures/participan
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
 import { generateRawRoom } from "../../entities/fixtures/rooms.fixture";
 import { generateRemoteVideoTrack } from "../../entities/fixtures/tracks.fixture";
-import ParticipantList from "./ParticipantList";
+import RoomPage from "./RoomPage";
 
 export default {
-  title: "ParticipantList",
-  component: ParticipantList,
+  title: "RoomPage",
+  component: RoomPage,
 };
 
 export function NoVideo(): JSX.Element | null {
   const room = generateRawRoom();
-  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
+  return <RoomPage room={room} onShuffle={action("onShuffle")} />;
 }
 
 export function SingleParticipant(): JSX.Element | null {
   const room = generateRawRoom();
   room.addParticipant(generateRawRemoteParticipant({ identity: "antoine" }));
 
-  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
+  return <RoomPage room={room} onShuffle={action("onShuffle")} />;
 }
 
 export function TwoParticipant(): JSX.Element | null {
@@ -43,7 +43,7 @@ export function TwoParticipant(): JSX.Element | null {
       .catch(console.error);
   }, [room]);
 
-  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
+  return <RoomPage room={room} onShuffle={action("onShuffle")} />;
 }
 
 export function Joining(): JSX.Element | null {
@@ -75,11 +75,9 @@ export function Joining(): JSX.Element | null {
     setTimeout(() => setIsJoining(false), 3000);
   }, []);
 
-  return (
-    <ParticipantList room={room} onShuffle={onShuffle} isJoining={isJoining} />
-  );
+  return <RoomPage room={room} onShuffle={onShuffle} isJoining={isJoining} />;
 }
 
 export function LoadingRoom(): JSX.Element | null {
-  return <ParticipantList room={null} onShuffle={action("shuffle")} />;
+  return <RoomPage room={null} onShuffle={action("shuffle")} />;
 }

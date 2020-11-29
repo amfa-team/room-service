@@ -72,9 +72,7 @@ export interface ParticipantConnectedEvent extends CommonRoomStatusEvent {
   ParticipantIdentity: string;
 }
 
-export const participantConnectedDecoder = JsonDecoder.object<
-  ParticipantConnectedEvent
->(
+export const participantConnectedDecoder = JsonDecoder.object<ParticipantConnectedEvent>(
   {
     StatusCallbackEvent: JsonDecoder.isExactly("participant-connected"),
     ParticipantSid: JsonDecoder.string,
@@ -99,9 +97,7 @@ export interface ParticipantDisconnectedEvent extends CommonRoomStatusEvent {
   ParticipantIdentity: string;
 }
 
-export const participantDisconnectedDecoder = JsonDecoder.object<
-  ParticipantDisconnectedEvent
->(
+export const participantDisconnectedDecoder = JsonDecoder.object<ParticipantDisconnectedEvent>(
   {
     StatusCallbackEvent: JsonDecoder.isExactly("participant-disconnected"),
     ParticipantSid: JsonDecoder.string,
