@@ -1,6 +1,12 @@
 @value m-sm: (max-width: 576px);
 @value vSidebarMobileHeight: 90px;
 
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .overlayContainer {
   position: absolute;
   z-index: 20;

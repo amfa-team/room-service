@@ -1,15 +1,20 @@
 import classnames from "classnames";
-import React, { useState } from "react";
-import type { IAudioTrack, IVideoTrack } from "../../entities/Track";
+import React, { useEffect, useState } from "react";
+import {
+  RawLocalParticipant,
+  RawVAudioTrackPublication,
+  RawVideoTrackPublication,
+} from "../../entities";
+import type { ILocalAudioTrack, ILocalVideoTrack } from "../../entities/Track";
 import { useMediaErrorMessage } from "../../hooks/useMediaErrorMessage";
 import { useDictionary } from "../../i18n/dictionary";
-import SettingsIcon from "../../icons/SettingsIcon";
-import LocalVideoPreview from "../LocalVideoPreview/LocalVideoPreview";
+import Controls from "../Controls/Controls";
+import Participant from "../Participant/Participant";
 import styles from "./waitingPage.module.css";
 
 interface WaitingPageProps {
-  videoTrack: IVideoTrack | null;
-  audioTrack: IAudioTrack | null;
+  videoTrack: ILocalVideoTrack | null;
+  audioTrack: ILocalAudioTrack | null;
   join: () => void;
   disabled: boolean;
   roomFull: boolean;
@@ -18,64 +23,83 @@ interface WaitingPageProps {
 }
 
 export default function WaitingPage(props: WaitingPageProps) {
+  const {
+    videoTrack,
+    audioTrack,
+    join,
+    disabled,
+    roomFull,
+    videoError,
+    audioError,
+  } = props;
   const dictionary = useDictionary("waitingPage");
-  const videoErrorMessage = useMediaErrorMessage(props.videoError, "video");
-  const audioErrorMessage = useMediaErrorMessage(props.audioError, "audio");
-  const [driversSetting, setDriversSetting] = useState(false);
+  const videoErrorMessage = useMediaErrorMessage(videoError, "video");
+  const audioErrorMessage = useMediaErrorMessage(audioError, "audio");
 
-  const toggleDriversSetting = () => setDriversSetting(!driversSetting);
+  const [
+    localParticipant,
+    setLocalParticipant,
+  ] = useState<RawLocalParticipant | null>(null);
+
+  useEffect(() => {
+    setLocalParticipant(new RawLocalParticipant("fake"));
+  }, []);
+
+  useEffect(() => {
+    if (videoTrack) {
+      const publication = new RawVideoTrackPublication("camera", videoTrack);
+      localParticipant?.addVideoTrack(publication);
+
+      return () => {
+        localParticipant?.removeVideoTrack(publication);
+      };
+    }
+
+    return () => {
+      // no-op
+    };
+  }, [localParticipant, videoTrack]);
+
+  useEffect(() => {
+    if (audioTrack) {
+      const publication = new RawVAudioTrackPublication("mic", audioTrack);
+      localParticipant?.addAudioTrack(publication);
+
+      return () => {
+        localParticipant?.removeAudioTrack(publication);
+      };
+    }
+
+    return () => {
+      // no-op
+    };
+  }, [localParticipant, audioTrack]);
+
   return (
     <div className={styles.container}>
-      <div className={styles.settingContainer}>
-        <div className={styles.settingBubble}>
-          <span
-            className={`${styles.closeIcon}`}
-            style={{ marginRight: "12px" }}
-            onClick={() => toggleDriversSetting()}
-          >
-            <SettingsIcon />
-          </span>
-
-          {driversSetting && (
-            <div className={styles.settingDriversBubble}>
-              Setting drivers here
-            </div>
-          )}
-          {!driversSetting && (
-            <div className={styles.settingVideoBubble}>
-              <LocalVideoPreview
-                videoTrack={props.videoTrack}
-                audioTrack={props.audioTrack}
-              />
-            </div>
-          )}
-          <span
-            className={`icon close-icon ${styles.closeIcon}`}
-            style={{ marginLeft: "12px" }}
-          >
-            &nbsp;
-          </span>
-        </div>
-        <span
-          className={`icon close-icon ${styles.closeIcon} ${styles.camIcon}`}
-        >
-          &nbsp;
-        </span>
+      <div className={styles.video}>
+        <Participant
+          participant={localParticipant}
+          participants={[]}
+          isLocalParticipant
+          loading={localParticipant === null}
+        />
       </div>
+      {roomFull && <p>{dictionary.roomFull}</p>}
+      {videoErrorMessage && <p>{videoErrorMessage}</p>}
+      {audioErrorMessage && <p>{audioErrorMessage}</p>}
+      <Controls localParticipant={localParticipant} />
       <div className={styles.joinContainer}>
         <button
           className={classnames(styles.join, {
-            [styles.disabled]: props.disabled || props.audioTrack === null,
+            [styles.disabled]: disabled || audioTrack === null,
           })}
           type="button"
-          onClick={props.join}
-          disabled={props.disabled || props.audioTrack === null}
+          onClick={join}
+          disabled={disabled || audioTrack === null}
         >
           {dictionary.join}
         </button>
-        {props.roomFull && <p>{dictionary.roomFull}</p>}
-        {videoErrorMessage && <p>{videoErrorMessage}</p>}
-        {audioErrorMessage && <p>{audioErrorMessage}</p>}
       </div>
     </div>
   );

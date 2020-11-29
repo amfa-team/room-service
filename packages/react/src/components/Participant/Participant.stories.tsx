@@ -12,11 +12,19 @@ import type {
   RawLocalParticipant,
   RawRemoteParticipant,
 } from "../../entities/Participant";
+import { SquareDiv } from "../ParticipantInfo/SquareDiv/SquareDiv";
 import Participant from "./Participant";
 
 export default {
   title: "Participant",
   component: Participant,
+  decorators: [
+    (Story: React.FC) => (
+      <SquareDiv>
+        <Story />
+      </SquareDiv>
+    ),
+  ],
 };
 
 export function NoVideo(): JSX.Element | null {
