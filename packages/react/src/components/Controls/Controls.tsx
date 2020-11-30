@@ -34,9 +34,7 @@ export default function Controls(props: ControlsProps) {
   return (
     <div className={classes.container}>
       <div
-        className={classnames(
-          classes.btn, 
-          {
+        className={classnames(classes.btn, {
           [classes.disabled]: !hasAudioTrack,
           [classes.on]: isAudioEnabled,
           [classes.off]: !isAudioEnabled,
