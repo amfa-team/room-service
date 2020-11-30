@@ -23,6 +23,7 @@ export function NoVideo(): JSX.Element | null {
       videoTrack={null}
       join={action("join")}
       audioTrack={audioTrack}
+      isAcquiringLocalTracks={audioTrack === null}
     />
   );
 }
@@ -42,6 +43,7 @@ export function WithVideoAndAudio(): JSX.Element | null {
       videoTrack={videoTrack}
       join={action("join")}
       audioTrack={audioTrack}
+      isAcquiringLocalTracks={audioTrack === null || videoTrack === null}
     />
   );
 }
@@ -57,6 +59,7 @@ export function NoAudio(): JSX.Element | null {
       videoTrack={videoTrack}
       join={action("join")}
       audioTrack={null}
+      isAcquiringLocalTracks={videoTrack === null}
     />
   );
 }
@@ -73,6 +76,7 @@ export function Disabled(): JSX.Element | null {
       join={action("join")}
       audioTrack={null}
       disabled
+      isAcquiringLocalTracks={track === null}
     />
   );
 }
@@ -90,6 +94,7 @@ export function WithAudioError(): JSX.Element | null {
       audioTrack={null}
       audioError={new Error()}
       disabled
+      isAcquiringLocalTracks={track === null}
     />
   );
 }
@@ -106,6 +111,7 @@ export function WithVideoError(): JSX.Element | null {
       join={action("join")}
       audioTrack={audioTrack}
       videoError={new Error()}
+      isAcquiringLocalTracks={audioTrack === null}
     />
   );
 }

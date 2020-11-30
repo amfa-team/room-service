@@ -1,10 +1,12 @@
 import { captureException } from "@sentry/react";
+import type { ILocalTrack } from "../entities";
 import { useDictionary } from "../i18n/dictionary";
 import { useHasAudioInputDevices, useHasVideoInputDevices } from "./useDevices";
 
 export function useMediaErrorMessage(
   error: null | Error,
   type: "video" | "audio",
+  track: null | ILocalTrack,
 ): null | string {
   const hasAudio = useHasAudioInputDevices();
   const hasVideo = useHasVideoInputDevices();
@@ -31,10 +33,10 @@ export function useMediaErrorMessage(
       return dictionary.unknown;
 
     case type === "audio" && !hasAudio:
-      return dictionary.notFound;
+      return track === null ? dictionary.notFound : null;
 
     case type === "video" && !hasVideo:
-      return dictionary.notFound;
+      return track === null ? dictionary.notFound : null;
 
     default:
       return null;

@@ -23,7 +23,8 @@ const audioTrackAtom = atom<LocalAudioTrack | null>({
 export default function useTwilioLocalTracks() {
   const [audioTrack, setAudioTrack] = useRecoilState(audioTrackAtom);
   const [videoTrack, setVideoTrack] = useRecoilState(videoTrackAtom);
-  const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
+  const [isAcquiringVideoTracks, setIsAcquiringVideoTracks] = useState(false);
+  const [isAcquiringAudioTracks, setIsAcquiringAudioTracks] = useState(false);
   const [audioError, setAudioError] = useState<Error | null>(null);
   const [videoError, setVideoError] = useState<Error | null>(null);
 
@@ -35,7 +36,7 @@ export default function useTwilioLocalTracks() {
 
     setAudioError(null);
 
-    setIsAcquiringLocalTracks(true);
+    setIsAcquiringAudioTracks(true);
     Video.createLocalAudioTrack()
       .then((track) => {
         setAudioTrack((previous) => {
@@ -44,7 +45,7 @@ export default function useTwilioLocalTracks() {
         });
       })
       .catch((e) => setAudioError(e))
-      .finally(() => setIsAcquiringLocalTracks(false));
+      .finally(() => setIsAcquiringAudioTracks(false));
   }, [hasAudio, setAudioTrack]);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function useTwilioLocalTracks() {
 
     setVideoError(null);
 
-    setIsAcquiringLocalTracks(true);
+    setIsAcquiringVideoTracks(true);
     Video.createLocalVideoTrack({
       ...(DEFAULT_VIDEO_CONSTRAINTS as Record<string, unknown>),
       name: `camera-${Date.now()}`,
@@ -64,13 +65,13 @@ export default function useTwilioLocalTracks() {
         });
       })
       .catch((e) => setVideoError(e))
-      .finally(() => setIsAcquiringLocalTracks(false));
+      .finally(() => setIsAcquiringVideoTracks(false));
   }, [hasVideo, setVideoTrack]);
 
   return {
     audioTrack,
     videoTrack,
-    isAcquiringLocalTracks,
+    isAcquiringLocalTracks: isAcquiringVideoTracks || isAcquiringAudioTracks,
     videoError,
     audioError,
   };
