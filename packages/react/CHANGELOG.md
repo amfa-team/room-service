@@ -1,3 +1,15 @@
+# [1.0.0-beta.61](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.60...v1.0.0-beta.61) (2020-11-30)
+
+
+### Bug Fixes
+
+* lint ([aa65a89](https://github.com/amfa-team/room-service/commit/aa65a89afeb537a6068bb1620f0b091a3fc6b55c))
+
+
+### Features
+
+* improve responsive design ([caf9117](https://github.com/amfa-team/room-service/commit/caf9117b5ce7d3f0fdd455d7e22be761ed4d2f66))
+
 # [1.0.0-beta.60](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.59...v1.0.0-beta.60) (2020-11-29)
 
 
