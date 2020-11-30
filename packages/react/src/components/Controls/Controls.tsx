@@ -34,15 +34,21 @@ export default function Controls(props: ControlsProps) {
   return (
     <div className={classes.container}>
       <div
-        className={classnames(classes.btn, classes.mic, {
+        className={classnames(
+          classes.btn, 
+          {
           [classes.disabled]: !hasAudioTrack,
+          [classes.on]: isAudioEnabled,
+          [classes.off]: !isAudioEnabled,
         })}
       >
         <MicIcon toggle={onToggleAudio} enabled={isAudioEnabled} />
       </div>
       <div
-        className={classnames(classes.btn, classes.cam, {
+        className={classnames(classes.btn, {
           [classes.disabled]: !hasVideoTrack,
+          [classes.on]: isVideoEnabled,
+          [classes.off]: !isVideoEnabled,
         })}
       >
         <CamIcon toggle={onToggleVideo} enabled={isVideoEnabled} />

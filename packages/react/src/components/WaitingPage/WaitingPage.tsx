@@ -10,6 +10,8 @@ import { useMediaErrorMessage } from "../../hooks/useMediaErrorMessage";
 import { useDictionary } from "../../i18n/dictionary";
 import Controls from "../Controls/Controls";
 import Participant from "../Participant/Participant";
+import { SnackbarContainer } from "../Snackbar/ScnackbarContainer";
+import { Snackbar } from "../Snackbar/Snackbar";
 import styles from "./waitingPage.module.css";
 
 interface WaitingPageProps {
@@ -20,6 +22,7 @@ interface WaitingPageProps {
   roomFull: boolean;
   videoError: Error | null;
   audioError: Error | null;
+  isAcquiringLocalTracks: boolean;
 }
 
 export default function WaitingPage(props: WaitingPageProps) {
@@ -31,10 +34,19 @@ export default function WaitingPage(props: WaitingPageProps) {
     roomFull,
     videoError,
     audioError,
+    isAcquiringLocalTracks,
   } = props;
   const dictionary = useDictionary("waitingPage");
-  const videoErrorMessage = useMediaErrorMessage(videoError, "video");
-  const audioErrorMessage = useMediaErrorMessage(audioError, "audio");
+  const videoErrorMessage = useMediaErrorMessage(
+    videoError,
+    "video",
+    videoTrack,
+  );
+  const audioErrorMessage = useMediaErrorMessage(
+    audioError,
+    "audio",
+    audioTrack,
+  );
 
   const [
     localParticipant,
@@ -85,22 +97,37 @@ export default function WaitingPage(props: WaitingPageProps) {
           loading={localParticipant === null}
         />
       </div>
-      {roomFull && <p>{dictionary.roomFull}</p>}
-      {videoErrorMessage && <p>{videoErrorMessage}</p>}
-      {audioErrorMessage && <p>{audioErrorMessage}</p>}
       <Controls localParticipant={localParticipant} />
       <div className={styles.joinContainer}>
         <button
           className={classnames(styles.join, {
-            [styles.disabled]: disabled || audioTrack === null,
+            [styles.disabled]:
+              disabled || audioTrack === null || isAcquiringLocalTracks,
           })}
           type="button"
           onClick={join}
-          disabled={disabled || audioTrack === null}
+          disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
         >
           {dictionary.join}
         </button>
       </div>
+      <SnackbarContainer>
+        {roomFull && (
+          <Snackbar>
+            <p>{dictionary.roomFull}</p>
+          </Snackbar>
+        )}
+        {videoErrorMessage && !isAcquiringLocalTracks && (
+          <Snackbar>
+            <p>{videoErrorMessage}</p>
+          </Snackbar>
+        )}
+        {audioErrorMessage && !isAcquiringLocalTracks && (
+          <Snackbar>
+            <p>{audioErrorMessage}</p>
+          </Snackbar>
+        )}
+      </SnackbarContainer>
     </div>
   );
 }
@@ -110,4 +137,5 @@ WaitingPage.defaultProps = {
   roomFull: false,
   videoError: null,
   audioError: null,
+  isAcquiringLocalTracks: false,
 };

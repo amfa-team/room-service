@@ -90,7 +90,8 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
       audioTrack={audioTrack}
       videoTrack={videoTrack}
       join={onJoinClicked}
-      disabled={isAcquiringLocalTracks || step !== "setup"}
+      disabled={step !== "setup"}
+      isAcquiringLocalTracks={isAcquiringLocalTracks}
       roomFull={roomFull}
       audioError={audioError}
       videoError={videoError}
