@@ -19,14 +19,14 @@
 .shuffleCTA {
   box-sizing: border-box;
   position: absolute;
-  top: calc(50% - 35px);
-  left: calc(50% - 35px);
+  top: calc(50% - 45px);
+  left: calc(50% - 45px);
 
   user-select: none;
   background: #ff7d70;
   border-radius: 100%;
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
