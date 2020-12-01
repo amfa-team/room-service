@@ -66,10 +66,11 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
           if (!abortController.signal.aborted) {
             if (r === null) {
               setRoomFull(true);
+              setStep("setup");
             } else if (roomName !== r) {
               onRoomChanged(r);
+              setStep("ready");
             }
-            setStep("ready");
           }
         })
         .catch((err) => {
