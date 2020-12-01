@@ -23,8 +23,8 @@ const audioTrackAtom = atom<LocalAudioTrack | null>({
 export default function useTwilioLocalTracks() {
   const [audioTrack, setAudioTrack] = useRecoilState(audioTrackAtom);
   const [videoTrack, setVideoTrack] = useRecoilState(videoTrackAtom);
-  const [isAcquiringVideoTracks, setIsAcquiringVideoTracks] = useState(false);
-  const [isAcquiringAudioTracks, setIsAcquiringAudioTracks] = useState(false);
+  const [isAcquiringVideoTracks, setIsAcquiringVideoTracks] = useState(true);
+  const [isAcquiringAudioTracks, setIsAcquiringAudioTracks] = useState(true);
   const [audioError, setAudioError] = useState<Error | null>(null);
   const [videoError, setVideoError] = useState<Error | null>(null);
 
@@ -32,7 +32,7 @@ export default function useTwilioLocalTracks() {
   const hasVideo = useHasVideoInputDevices();
 
   useEffect(() => {
-    if (!hasAudio) return;
+    if (!hasAudio || audioTrack) return;
 
     setAudioError(null);
 
@@ -46,10 +46,10 @@ export default function useTwilioLocalTracks() {
       })
       .catch((e) => setAudioError(e))
       .finally(() => setIsAcquiringAudioTracks(false));
-  }, [hasAudio, setAudioTrack]);
+  }, [hasAudio, setAudioTrack, audioTrack]);
 
   useEffect(() => {
-    if (!hasVideo) return;
+    if (!hasVideo || videoTrack) return;
 
     setVideoError(null);
 
@@ -66,7 +66,7 @@ export default function useTwilioLocalTracks() {
       })
       .catch((e) => setVideoError(e))
       .finally(() => setIsAcquiringVideoTracks(false));
-  }, [hasVideo, setVideoTrack]);
+  }, [hasVideo, setVideoTrack, videoTrack]);
 
   return {
     audioTrack,
