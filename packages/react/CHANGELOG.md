@@ -1,3 +1,17 @@
+# [1.0.0-beta.62](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.61...v1.0.0-beta.62) (2020-12-02)
+
+
+### Bug Fixes
+
+* handle room full ([9ff6281](https://github.com/amfa-team/room-service/commit/9ff6281df724f27b0a3c116fdf97ff287b310b27))
+* popup blink ([3ec3e60](https://github.com/amfa-team/room-service/commit/3ec3e6023dce2defec7caeefebbe5c923ce4cbc9))
+* tweak layout ([2029278](https://github.com/amfa-team/room-service/commit/2029278419e4dba97e3c18fa4cb4b46fbe6944fa))
+
+
+### Features
+
+* keep audio & video settings set in waiting room ([81b3633](https://github.com/amfa-team/room-service/commit/81b363361ca43f315cb47f6ce360c72bd981b3d0))
+
 # [1.0.0-beta.61](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.60...v1.0.0-beta.61) (2020-11-30)
 
 
