@@ -1,7 +1,7 @@
 .container {
   height: 100%;
   display: grid;
-  grid-template-rows: auto 50px 25px;
+  grid-template-rows: auto 50px 5px;
   position: relative;
   gap: 30px;
   padding-top: 20px;
@@ -24,7 +24,7 @@
   height: 50px;
   border: 0;
   position: absolute;
-  bottom: -25px;
+  bottom: -45px;
   left: calc(50% - 200px);
   border-radius: 5px;
 }

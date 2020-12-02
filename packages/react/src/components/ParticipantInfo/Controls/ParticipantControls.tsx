@@ -3,9 +3,9 @@ import classnames from "classnames";
 import { motion } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
 import type { IParticipant } from "packages/react/src/entities";
-import { CamIcon } from "./Icons/CamIcon";
+// import { CamIcon } from "./Icons/CamIcon";
 import { SettingsIcon } from "./Icons/SettingsIcon";
-import { SoundIcon } from "./Icons/SoundIcon";
+// import { SoundIcon } from "./Icons/SoundIcon";
 import classes from "./participantControls.module.css";
 
 interface ParticipantControlsProps {
@@ -42,15 +42,15 @@ const p1 = {
   closed: getAnimation(3 / 6, 5 / 6, 10),
 };
 
-const p2 = {
-  opened: getAnimation(5 / 6, 1 / 6, 10),
-  closed: getAnimation(1 / 6, 5 / 6, 10),
-};
+// const p2 = {
+//   opened: getAnimation(5 / 6, 1 / 6, 10),
+//   closed: getAnimation(1 / 6, 5 / 6, 10),
+// };
 
-const p3 = {
-  opened: getAnimation(5 / 6, -1 / 6, 10),
-  closed: getAnimation(-1 / 6, 5 / 6, 10),
-};
+// const p3 = {
+//   opened: getAnimation(5 / 6, -1 / 6, 10),
+//   closed: getAnimation(-1 / 6, 5 / 6, 10),
+// };
 
 const renderAnimation = {
   opacity: [null, 0, 1],
@@ -99,7 +99,7 @@ export function ParticipantControls({
       >
         <SettingsIcon />
       </div>
-      <motion.div
+      {/* <motion.div
         initial={"closed"}
         animate={isMenuOpen ? "opened" : "closed"}
         variants={p1}
@@ -116,11 +116,11 @@ export function ParticipantControls({
         className={classnames(classes.control)}
       >
         <SoundIcon />
-      </motion.div>
+      </motion.div> */}
       <motion.div
         initial={"closed"}
         animate={isMenuOpen ? "opened" : "closed"}
-        variants={p3}
+        variants={p1}
         transition={transition}
         className={classnames(classes.control)}
       >
