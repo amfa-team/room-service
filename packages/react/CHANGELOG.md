@@ -1,3 +1,15 @@
+# [1.0.0-beta.63](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.62...v1.0.0-beta.63) (2020-12-04)
+
+
+### Bug Fixes
+
+* simplify github actions ([f839c61](https://github.com/amfa-team/room-service/commit/f839c61b696c0372badb0c99bf5a5096243fd074))
+
+
+### Features
+
+* upgrade user-service ([0be64d3](https://github.com/amfa-team/room-service/commit/0be64d32bf536cf4f04b2876ba49b7d743e2de53))
+
 # [1.0.0-beta.62](https://github.com/amfa-team/room-service/compare/v1.0.0-beta.61...v1.0.0-beta.62) (2020-12-02)
 
 
