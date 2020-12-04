@@ -1,0 +1,39 @@
+.threedotloader {
+  /*em*/
+}
+.threedotloader .dot {
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 1.4em;
+  background-color: #fff;
+  transform: scale(0);
+  display: inline-block;
+  animation: dotanim 1.5s infinite ease-in-out;
+}
+.threedotloader .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.threedotloader .dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.threedotloader .dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.threedotloader .dot:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+@keyframes dotanim {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+  90% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(0);
+  }
+}

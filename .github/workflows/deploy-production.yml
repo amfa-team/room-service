@@ -16,29 +16,19 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-production-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-deploy-production-
             ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
+      - run: echo -e "//npm.pkg.github.com/:_authToken=$NPM_TOKEN\n@amfa-team:registry=https://npm.pkg.github.com" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn install
-  deploy-react:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-production-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-deploy-production-
-            ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
-      - run: yarn install
+      - run: echo "SENTRY_DNS=${{secrets.SENTRY_EXAMPLE_DNS}}" >> packages/example/.env
+      - run: echo "API_ENDPOINT=${{secrets.API_ENDPOINT_PRODUCTION}}" >> packages/example/.env
+      - run: echo "USER_API_ENDPOINT=${{secrets.USER_API_ENDPOINT_PRODUCTION}}" >> packages/example/.env
+      - name: build
+        run: yarn build
+      # deploy-react:
       - name: publish sdk
         working-directory: ./packages/react
         run: yarn semantic-release
@@ -46,38 +36,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_SDK }}
-  deploy-example:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-production-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-deploy-production-
-            ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
-      - run: yarn install
-      - uses: TickX/var-to-dotenv@v1.1.1
-        with:
-          key: "SENTRY_DNS"
-          value: ${{secrets.SENTRY_EXAMPLE_DNS}}
-          envPath: "packages/example/.env"
-      - uses: TickX/var-to-dotenv@v1.1.1
-        with:
-          key: "API_ENDPOINT"
-          value: ${{secrets.API_ENDPOINT_PRODUCTION}}
-          envPath: "packages/example/.env"
-      - name: build
-        run: yarn build
+      # deploy-example:
       - name: deploy
         working-directory: ./packages/example
-        run: yarn aws:profile:set --stage production && yarn deploy:prod
+        run: yarn aws:profile:set --stage production && yarn deploy:production
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -86,28 +48,22 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_SDK }}
           SLACK_CHANNEL: deploys
-          SLACK_TITLE: sbs-service-template/example deployed
-  deploy-api:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-deploy-production-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-deploy-production-
-            ${{ runner.os }}-
-      - run: echo '@amfa-team:registry=https://npm.pkg.github.com' > .npmrc
-      - run: yarn install
+          SLACK_TITLE: room-service/example deployed
+      # deploy-api:
       - name: serverless deploy
         working-directory: ./packages/api
-        run: yarn aws:profile:set --stage production && yarn deploy:prod
+        run: yarn aws:profile:set --stage production && yarn deploy:production
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           SENTRY_DNS: ${{ secrets.SENTRY_API_DNS }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID_PRODUCTION }}
+          TWILIO_API_KEY_SID: ${{ secrets.TWILIO_API_KEY_SID_PRODUCTION }}
+          TWILIO_API_KEY_SECRET: ${{ secrets.TWILIO_API_KEY_SECRET_PRODUCTION }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN_PRODUCTION }}
+          MONGO_DB_URL: ${{ secrets.MONGO_DB_URL_PRODUCTION }}
+          API_ENDPOINT: ${{ secrets.API_ENDPOINT_PRODUCTION }}
+          SECRET: ${{ secrets.API_SECRET_PRODUCTION }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          USER_SERVICE_API_SECRET: ${{ secrets.USER_SERVICE_API_SECRET_PRODUCTION }}
+          USER_SERVICE_API_ENDPOINT: ${{ secrets.USER_SERVICE_API_ENDPOINT_PRODUCTION }}

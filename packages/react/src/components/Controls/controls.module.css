@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  box-sizing: border-box;
+  width: 50px;
+  height: 50px;
+  margin: 40px;
+  border-radius: 100%;
+  padding: 3px;
+  cursor: pointer;
+  user-select: none;
+
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn:focus {
+  outline: 0;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.on {
+  background-color: #0ee997;
+}
+
+.off {
+  background-color: #fa7d6d;
+}

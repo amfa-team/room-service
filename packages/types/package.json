@@ -1,7 +1,7 @@
 {
   "name": "@amfa-team/types",
   "private": true,
-  "repository": "https://github.com/amfa-team/sbs-service-template.git",
+  "repository": "https://github.com/amfa-team/room-service.git",
   "version": "0.1.0",
   "description": "",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -10,7 +10,7 @@
   "sideEffects": false,
   "dependencies": {},
   "devDependencies": {
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
   },
   "peerDependencies": {},
   "scripts": {

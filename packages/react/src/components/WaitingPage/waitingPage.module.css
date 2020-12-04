@@ -1,0 +1,35 @@
+.container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 50px 5px;
+  position: relative;
+  gap: 30px;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+.video {
+  height: 100%;
+  position: relative;
+}
+
+.joinContainer {
+  height: 100%;
+}
+
+.join {
+  color: #ffffff;
+  background-color: #0ee997;
+  width: 400px;
+  height: 50px;
+  border: 0;
+  position: absolute;
+  bottom: -45px;
+  left: calc(50% - 200px);
+  border-radius: 5px;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
+}

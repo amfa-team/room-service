@@ -1,20 +1,5 @@
 /* eslint-disable max-classes-per-file */
 
-export class PicnicError extends Error {
-  cause: Error | null;
-
-  constructor(message: string, cause: Error | null) {
-    super(message);
-
-    this.cause = cause;
-
-    if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
-      console.error(message, cause);
-    }
-  }
-}
-
 export class InvalidRequestError extends Error {
   readonly code: 400 | 403;
 

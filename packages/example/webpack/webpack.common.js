@@ -1,11 +1,13 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
+const { ProvidePlugin } = require("webpack");
 const commonPaths = require("./common-paths");
 
 const config = {
   target: "web",
   entry: {
-    bundle: "./src/index.tsx",
+    polyfills: "./src/polyfills.ts",
+    index: "./src/index.tsx",
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
@@ -18,7 +20,7 @@ const config = {
     chunkFilename: "static/js/[name].chunk.js",
 
     // This is the URL that app is served from. We use "/" in development.
-    publicPath: "./",
+    publicPath: "/",
   },
   optimization: {
     splitChunks: {
@@ -26,6 +28,7 @@ const config = {
     },
   },
   plugins: [
+    new ProvidePlugin({ process: "process" }),
     new DotEnv({
       safe: true,
     }),
@@ -48,15 +51,8 @@ const config = {
       // this way we will get the source file exactly as we see it in our code editor.
       {
         enforce: "pre",
-        test: /\.js$/,
-        loader: "source-map-loader",
-        exclude: "/node_modules/",
-      },
-      {
-        enforce: "pre",
-        test: /\.tsx?$/,
+        test: /\.(js|mjs|jsx|ts|tsx|css)$/,
         use: "source-map-loader",
-        exclude: "/node_modules/",
       },
       {
         test: /\.ts(x?)$/,

@@ -1,3 +1,5 @@
+import type { IParticipant, IRoom } from "./model";
+
 export interface SuccessResponse<T> {
   success: true;
   payload: T;
@@ -24,18 +26,60 @@ export type PostRoute<I, O> = {
   out: O;
 };
 
-export interface HelloData {
-  name: string | null;
+export interface JoinData {
+  spaceId: string;
+  participantToken: string;
+  change: boolean;
+  roomName: string | null;
 }
 
-export interface HelloPayload {
-  message: string;
+export interface JoinPayload {
+  room: IRoom;
+  token: string;
+}
+
+export interface AdminData {
+  secret: string;
+}
+
+export interface PaginationData {
+  pageIndex: number;
+  pageSize: number;
+}
+
+export interface AdminRoomData extends AdminData {
+  pagination: PaginationData;
+}
+
+export interface AdminParticipantData extends AdminData {
+  pagination: PaginationData;
+}
+
+export interface PaginationContext extends PaginationData {
+  pageCount: number;
+  count: number;
+}
+
+export interface PaginationPayload<T> {
+  pagination: PaginationContext;
+  page: T[];
 }
 
 export type GetRoutes = {
-  hello: GetRoute<HelloPayload>;
+  // no-op
 };
 
-export type PostRoutes = {
-  hello: PostRoute<HelloData, HelloPayload>;
+export type PublicPostRoutes = {
+  join: PostRoute<JoinData, JoinPayload | null>;
+  "webhook/twilio/status": PostRoute<string, boolean>;
 };
+
+export type AdminPostRoutes = {
+  "admin/room": PostRoute<AdminRoomData, PaginationPayload<IRoom>>;
+  "admin/participant": PostRoute<
+    AdminParticipantData,
+    PaginationPayload<IParticipant>
+  >;
+};
+
+export type PostRoutes = PublicPostRoutes & AdminPostRoutes;

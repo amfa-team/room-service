@@ -1,7 +1,21 @@
 const path = require("path");
+const SentryWebpackPlugin = require("@sentry/webpack-plugin");
 const slsw = require("serverless-webpack");
 const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
+
+const plugins = [new webpack.WatchIgnorePlugin([/\.d\.ts$/])];
+
+if (!slsw.lib.webpack.isLocal) {
+  plugins.push(
+    new SentryWebpackPlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      org: "side-by-side-sas",
+      project: "room-service-api",
+      include: "./src",
+    }),
+  );
+}
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -36,9 +50,15 @@ module.exports = {
       "@amfa-team/types": path.resolve(__dirname, "../types/src"),
     },
   },
-  plugins: [new webpack.WatchIgnorePlugin([/\.d\.ts$/])],
+  plugins,
   externals: [
-    nodeExternals({ allowlist: ["@amfa-team/shared", "@amfa-team/types"] }),
+    nodeExternals({
+      allowlist: ["@amfa-team/shared", "@amfa-team/types"],
+      additionalModuleDirs: [
+        path.resolve(__dirname, "..", "..", "node_modules"),
+      ],
+    }),
   ],
   cache: false,
+  stats: "minimal",
 };

@@ -1,39 +1,122 @@
-service:
-  name: template-service-api
+service: room-service-api
+
+frameworkVersion: ^2.11.0
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-stage-manager
+  - serverless-domain-manager
+  - serverless-pseudo-parameters
   - serverless-webpack
   - serverless-plugin-monorepo
   - serverless-offline
+  - serverless-ngrok-tunnel
 
 provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-3
+  memorySize: 512
+  timeout: 30
+  stage: ${opt:stage}
   profile: picnic
   environment:
     SENTRY_ENVIRONMENT: "${self:provider.stage}"
     SENTRY_DNS: "${env:SENTRY_DNS}"
+    MONGO_DB_URL: "${env:MONGO_DB_URL}"
+    TWILIO_ACCOUNT_SID: "${env:TWILIO_ACCOUNT_SID}"
+    TWILIO_API_KEY_SID: "${env:TWILIO_API_KEY_SID}"
+    TWILIO_API_KEY_SECRET: "${env:TWILIO_API_KEY_SECRET}"
+    TWILIO_AUTH_TOKEN: "${env:TWILIO_AUTH_TOKEN}"
+    SECRET: "${env:SECRET}"
+    API_ENDPOINT: "${env:API_ENDPOINT}"
+    USER_SERVICE_API_SECRET: "${env:USER_SERVICE_API_SECRET}"
+    USER_SERVICE_API_ENDPOINT: "${env:USER_SERVICE_API_ENDPOINT}"
+    NGROK: "${env:NGROK}"
+  apiGateway:
+    shouldStartNameWithService: true
 
 package:
   individually: true
 
 functions:
-  hello:
-    handler: src/handler.hello
+  join:
+    handler: src/handler.join
     events:
       - http:
-          path: hello
-          method: get
-  helloYou:
-    handler: src/handler.helloYou
-    events:
-      - http:
-          path: hello
+          path: join
           method: post
+          cors:
+            origin: "*" # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
+  adminRooms:
+    handler: src/handler.adminRooms
+    events:
+      - http:
+          path: admin/room
+          method: post
+          cors:
+            origin: "*" # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
+  adminParticipants:
+    handler: src/handler.adminParticipants
+    events:
+      - http:
+          path: admin/participant
+          method: post
+          cors:
+            origin: "*" # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
+  webhookStatus:
+    handler: src/handler.webhookStatus
+    events:
+      - http:
+          path: webhook/twilio/status
+          method: post
+  cron:
+    handler: src/handler.cron
+    timeout: 300
+    events:
+      - schedule: rate(5 minutes)
 
 custom:
+  sbs:
+    domains:
+      production: "room.sidebyside.live"
+      staging: "room.dev.sidebyside.live"
+      dev: "localhost"
+
+  ngrokTunnel:
+    envPath: "./.env"
+    tunnels:
+      - port: 4000 # required
+        envProp: API_ENDPOINT
+        ngrokOptions:
+          auth: "user:pwd"
+          authtoken: "${env:NGROK}"
+          region: "eu"
+
   serverless-offline:
     useChildProcesses: true
     httpPort: 4000
@@ -44,3 +127,18 @@ custom:
     includeModules: true
     packager: "yarn"
     excludeFiles: src/**/*.test.js
+
+  stages:
+    - dev
+    - production
+    - staging
+
+  customDomain:
+    domainName: ${self:custom.sbs.domains.${opt:stage, self:provider.stage}}
+    stage: ${opt:stage}
+    basePath: api
+    certificateName: "*.sidebyside.live"
+    createRoute53Record: true
+    endpointType: "regional"
+    apiType: rest
+    autoDomain: true
