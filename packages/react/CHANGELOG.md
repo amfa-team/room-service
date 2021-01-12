@@ -1,3 +1,10 @@
+## [1.0.1-beta.1](https://github.com/amfa-team/room-service/compare/v1.0.0...v1.0.1-beta.1) (2021-01-12)
+
+
+### Bug Fixes
+
+* mongodb client connection failed ([a9610d7](https://github.com/amfa-team/room-service/commit/a9610d76ede2d989f7ca3d10a2f6e17b60b1cb07))
+
 # 1.0.0 (2020-12-04)
 
 
