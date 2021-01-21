@@ -2,6 +2,7 @@ import { TwilioApp, defaultRoomDictionary } from "@amfa-team/room-service";
 import { SpacePage } from "@amfa-team/space-service";
 import { DotLoader } from "@amfa-team/theme-service";
 import {
+  defaultBlameDictionary,
   defaultLoginDictionary,
   defaultLogoutDictionary,
   defaultRegisterDictionary,
@@ -52,6 +53,7 @@ function RoomFeature(): ReactElement {
               onRoomChanged={onRoomChanged}
               roomName={roomName ?? null}
               dictionary={defaultRoomDictionary.fr}
+              blameDictionary={defaultBlameDictionary.fr}
             />
           );
         }}

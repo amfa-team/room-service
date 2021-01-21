@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@amfa-team/room-service-types": "^0.1.0",
-    "@amfa-team/space-service-node": "^1.0.0-03d48be37ea59ed65a42af010fae3da2.2",
-    "@amfa-team/user-service-node": "^1.1.0-8918adf3c6a6bcd1cbcec74de56b0719.1",
+    "@amfa-team/space-service-node": "^1.0.0-beta.1",
+    "@amfa-team/user-service-node": "^1.1.0-beta.1",
     "@sentry/serverless": "^5.30.0",
     "@types/aws-lambda": "^8.10.71",
     "aws-lambda": "^1.0.6",

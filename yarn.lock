@@ -10,10 +10,10 @@
     d "1"
     es5-ext "^0.10.47"
 
-"@amfa-team/space-service-node@^1.0.0-03d48be37ea59ed65a42af010fae3da2.2":
-  version "1.0.0-03d48be37ea59ed65a42af010fae3da2.2"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/space-service-node/1.0.0-03d48be37ea59ed65a42af010fae3da2.2/5a470ea0e1684932362a410bfc6a1396e377974ede6be2d0b5837325de4eb947#ac2c3097af8783db6e56a1ba363d46a3fe14926d"
-  integrity sha512-NGNR9kfMFmdT58Bs8NeiRVMo4KRgv0js1ZyzCP38GfiwdQjQYGKzNSbnmVBS5xg8R8eoCySPxMQyOTzgb8/RzA==
+"@amfa-team/space-service-node@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/space-service-node/1.0.0-beta.1/03cb458c9f9ad8088497c004f86b41d8ee3009e35a678a6b3bb849f717a525dc#12ed782ba743d70dd474386e9a1f882ae7420250"
+  integrity sha512-XfazxMtg/xAAbuPBZUrTSd/iAkPrQSmbO/MX7BMZ0jWBCysGN8j8aRMfHlpdTYJQzoHEedqcMoRUVYobt2rBXg==
   dependencies:
     node-fetch "^2.6.1"
 
@@ -22,10 +22,10 @@
   resolved "https://npm.pkg.github.com/download/@amfa-team/space-service-types/1.2.0/f33fdd99a278b57b5e1aa5d4fbc7309d2d4bfd58d70c96bbcd57249677f31fb9#969497e1ab94cf6ef5f8b9ac9389160ef8bb4d4b"
   integrity sha512-p8AiQZAkk2SvqvcnXMlmVZ/B18rvCh7A8wjwEOc9PAVCTbBjzp0tEVRaFxAjEYMGh1w7iU8I2KF+r/q+TFpO0A==
 
-"@amfa-team/space-service@^1.3.0-03d48be37ea59ed65a42af010fae3da2.2":
-  version "1.3.0-03d48be37ea59ed65a42af010fae3da2.2"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/space-service/1.3.0-03d48be37ea59ed65a42af010fae3da2.2/c7ea5b957c09c236aa71f7cf711451e483854969d82aafac4f6b3b78bfd2f9e8#205a025b418278a44448e18ca1477d9b369fe9ef"
-  integrity sha512-xZ0yvnysczq5uJiGnZ1+ddPc4ncrYbMjOO75BbgNEQB9VyKyVIvlBNP/et2ujUDUKPn6mQAgeaght/ru32s0ig==
+"@amfa-team/space-service@^1.3.0-beta.1":
+  version "1.3.0-beta.1"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/space-service/1.3.0-beta.1/02bbf030d357b7d9873adef43404e4fa13573b1e43e0791d6e691f7c09c48cd5#67e2c9b93cfb5fe5fa8e9d280c94284c490df12d"
+  integrity sha512-xUmVrnTUeHpYL4+c/qArDtzUsqnqhJBA3F1ZnTJp4eAJAWIoQaFlb6aZ+8QB9TJQTG8itDFgy6UMsQZQuZBU1A==
   dependencies:
     "@amfa-team/space-service-types" "1.2.0"
     "@babel/runtime" "^7.12.5"
@@ -34,7 +34,7 @@
     react-table "^7.6.2"
     whatwg-fetch "^3.5.0"
 
-"@amfa-team/theme-service@^1.1.0-e5c2b5f8a17fce69db3276fc4e2f8cb7.10":
+"@amfa-team/theme-service@^1.1.0-beta.1":
   version "1.1.0-e5c2b5f8a17fce69db3276fc4e2f8cb7.13"
   resolved "https://npm.pkg.github.com/download/@amfa-team/theme-service/1.1.0-e5c2b5f8a17fce69db3276fc4e2f8cb7.13/885c52896a943f3d6124a5e5aefe9ef9ab5580d52c2e8134d5811555cf7395ce#6140501977fa74decc7032fafcd63023353aee8a"
   integrity sha512-/1qof6v5kPQbJs8Sk43cG1nNnI/yH7qi1trN6t9V/C523ALppF4ny61sa5Lcs8wivwAXOocOI9IsvPtvU+YtwA==
@@ -47,25 +47,24 @@
     react-datepicker "^3.4.1"
     whatwg-fetch "^3.5.0"
 
-"@amfa-team/user-service-node@^1.1.0-8918adf3c6a6bcd1cbcec74de56b0719.1":
-  version "1.1.0-8918adf3c6a6bcd1cbcec74de56b0719.1"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service-node/1.1.0-8918adf3c6a6bcd1cbcec74de56b0719.1/b5b61834127dafc0dca896b1a75376ab2cddf4cdd2b16ffc71cfc5721e2f7af6#6ec2f632aa66611a7a57103367132e7bf6608194"
-  integrity sha512-Uk8ffIMz7+aPpzRh+UALHCmoQOm03HpSFzGESLJglDcMiT6zVWH9vEI0ZIA0MnpN6+JD/6Qz0NHKgbARlDZIbQ==
+"@amfa-team/user-service-node@^1.1.0-beta.1":
+  version "1.1.0-beta.1"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service-node/1.1.0-beta.1/1f1cc2033532b405e2bf8428738d86640d92c66ac32c8eaed0d280cd5137a9e2#f6d8d8b71aab7257f4c31a42e307b0bca204a8fc"
+  integrity sha512-6hisle+Hh3egx6I0f6zu5BLvgYmZNxFI104yLt6/qRVjrTjQ8N9r5E1+1Rnvh5oLsByxaUh40GaZd9Eu/AZRhQ==
   dependencies:
     jsonwebtoken "^8.5.1"
     node-fetch "^2.6.1"
 
-"@amfa-team/user-service-types@^1.1.0-8918adf3c6a6bcd1cbcec74de56b0719.1":
-  version "1.1.0-8918adf3c6a6bcd1cbcec74de56b0719.1"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service-types/1.1.0-8918adf3c6a6bcd1cbcec74de56b0719.1/4cdadeebedf975c30f5d7aa15f968053022f92abc2c04d65274dfb2447a7ba2e#415df2f648a1d98cdea390cf83614a9bba7a8f03"
-  integrity sha512-GnYvcaISoMSlJUSiqzDaX5sccYshzCSNSVDGnk/A2ajS7NWRwNhBTzb8zsRr2/3XfwU9c5Q1ved+UA4EJ613zw==
+"@amfa-team/user-service-types@^1.1.0-beta.1":
+  version "1.1.0-beta.1"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service-types/1.1.0-beta.1/bf9b71ae40a966e4a9bc58b56966bccd54da3fd9a16885469adfcb1b463a67e5#a89ce53ad517f35fdd7a3180b12e439adb83b74f"
+  integrity sha512-HqymFBMR38+xp6+Ne+UxPPcDCfej8tkP+nZJTAQstf+pI4yroj1Ugly+kzZoW4lYK35Y0YojOMywz4XcpVVvuQ==
 
-"@amfa-team/user-service@^1.3.0-8918adf3c6a6bcd1cbcec74de56b0719.2":
-  version "1.3.0-8918adf3c6a6bcd1cbcec74de56b0719.2"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.3.0-8918adf3c6a6bcd1cbcec74de56b0719.2/d69d73319dbd6690e7b3fd6b8180ea7f91a1405951ce02aba7929de8e610fa15#c4398fa2443fe6bdf08c8beb17ae4c23a7bfac16"
-  integrity sha512-0zTdGCtDpmmwyLg5YRFaUPG0+ScYOzmwl8rL0ocVWRRNfkeArlUfnAVvVRF+wv87bpNzEPAun3WKJvQqM7PZNQ==
+"@amfa-team/user-service@^1.3.0-beta.1":
+  version "1.3.0-beta.1"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.3.0-beta.1/a79c67dab408de81d35ee13015fb2957e1d13043dee33079d0d9ba772469e294#93f8c5d2ebfd447b4238b75f6d1c899c4030621e"
+  integrity sha512-itx5sCVn6HTNJwyp8+70kKtci4t3bdfrEDlnHmRloh3BwXawLaatA6RxomV1NjkBTtRvNNzn21A//aCDWNy+3Q==
   dependencies:
-    "@amfa-team/theme-service" "^1.1.0-e5c2b5f8a17fce69db3276fc4e2f8cb7.10"
     "@babel/runtime" "^7.12.5"
     abortcontroller-polyfill "^1.7.1"
     classnames "^2.2.6"
@@ -15197,6 +15196,11 @@ normalize-url@^5.0.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-5.2.1.tgz#492a22a8443e604b13cef4b3a97983d66f08bf65"
   integrity sha512-bFT2ilr7p37ZPEQ9LO9HP/tdFIAE7Q4UoeojXNKeLjs0vXxZetM+C2K9jdbVS7b6ut66CflVLgk1yqHJVrXmiw==
+
+normalize.css@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
+  integrity sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==
 
 npm-audit-report@^1.3.3:
   version "1.3.3"
