@@ -1,3 +1,4 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import { useConnect, useToken as useJwtToken } from "@amfa-team/user-service";
 import React, { useCallback, useEffect, useState } from "react";
 import { useJoin } from "../../api/useApi";
@@ -8,12 +9,13 @@ interface TwilioWaitingPageProps {
   spaceId: string;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
+  blameDictionary: BlameDictionary;
 }
 
 type Step = "setup" | "connect" | "join" | "ready";
 
 export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
-  const { spaceId, roomName, onRoomChanged } = props;
+  const { spaceId, roomName, onRoomChanged, blameDictionary } = props;
   const [step, setStep] = useState<Step>("setup");
   const jwtToken = useJwtToken();
   const { connect } = useConnect();
@@ -24,51 +26,55 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
     audioTrack,
     audioError,
   } = useTwilioLocalTracks();
-  const [roomFull, setRoomFull] = useState(false);
-  const { join } = useJoin(spaceId, roomFull, props.roomName);
-  const onJoinClicked = useCallback(() => {
+  const [changeRoom, setChangeRoom] = useState(false);
+  const { join, isFull } = useJoin(spaceId, changeRoom, props.roomName);
+  const onJoinClicked = useCallback((change: boolean) => {
+    setChangeRoom(change);
     setStep("connect");
   }, []);
 
   useEffect(() => {
     // Restart
     setStep("setup");
-    setRoomFull(false);
+    setChangeRoom(false);
   }, [roomName]);
 
   useEffect(() => {
     const abortController = new AbortController();
     if (step === "connect") {
-      connect(null)
-        .then((result) => {
-          if (!abortController.signal.aborted) {
-            setStep(result === null ? "setup" : "join");
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          if (!abortController.signal.aborted) {
-            setStep("setup");
-          }
-        });
+      if (jwtToken !== null) {
+        setStep("join");
+      } else {
+        connect(null)
+          .then((result) => {
+            if (!abortController.signal.aborted) {
+              setStep(result === null ? "setup" : "join");
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            if (!abortController.signal.aborted) {
+              setStep("setup");
+            }
+          });
+      }
     }
 
     return () => {
       abortController.abort();
     };
-  }, [step, connect]);
+  }, [step, connect, jwtToken]);
 
   useEffect(() => {
     const abortController = new AbortController();
     if (step === "join" && jwtToken !== null) {
-      join(jwtToken)
-        .then((r) => {
+      join(jwtToken, abortController.signal)
+        .then((result) => {
           if (!abortController.signal.aborted) {
-            if (r === null) {
-              setRoomFull(true);
+            if (!result.success) {
               setStep("setup");
-            } else if (roomName !== r) {
-              onRoomChanged(r);
+            } else if (roomName !== result.room.name) {
+              onRoomChanged(result.room.name);
               setStep("ready");
             }
           }
@@ -93,9 +99,10 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
       join={onJoinClicked}
       disabled={step !== "setup"}
       isAcquiringLocalTracks={isAcquiringLocalTracks}
-      roomFull={roomFull}
+      roomFull={isFull}
       audioError={audioError}
       videoError={videoError}
+      blameDictionary={blameDictionary}
     />
   );
 }

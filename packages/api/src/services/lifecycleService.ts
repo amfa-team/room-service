@@ -1,5 +1,5 @@
-import type { IParticipant } from "@amfa-team/types";
-import { ParticipantStatus } from "@amfa-team/types";
+import type { IParticipant } from "@amfa-team/room-service-types";
+import { ParticipantStatus } from "@amfa-team/room-service-types";
 import type { FilterQuery } from "mongoose";
 import {
   adjectives,
@@ -8,10 +8,6 @@ import {
   uniqueNamesGenerator,
 } from "unique-names-generator";
 import { MAX_PARTICIPANTS } from "../constants";
-import type { IParticipantDocument } from "../mongo/model/participant";
-import { ParticipantModel } from "../mongo/model/participant";
-import type { IRoomDocument } from "../mongo/model/room";
-import { RoomModel } from "../mongo/model/room";
 import {
   WEBHOOK_URL,
   createTwilioRoom,
@@ -24,6 +20,10 @@ import type {
   RoomCreatedEvent,
   RoomEndedEvent,
 } from "../twilio/webhook";
+import type { IParticipantDocument } from "./mongo/model/participant";
+import { ParticipantModel } from "./mongo/model/participant";
+import type { IRoomDocument } from "./mongo/model/room";
+import { RoomModel } from "./mongo/model/room";
 
 function generateRoomName() {
   return uniqueNamesGenerator({

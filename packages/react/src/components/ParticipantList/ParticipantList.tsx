@@ -1,3 +1,4 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import classnames from "classnames";
 import { motion } from "framer-motion";
 import debounce from "lodash.debounce";
@@ -34,13 +35,14 @@ export interface ParticipantListProps {
   room: IRoom | null;
   onShuffle: () => void;
   isJoining: boolean;
+  blameDictionary: BlameDictionary;
 }
 
 export default function ParticipantList(
   props: ParticipantListProps,
 ): JSX.Element | null {
   const dictionary = useDictionary("participantList");
-  const { room, isJoining, onShuffle } = props;
+  const { room, isJoining, onShuffle, blameDictionary } = props;
 
   const localParticipant = room?.localParticipant ?? null;
   const participants = useParticipants(room);
@@ -78,6 +80,7 @@ export default function ParticipantList(
           participant={localParticipant}
           isLocalParticipant
           loading={loading}
+          blameDictionary={blameDictionary}
         />
         {participants.map((participant) => (
           <Participant
@@ -85,6 +88,7 @@ export default function ParticipantList(
             participant={participant}
             participants={participants}
             loading={loading}
+            blameDictionary={blameDictionary}
           />
         ))}
         {["0", "1", "2"]
@@ -95,6 +99,7 @@ export default function ParticipantList(
               participants={participants}
               participant={null}
               loading={loading}
+              blameDictionary={blameDictionary}
             />
           ))}
       </motion.div>

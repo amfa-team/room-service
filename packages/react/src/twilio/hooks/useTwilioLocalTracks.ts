@@ -32,9 +32,12 @@ export default function useTwilioLocalTracks() {
   const hasVideo = useHasVideoInputDevices();
 
   useEffect(() => {
-    if (!hasAudio || audioTrack) return;
-
     setAudioError(null);
+
+    if (!hasAudio || audioTrack) {
+      setIsAcquiringAudioTracks(false);
+      return;
+    }
 
     setIsAcquiringAudioTracks(true);
     Video.createLocalAudioTrack()
@@ -49,11 +52,15 @@ export default function useTwilioLocalTracks() {
   }, [hasAudio, setAudioTrack, audioTrack]);
 
   useEffect(() => {
-    if (!hasVideo || videoTrack) return;
-
     setVideoError(null);
 
+    if (!hasVideo || videoTrack) {
+      setIsAcquiringVideoTracks(false);
+      return;
+    }
+
     setIsAcquiringVideoTracks(true);
+    console.log("setIsAcquiringVideoTracks:will");
     Video.createLocalVideoTrack({
       ...(DEFAULT_VIDEO_CONSTRAINTS as Record<string, unknown>),
       name: `camera-${Date.now()}`,
@@ -65,7 +72,10 @@ export default function useTwilioLocalTracks() {
         });
       })
       .catch((e) => setVideoError(e))
-      .finally(() => setIsAcquiringVideoTracks(false));
+      .finally(() => {
+        setIsAcquiringVideoTracks(false);
+        console.log("setIsAcquiringVideoTracks:did");
+      });
   }, [hasVideo, setVideoTrack, videoTrack]);
 
   return {

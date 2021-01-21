@@ -1,3 +1,3 @@
 export interface ISpace {
-  id: string;
+  _id: string;
 }

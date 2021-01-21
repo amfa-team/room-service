@@ -1,20 +1,22 @@
 import querystring from "querystring";
-import { logger } from "../io/logger";
-import { RoomStatusModel } from "../mongo/model/roomStatus";
+import type { APIGatewayProxyEventHeaders } from "aws-lambda";
+import { logger } from "../services/io/logger";
+import type { HandlerResult } from "../services/io/types";
 import {
   onParticipantConnected,
   onParticipantDisconnected,
   onRoomCreated,
   onRoomEnded,
-} from "../service/lifecycleService";
+} from "../services/lifecycleService";
+import { RoomStatusModel } from "../services/mongo/model/roomStatus";
 import { verifyWebhook } from "../twilio/client";
 import type { RoomStatusEvent } from "../twilio/webhook";
 import { roomStatusEventDecoder } from "../twilio/webhook";
 
 export async function handleTwilioWebhook(
   params: string | null,
-  headers: Record<string, string | null>,
-): Promise<boolean> {
+  headers: APIGatewayProxyEventHeaders,
+): Promise<HandlerResult<boolean>> {
   if (params === null) {
     throw new Error("webhookController.handleTwilioWebhook: missing params");
   }
@@ -40,7 +42,7 @@ export async function handleTwilioWebhook(
       success: false,
     });
 
-    return false;
+    return { payload: false };
   }
 
   const event: RoomStatusEvent = result.value;
@@ -74,7 +76,7 @@ export async function handleTwilioWebhook(
       rawEvent: params,
       success: false,
     });
-    return false;
+    return { payload: false };
   }
 
   // Out from try/catch to return error status on fail (twilio will retry the request
@@ -84,5 +86,5 @@ export async function handleTwilioWebhook(
     success: true,
   });
 
-  return true;
+  return { payload: true };
 }

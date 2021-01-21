@@ -6,7 +6,19 @@ on:
       - master
 
 jobs:
-  install: # Runs install once before everything to create & save cache
+  back-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge master -> develop
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: master
+          target_branch: develop
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,15 +38,15 @@ jobs:
       - run: echo "SENTRY_DNS=${{secrets.SENTRY_EXAMPLE_DNS}}" >> packages/example/.env
       - run: echo "API_ENDPOINT=${{secrets.API_ENDPOINT_PRODUCTION}}" >> packages/example/.env
       - run: echo "USER_API_ENDPOINT=${{secrets.USER_API_ENDPOINT_PRODUCTION}}" >> packages/example/.env
+      - run: echo "SPACE_API_ENDPOINT=${{secrets.SPACE_API_ENDPOINT_PRODUCTION}}" >> packages/example/.env
       - name: build
         run: yarn build
       # deploy-react:
       - name: publish sdk
-        working-directory: ./packages/react
-        run: yarn semantic-release
+        run: yarn npm:release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_SDK }}
       # deploy-example:
       - name: deploy
@@ -67,3 +79,4 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           USER_SERVICE_API_SECRET: ${{ secrets.USER_SERVICE_API_SECRET_PRODUCTION }}
           USER_SERVICE_API_ENDPOINT: ${{ secrets.USER_SERVICE_API_ENDPOINT_PRODUCTION }}
+          SPACE_SERVICE_API_ENDPOINT: ${{ secrets.SPACE_SERVICE_API_ENDPOINT_STAGING }}

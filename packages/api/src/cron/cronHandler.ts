@@ -1,9 +1,9 @@
-import { ParticipantStatus } from "@amfa-team/types";
-import { logger } from "../io/logger";
-import { ParticipantModel } from "../mongo/model/participant";
-import type { IRoomDocument } from "../mongo/model/room";
-import { RoomModel } from "../mongo/model/room";
-import { disconnectParticipant } from "../service/lifecycleService";
+import { ParticipantStatus } from "@amfa-team/room-service-types";
+import { logger } from "../services/io/logger";
+import { disconnectParticipant } from "../services/lifecycleService";
+import { ParticipantModel } from "../services/mongo/model/participant";
+import type { IRoomDocument } from "../services/mongo/model/room";
+import { RoomModel } from "../services/mongo/model/room";
 import { getTwilioRoomState } from "../twilio/client";
 
 async function validateRoom(room: IRoomDocument) {
@@ -15,7 +15,7 @@ async function validateRoom(room: IRoomDocument) {
       ParticipantModel.find({ _id: { $in: room.participants } }),
     ]);
 
-    const tasks = [];
+    const tasks: Promise<unknown>[] = [];
 
     if (twilioState) {
       if (room.live && !twilioState.live) {
@@ -23,7 +23,7 @@ async function validateRoom(room: IRoomDocument) {
           RoomModel.findOneAndUpdate(
             { _id: room.id },
             { $set: { live: false, participants: [] } },
-          ).catch((e) =>
+          ).catch((e: Error) =>
             logger.error(
               e,
               "cron.validateRoom: unable to update room live status",

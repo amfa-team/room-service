@@ -1,4 +1,4 @@
-import type { PostRoutes, Response } from "@amfa-team/types";
+import type { PostRoutes, Response } from "@amfa-team/room-service-types";
 import { fetch as fetchPolyfill } from "whatwg-fetch";
 
 export interface ApiSettings {

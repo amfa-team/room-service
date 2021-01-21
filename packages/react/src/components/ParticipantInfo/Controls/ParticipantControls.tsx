@@ -1,3 +1,4 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import { BlameAction } from "@amfa-team/user-service";
 import classnames from "classnames";
 import { motion } from "framer-motion";
@@ -12,6 +13,7 @@ interface ParticipantControlsProps {
   participant: IParticipant;
   participants: IParticipant[];
   isLocalParticipant: boolean;
+  blameDictionary: BlameDictionary;
 }
 
 function getAngle(value: number) {
@@ -63,6 +65,7 @@ export function ParticipantControls({
   participant,
   participants,
   isLocalParticipant,
+  blameDictionary,
 }: ParticipantControlsProps): JSX.Element | null {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -124,7 +127,11 @@ export function ParticipantControls({
         transition={transition}
         className={classnames(classes.control)}
       >
-        <BlameAction accusedId={participant.identity} witnesses={witnesses} />
+        <BlameAction
+          accusedId={participant.identity}
+          witnesses={witnesses}
+          dictionary={blameDictionary}
+        />
       </motion.div>
     </motion.div>
   );
