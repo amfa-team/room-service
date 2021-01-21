@@ -1,3 +1,4 @@
+import { defaultBlameDictionary } from "@amfa-team/user-service";
 import React, { useEffect, useState } from "react";
 import { generateRawRemoteParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
@@ -23,6 +24,7 @@ export function NoVideo(): JSX.Element | null {
     <ParticipantInfo
       participant={generateRawRemoteParticipant()}
       participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
     >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
@@ -58,7 +60,11 @@ export function ScreenShare(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo participant={participant} participants={[]}>
+    <ParticipantInfo
+      participant={participant}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -94,6 +100,7 @@ export function Hide(): JSX.Element | null {
     <ParticipantInfo
       participant={participant}
       participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
       hideParticipant
     >
       <div
@@ -155,7 +162,11 @@ export function AsyncVideo(): JSX.Element | null {
   }
 
   return (
-    <ParticipantInfo participant={participant} participants={[]}>
+    <ParticipantInfo
+      participant={participant}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -165,7 +176,11 @@ export function AsyncVideo(): JSX.Element | null {
 
 export function SeatAvailable(): JSX.Element | null {
   return (
-    <ParticipantInfo participant={null} participants={[]}>
+    <ParticipantInfo
+      participant={null}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -175,7 +190,12 @@ export function SeatAvailable(): JSX.Element | null {
 
 export function Loading(): JSX.Element | null {
   return (
-    <ParticipantInfo participant={null} participants={[]} loading>
+    <ParticipantInfo
+      participant={null}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+      loading
+    >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />
@@ -188,7 +208,11 @@ export function Reconnecting(): JSX.Element | null {
   participant.setState("reconnecting");
 
   return (
-    <ParticipantInfo participant={participant} participants={[]}>
+    <ParticipantInfo
+      participant={participant}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    >
       <div
         style={{ backgroundColor: "blueviolet", width: "100%", height: "100%" }}
       />

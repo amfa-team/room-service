@@ -10,7 +10,7 @@ const adminPages = {
 
 export default function Admin(props: { endpoint: string }) {
   const [secret, setSecret] = useLocalStorage("API_SECRET", "super-SECRET");
-  const params = useParams<{ page?: string }>();
+  const params = useParams<{ pageName?: string }>();
 
   return (
     <>
@@ -26,7 +26,7 @@ export default function Admin(props: { endpoint: string }) {
       </form>
       <AdminApp
         settings={{ endpoint: props.endpoint, secret }}
-        currentPage={params.page ?? null}
+        currentPage={params.pageName ?? null}
         links={adminPages}
       />
     </>

@@ -1,8 +1,8 @@
 import type { Context } from "aws-lambda";
 import mongoose from "mongoose";
 import type { Mongoose } from "mongoose";
+import { getEnv, getEnvName } from "../../utils/env";
 import { logger } from "../io/logger";
-import { getEnv, getEnvName } from "../utils/env";
 
 const cachedClientMap: Map<string, Promise<Mongoose>> = new Map();
 let closing = false;
@@ -56,16 +56,16 @@ async function getClient(url: string): Promise<Mongoose> {
       client.disconnect().catch((e) => logger.error(e));
     });
 
-    client.connection.on("disconnected", (...args) => {
-      logger.warn("[mongo/client:event]: disconnected", { args });
+    client.connection.on("disconnected", () => {
+      logger.info("[mongo/client:event]: disconnected");
     });
 
-    client.connection.on("connected", (...args) => {
-      logger.info("[mongo/client:event]: connected", { args });
+    client.connection.on("connected", () => {
+      logger.info("[mongo/client:event]: connected");
     });
 
     client.connection.on("reconnected", () => {
-      logger.warn("[mongo/client:event]: reconnected");
+      logger.info("[mongo/client:event]: reconnected");
     });
 
     client.connection.on("close", () => {

@@ -1,12 +1,22 @@
-import type { JoinData, JoinPayload } from "@amfa-team/types";
-import type { APIGatewayEventRequestContext } from "aws-lambda";
+import type { JoinData, JoinPayload } from "@amfa-team/room-service-types";
+import { getSpace } from "@amfa-team/space-service-node";
+import {
+  canAccessSpace,
+  checkBan,
+  parseUserServiceToken,
+} from "@amfa-team/user-service-node";
+import type {
+  APIGatewayEventRequestContext,
+  APIGatewayProxyEventHeaders,
+} from "aws-lambda";
 import { JsonDecoder } from "ts.data.json";
+import { ForbiddenError } from "../services/io/exceptions";
+import type { HandlerResult } from "../services/io/types";
 import {
   findOrCreateParticipant,
   getParticipantRoom,
   joinRoom,
-} from "../service/lifecycleService";
-import { checkBan, parseUserServiceToken } from "../service/user/userService";
+} from "../services/lifecycleService";
 import { getParticipantTwilioToken } from "../twilio/client";
 
 export const joinDecoder = JsonDecoder.object(
@@ -24,13 +34,28 @@ export const joinDecoder = JsonDecoder.object(
 
 export async function handleJoin(
   data: JoinData,
-  _headers: Record<string, string | null>,
+  _headers: APIGatewayProxyEventHeaders,
   requestContext: APIGatewayEventRequestContext,
-): Promise<null | JoinPayload> {
-  await checkBan(requestContext);
-  let participant = await findOrCreateParticipant(
-    parseUserServiceToken(data.participantToken).id,
-  );
+): Promise<HandlerResult<JoinPayload>> {
+  const userData = parseUserServiceToken(data.participantToken);
+  const [space] = await Promise.all([
+    getSpace(data.spaceId, data.participantToken),
+    checkBan(requestContext, () => {
+      throw new ForbiddenError("banned", {
+        userData,
+        identity: requestContext.identity,
+      });
+    }),
+  ]);
+
+  if (!space) {
+    return { payload: { success: false, notFound: true } };
+  }
+
+  if (!space.public && !canAccessSpace(userData, data.spaceId)) {
+    return { payload: { success: false, notFound: true } };
+  }
+  let participant = await findOrCreateParticipant(userData.id);
   let room = await getParticipantRoom(participant);
 
   if (data.change || !room || (data.roomName && room.name !== data.roomName)) {
@@ -41,14 +66,17 @@ export async function handleJoin(
     );
 
     if (result === null) {
-      return null;
+      return { payload: { success: false, full: true } };
     }
 
     [room, participant] = result;
   }
 
   return {
-    room: room.toJSON(),
-    token: getParticipantTwilioToken(participant, room),
+    payload: {
+      success: true,
+      room: room.toJSON(),
+      token: getParticipantTwilioToken(participant, room),
+    },
   };
 }

@@ -1,3 +1,4 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import React from "react";
 import type { IParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
@@ -59,6 +60,7 @@ interface ParticipantInfoProps extends ParticipantInfoInnerProps {
   hideParticipant: boolean;
   participants: IParticipant[];
   isLocalParticipant: boolean;
+  blameDictionary: BlameDictionary;
 }
 
 export default function ParticipantInfo({
@@ -68,6 +70,7 @@ export default function ParticipantInfo({
   hideParticipant,
   isLocalParticipant,
   loading,
+  blameDictionary,
 }: ParticipantInfoProps) {
   const dictionary = useDictionary("participantInfo");
   const audioTrack = useParticipantAudioTrack(participant);
@@ -81,6 +84,7 @@ export default function ParticipantInfo({
             isLocalParticipant={isLocalParticipant}
             participant={participant}
             participants={participants}
+            blameDictionary={blameDictionary}
           />
           <NetworkQualityLevel participant={participant} />
           <div className={styles.infoRowBottom}>

@@ -1,5 +1,5 @@
-import type { IRoom } from "@amfa-team/types";
-import { useEffect, useState } from "react";
+import type { IRoom, JoinPayload } from "@amfa-team/room-service-types";
+import { useCallback, useEffect, useState } from "react";
 import {
   atom,
   useRecoilState,
@@ -50,16 +50,15 @@ export function useJoin(
   const setRoom = useSetRecoilState(roomAtom);
   const setToken = useSetRecoilState(tokenAtom);
   const [isJoining, setIsJoining] = useState(false);
-  const [join, setJoin] = useState<
-    (jwtToken: string) => Promise<string | null>
-  >(async () => null);
+  const [isFull, setIsFull] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
-  useEffect(() => {
-    setIsJoining(false);
-    const abortController = new AbortController();
-
-    const j = async (jwtToken: string) => {
+  const join = useCallback(
+    async (jwtToken: string, signal: AbortSignal): Promise<JoinPayload> => {
       setIsJoining(true);
+      setIsFull(false);
+      setNotFound(false);
+
       try {
         const data = await apiPost(
           settings,
@@ -70,33 +69,40 @@ export function useJoin(
             change,
             roomName,
           },
-          abortController.signal,
+          signal,
         );
-        setRoom(data?.room ?? null);
-        setToken(data?.token ?? null);
+
+        if (data.success) {
+          setRoom(data.room);
+          setToken(data.token);
+        } else {
+          setIsFull(data.full ?? false);
+          setNotFound(data.notFound ?? false);
+        }
+
         setIsJoining(false);
 
-        return data?.room.name ?? null;
+        return data;
       } catch (e) {
-        if (e.name !== "AbortError") {
+        if (!signal.aborted) {
           console.error("useApi/useJoin: fail", e);
           setIsJoining(false);
           throw e;
         }
-        return null;
+
+        return {
+          success: false,
+        };
       }
-    };
-
-    setJoin(() => j);
-
-    return () => {
-      abortController.abort();
-    };
-  }, [settings, spaceId, setToken, setRoom, change, roomName]);
+    },
+    [settings, setRoom, setToken, spaceId, change, roomName],
+  );
 
   return {
     join,
     isJoining,
+    notFound,
+    isFull,
   };
 }
 

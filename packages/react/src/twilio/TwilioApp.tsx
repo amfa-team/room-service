@@ -1,10 +1,11 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import { useToken as useJwtToken } from "@amfa-team/user-service";
 import React from "react";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
 import { DictionaryProvider } from "../components/DictionaryProvider/DictionaryProvider";
 import type { ISpace } from "../entities/Space";
-import type { Dictionary } from "../i18n/dictionary";
+import type { RoomDictionary } from "../i18n/dictionary";
 import TwilioRoomPage from "./components/TwilioRoomPage";
 import TwilioWaitingPage from "./components/TwilioWaitingPage";
 
@@ -13,17 +14,19 @@ export interface TwilioAppProps {
   settings: ApiSettings;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
-  dictionary: Dictionary;
+  dictionary: RoomDictionary;
+  blameDictionary: BlameDictionary;
 }
 
-function TwilioApp(props: TwilioAppProps) {
+function TwilioAppRaw(props: TwilioAppProps) {
   const token = useToken();
   const jwtToken = useJwtToken();
 
   if (!token || props.roomName === null || jwtToken === null) {
     return (
       <TwilioWaitingPage
-        spaceId={props.space.id}
+        blameDictionary={props.blameDictionary}
+        spaceId={props.space._id}
         roomName={props.roomName}
         onRoomChanged={props.onRoomChanged}
       />
@@ -32,14 +35,17 @@ function TwilioApp(props: TwilioAppProps) {
 
   return (
     <TwilioRoomPage
+      blameDictionary={props.blameDictionary}
       token={token}
       userJwtToken={jwtToken}
-      spaceId={props.space.id}
+      spaceId={props.space._id}
       roomName={props.roomName}
       onRoomChanged={props.onRoomChanged}
     />
   );
 }
+
+const TwilioApp = React.memo(TwilioAppRaw);
 
 export default function TwilioAppContainer(props: TwilioAppProps) {
   const ready = useSetApiSettings(props.settings);

@@ -1,4 +1,4 @@
-import type { IRoom } from "@amfa-team/types";
+import type { IRoom } from "@amfa-team/room-service-types";
 import type { Document } from "mongoose";
 import mongoose, { Schema } from "mongoose";
 

@@ -16,8 +16,9 @@ export default function useParticipantIsReconnecting(
     participant?.on("reconnected", handleReconnected);
 
     return () => {
-      participant?.off("reconnecting", handleReconnecting);
-      participant?.off("reconnected", handleReconnected);
+      // TODO
+      // participant?.off("reconnecting", handleReconnecting);
+      // participant?.off("reconnected", handleReconnected);
     };
   }, [participant]);
 

@@ -3,7 +3,7 @@ import type {
   AdminPostRoutes,
   GetRoutes,
   PublicPostRoutes,
-} from "@amfa-team/types";
+} from "@amfa-team/room-service-types";
 import { flush, init as initSentry } from "@sentry/serverless";
 import type {
   APIGatewayProxyEvent,
@@ -11,15 +11,26 @@ import type {
   Context,
 } from "aws-lambda";
 import type { JsonDecoder } from "ts.data.json";
+import { getEnv } from "../../utils/env";
 import { close, connect } from "../mongo/client";
 import { ForbiddenError, InvalidRequestError } from "./exceptions";
 import { logger } from "./logger";
 import type {
   AdminRequest,
   GetHandler,
+  HandlerResult,
   PostHandler,
   PublicRequest,
 } from "./types";
+
+function getCorsHeaders(): Record<string, string> {
+  return {
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH",
+    "Access-Control-Allow-Headers":
+      "Content-Type,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-User-Id",
+    "Access-Control-Allow-Origin": "*",
+  };
+}
 
 export function setup() {
   initSentry({
@@ -41,8 +52,6 @@ export async function teardown(context: Context | null) {
   await flush(2000);
   logger.info("io.teardown: did");
 }
-
-const SECRET = process.env.SECRET ?? "";
 
 export function parse(body: string | null): unknown {
   try {
@@ -87,8 +96,10 @@ export function parseHttpAdminRequest<T extends AdminData>(
   const body = parse(event.body);
   const req = { data: decode(body, decoder) };
 
-  if (req.data.secret !== SECRET) {
-    throw new ForbiddenError();
+  if (req.data.secret !== getEnv("API_SECRET")) {
+    throw new ForbiddenError("parseHttpAdminRequest: invalid secret", {
+      data: req.data,
+    });
   }
 
   return req;
@@ -101,15 +112,11 @@ export async function handleHttpErrorResponse(
   if (e instanceof InvalidRequestError) {
     return {
       statusCode: e.code,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH",
-        "Access-Control-Allow-Headers":
-          "Content-Type,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-User-Id",
-      },
+      headers: { ...getCorsHeaders() },
       body: JSON.stringify({
         success: false,
         error: e.message,
+        reason: e.reason,
       }),
     };
   }
@@ -118,12 +125,7 @@ export async function handleHttpErrorResponse(
 
   return {
     statusCode: 500,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH",
-      "Access-Control-Allow-Headers":
-        "Content-Type,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-User-Id",
-    },
+    headers: { ...getCorsHeaders() },
     body: JSON.stringify({
       success: false,
       error: "Unexpected Server error",
@@ -131,18 +133,18 @@ export async function handleHttpErrorResponse(
   };
 }
 
-export function handleSuccessResponse(data: unknown): APIGatewayProxyResult {
+export function handleSuccessResponse(
+  data: HandlerResult<unknown>,
+): APIGatewayProxyResult {
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH",
-      "Access-Control-Allow-Headers":
-        "Content-Type,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-User-Id",
+      ...getCorsHeaders(),
+      ...data.headers,
     },
     body: JSON.stringify({
       success: true,
-      payload: data,
+      payload: data.payload,
     }),
   };
 }
@@ -154,12 +156,12 @@ export async function handlePublicGET<P extends keyof GetRoutes>(
 ): Promise<APIGatewayProxyResult> {
   try {
     await init(context);
-    const payload = await handler(
+    const result = await handler(
       event.queryStringParameters,
       event.headers,
       event.requestContext,
     );
-    return handleSuccessResponse(payload);
+    return handleSuccessResponse(result);
   } catch (e) {
     return handleHttpErrorResponse(e, event);
   }
@@ -173,18 +175,11 @@ export async function handlePublicPOST<P extends keyof PublicPostRoutes>(
   jsonParse: boolean = true,
 ): Promise<APIGatewayProxyResult> {
   try {
-    logger.info("io.handlePublicPOST: will", { event });
-
     await init(context);
-
     const { data } = await parseHttpPublicRequest(event, decoder, jsonParse);
-    const payload = await handler(data, event.headers, event.requestContext);
-    const response = await handleSuccessResponse(payload);
-
-    logger.info("io.handlePublicPOST: did");
-    return response;
+    const result = await handler(data, event.headers, event.requestContext);
+    return handleSuccessResponse(result);
   } catch (e) {
-    logger.error(e, "io.handlePublicPOST: fail");
     return handleHttpErrorResponse(e, event);
   }
 }
@@ -198,8 +193,8 @@ export async function handleAdminPOST<P extends keyof AdminPostRoutes>(
   try {
     await init(context);
     const { data } = await parseHttpAdminRequest(event, decoder);
-    const payload = await handler(data, event.headers, event.requestContext);
-    return handleSuccessResponse(payload);
+    const result = await handler(data, event.headers, event.requestContext);
+    return handleSuccessResponse(result);
   } catch (e) {
     return handleHttpErrorResponse(e, event);
   }

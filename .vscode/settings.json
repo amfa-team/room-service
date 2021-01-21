@@ -7,6 +7,7 @@
   "files.insertFinalNewline": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.importModuleSpecifier": "project-relative",
   "files.associations": {
     ".stylelintrc": "json"
   },
@@ -16,7 +17,7 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    // "**/node_modules": true,
+    "**/node_modules": true,
     "packages/*/lib": true,
     "packages/*/dist": true,
     "packages/*/build": true,
@@ -24,6 +25,12 @@
     "**/.webpack": true
   },
   "files.watcherExclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
     "packages/*/lib": true,
     "packages/*/dist": true,
     "packages/*/build": true,
@@ -31,10 +38,29 @@
     "**/.webpack": true
   },
   "search.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
     "packages/*/lib": true,
     "packages/*/dist": true,
     "packages/*/build": true,
     "**/.serverless": true,
     "**/.webpack": true
-  }
+  },
+  "compareFolders.excludeFilter": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/node_modules",
+    "packages/*/lib",
+    "packages/*/dist",
+    "packages/*/build",
+    "**/.serverless",
+    "**/.webpack"
+  ]
 }

@@ -1,3 +1,4 @@
+import { defaultBlameDictionary } from "@amfa-team/user-service";
 import React from "react";
 import {
   generateRawLocalParticipant,
@@ -34,6 +35,7 @@ export function Local() {
     <ParticipantControls
       participants={[]}
       participant={generateRawLocalParticipant()}
+      blameDictionary={defaultBlameDictionary.fr}
       isLocalParticipant
     />
   );
@@ -44,6 +46,7 @@ export function Remote() {
     <ParticipantControls
       participants={[]}
       participant={generateRawRemoteParticipant()}
+      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }

@@ -1,3 +1,4 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import React, { useCallback } from "react";
 import { useJoin } from "../../api/useApi";
 import RoomPage from "../../components/RoomPage/RoomPage";
@@ -10,17 +11,26 @@ interface TwilioRoomPageProps {
   token: string;
   roomName: string;
   onRoomChanged: (roomName: string) => void;
+  blameDictionary: BlameDictionary;
 }
 
 export default function TwilioRoomPage(props: TwilioRoomPageProps) {
-  const { token, onRoomChanged, spaceId, userJwtToken, roomName } = props;
+  const {
+    token,
+    onRoomChanged,
+    spaceId,
+    userJwtToken,
+    roomName,
+    blameDictionary,
+  } = props;
   const { data } = useConnectTwilioRoom(token);
   const { join, isJoining } = useJoin(spaceId, true, roomName);
 
   const onShuffleClicked = useCallback(async () => {
-    const r = await join(userJwtToken);
-    if (r !== null) {
-      onRoomChanged(r);
+    const abortController = new AbortController();
+    const joinData = await join(userJwtToken, abortController.signal);
+    if (joinData.success) {
+      onRoomChanged(joinData.room.name);
     }
   }, [join, onRoomChanged, userJwtToken]);
 
@@ -29,6 +39,11 @@ export default function TwilioRoomPage(props: TwilioRoomPageProps) {
   const room: IRoom | null = data as any;
 
   return (
-    <RoomPage room={room} onShuffle={onShuffleClicked} isJoining={isJoining} />
+    <RoomPage
+      room={room}
+      onShuffle={onShuffleClicked}
+      isJoining={isJoining}
+      blameDictionary={blameDictionary}
+    />
   );
 }

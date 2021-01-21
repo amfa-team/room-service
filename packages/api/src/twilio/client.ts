@@ -1,8 +1,8 @@
 import querystring from "querystring";
-import type { IParticipant, IRoom } from "@amfa-team/types";
+import type { IParticipant, IRoom } from "@amfa-team/room-service-types";
 import { Twilio, jwt, validateRequest } from "twilio";
 import { MAX_ALLOWED_SESSION_DURATION, MAX_PARTICIPANTS } from "../constants";
-import { logger } from "../io/logger";
+import { logger } from "../services/io/logger";
 import { getEnv } from "../utils/env";
 
 const { AccessToken } = jwt;

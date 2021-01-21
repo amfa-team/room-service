@@ -1,5 +1,6 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import classnames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   RawLocalParticipant,
   RawVAudioTrackPublication,
@@ -17,12 +18,13 @@ import styles from "./waitingPage.module.css";
 interface WaitingPageProps {
   videoTrack: ILocalVideoTrack | null;
   audioTrack: ILocalAudioTrack | null;
-  join: () => void;
+  join: (change: boolean) => void;
   disabled: boolean;
   roomFull: boolean;
   videoError: Error | null;
   audioError: Error | null;
   isAcquiringLocalTracks: boolean;
+  blameDictionary: BlameDictionary;
 }
 
 export default function WaitingPage(props: WaitingPageProps) {
@@ -35,6 +37,7 @@ export default function WaitingPage(props: WaitingPageProps) {
     videoError,
     audioError,
     isAcquiringLocalTracks,
+    blameDictionary,
   } = props;
   const dictionary = useDictionary("waitingPage");
   const videoErrorMessage = useMediaErrorMessage(
@@ -87,6 +90,10 @@ export default function WaitingPage(props: WaitingPageProps) {
     };
   }, [localParticipant, audioTrack]);
 
+  const onJoinClicked = useCallback(() => {
+    join(roomFull);
+  }, [join, roomFull]);
+
   return (
     <div className={styles.container}>
       <div className={styles.video}>
@@ -95,6 +102,7 @@ export default function WaitingPage(props: WaitingPageProps) {
           participants={[]}
           isLocalParticipant
           loading={localParticipant === null}
+          blameDictionary={blameDictionary}
         />
       </div>
       <Controls localParticipant={localParticipant} />
@@ -105,7 +113,7 @@ export default function WaitingPage(props: WaitingPageProps) {
               disabled || audioTrack === null || isAcquiringLocalTracks,
           })}
           type="button"
-          onClick={join}
+          onClick={onJoinClicked}
           disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
         >
           {dictionary.join}

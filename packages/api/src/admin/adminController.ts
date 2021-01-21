@@ -4,10 +4,11 @@ import type {
   IParticipant,
   IRoom,
   PaginationPayload,
-} from "@amfa-team/types";
+} from "@amfa-team/room-service-types";
 import { JsonDecoder } from "ts.data.json";
-import { ParticipantModel } from "../mongo/model/participant";
-import { RoomModel } from "../mongo/model/room";
+import type { HandlerResult } from "../services/io/types";
+import { ParticipantModel } from "../services/mongo/model/participant";
+import { RoomModel } from "../services/mongo/model/room";
 
 export const paginationDecoder = JsonDecoder.object(
   {
@@ -27,7 +28,7 @@ export const adminDecoder = JsonDecoder.object(
 
 export async function handleAdminRooms(
   data: AdminRoomData,
-): Promise<PaginationPayload<IRoom>> {
+): Promise<HandlerResult<PaginationPayload<IRoom>>> {
   const { pageSize, pageIndex } = data.pagination;
   const [roomCount, rooms] = await Promise.all([
     RoomModel.countDocuments({}),
@@ -39,19 +40,21 @@ export async function handleAdminRooms(
   ]);
 
   return {
-    pagination: {
-      pageSize,
-      pageIndex,
-      pageCount: Math.ceil(roomCount / pageSize),
-      count: roomCount,
+    payload: {
+      pagination: {
+        pageSize,
+        pageIndex,
+        pageCount: Math.ceil(roomCount / pageSize),
+        count: roomCount,
+      },
+      page: rooms.map((room) => room.toJSON()),
     },
-    page: rooms.map((room) => room.toJSON()),
   };
 }
 
 export async function handleAdminParticipants(
   data: AdminParticipantData,
-): Promise<PaginationPayload<IParticipant>> {
+): Promise<HandlerResult<PaginationPayload<IParticipant>>> {
   const { pageSize, pageIndex } = data.pagination;
   const [participantCount, participants] = await Promise.all([
     ParticipantModel.countDocuments({}),
@@ -63,12 +66,14 @@ export async function handleAdminParticipants(
   ]);
 
   return {
-    pagination: {
-      pageSize,
-      pageIndex,
-      pageCount: Math.ceil(participantCount / pageSize),
-      count: participantCount,
+    payload: {
+      pagination: {
+        pageSize,
+        pageIndex,
+        pageCount: Math.ceil(participantCount / pageSize),
+        count: participantCount,
+      },
+      page: participants.map((participant) => participant.toJSON()),
     },
-    page: participants.map((participant) => participant.toJSON()),
   };
 }

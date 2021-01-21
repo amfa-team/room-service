@@ -11,8 +11,6 @@ module.exports = {
       return !r.test.test("file.css");
     });
 
-    config.entry.push("@amfa-team/user-service/dist/index.css");
-
     // Make whatever fine-grained changes you need
     rules.push({
       test: /\.css$/i,

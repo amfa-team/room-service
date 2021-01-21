@@ -1,10 +1,11 @@
 const path = require("path");
 const SentryWebpackPlugin = require("@sentry/webpack-plugin");
 const slsw = require("serverless-webpack");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
 
-const plugins = [new webpack.WatchIgnorePlugin([/\.d\.ts$/])];
+const plugins = [new webpack.WatchIgnorePlugin({ paths: [/\.d\.ts$/] })];
 
 if (!slsw.lib.webpack.isLocal) {
   plugins.push(
@@ -20,6 +21,9 @@ if (!slsw.lib.webpack.isLocal) {
 module.exports = {
   entry: slsw.lib.entries,
   mode: slsw.lib.webpack.isLocal ? "development" : "production",
+  optimization: {
+    concatenateModules: false,
+  },
   target: "node",
   module: {
     rules: [
@@ -46,14 +50,14 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {
-      "@amfa-team/shared": path.resolve(__dirname, "../shared/src"),
-      "@amfa-team/types": path.resolve(__dirname, "../types/src"),
+      "@amfa-team/room-service-types": path.resolve(__dirname, "../types/src"),
     },
+    plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
   },
   plugins,
   externals: [
     nodeExternals({
-      allowlist: ["@amfa-team/shared", "@amfa-team/types"],
+      allowlist: [/^@amfa-team\//],
       additionalModuleDirs: [
         path.resolve(__dirname, "..", "..", "node_modules"),
       ],
