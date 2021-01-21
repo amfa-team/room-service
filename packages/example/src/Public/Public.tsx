@@ -6,7 +6,7 @@ import HomeFeature from "./HomeFeature/HomeFeature";
 import Menu from "./Menu/Menu";
 import RoomFeature from "./RoomFeature/RoomFeature";
 
-const endpoint = process.env.SPACE_API_ENDPOINT ?? "";
+const endpoint = process.env.SPACE_SERVICE_API_ENDPOINT ?? "";
 const settings = { endpoint };
 
 function Public(): ReactElement | null {
