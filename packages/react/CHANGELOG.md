@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.1.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.1.0-beta.1...@amfa-team/room-service@1.1.0-beta.2) (2021-01-27)
+
+
+### Features
+
+* basic mobile support ([4e323c0](https://github.com/amfa-team/room-service/commit/4e323c07b1c3af17bb14916dbded670d64a4d3c9))
+
 # @amfa-team/room-service [1.1.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.0.1...@amfa-team/room-service@1.1.0-beta.1) (2021-01-21)
 
 
