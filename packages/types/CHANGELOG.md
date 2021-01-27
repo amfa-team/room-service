@@ -1,3 +1,10 @@
+# @amfa-team/room-service-types [1.0.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service-types@1.0.0-beta.1...@amfa-team/room-service-types@1.0.0-beta.2) (2021-01-27)
+
+
+### Features
+
+* upgrade version ([3eb4e8e](https://github.com/amfa-team/room-service/commit/3eb4e8e17a64d7a42be5d2bde7fbf55244cc2f1f))
+
 # @amfa-team/room-service-types 1.0.0-beta.1 (2021-01-21)
 
 
