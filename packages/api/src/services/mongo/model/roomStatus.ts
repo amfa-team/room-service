@@ -1,6 +1,6 @@
 import type { Document } from "mongoose";
 import mongoose, { Schema } from "mongoose";
-import type { RoomStatusEvent } from "../../twilio/webhook";
+import type { RoomStatusEvent } from "../../../twilio/webhook";
 
 interface IRoomStatusDocument extends Document {
   id: string;

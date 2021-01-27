@@ -43,18 +43,18 @@ export default function useScreenShareParticipant(
         updateScreenShareParticipant,
       );
       return () => {
-        room.off("trackPublished", updateScreenShareParticipant);
-        room.off("trackUnpublished", updateScreenShareParticipant);
-        room.off("participantDisconnected", updateScreenShareParticipant);
-
-        room.localParticipant.off(
-          "trackPublished",
-          updateScreenShareParticipant,
-        );
-        room.localParticipant.off(
-          "trackUnpublished",
-          updateScreenShareParticipant,
-        );
+        // TODO
+        // room.off("trackPublished", updateScreenShareParticipant);
+        // room.off("trackUnpublished", updateScreenShareParticipant);
+        // room.off("participantDisconnected", updateScreenShareParticipant);
+        // room.localParticipant.off(
+        //   "trackPublished",
+        //   updateScreenShareParticipant,
+        // );
+        // room.localParticipant.off(
+        //   "trackUnpublished",
+        //   updateScreenShareParticipant,
+        // );
       };
     }
 

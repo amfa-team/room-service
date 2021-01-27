@@ -38,7 +38,10 @@ export function SquareDiv(props: SquareDivProps) {
       refreshRate={50}
     >
       {({ width, height, targetRef }: RenderProps) => {
-        const size = Math.min(height, width);
+        const size = Math.min(
+          Number.isNaN(height) ? 10 : height,
+          Number.isNaN(width) ? 10 : width,
+        );
         return (
           <motion.div
             initial={initial}

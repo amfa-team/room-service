@@ -1,3 +1,4 @@
+import type { BlameDictionary } from "@amfa-team/user-service";
 import React from "react";
 import type { IRoom } from "../../entities/Room";
 import Controls from "../Controls/Controls";
@@ -8,10 +9,11 @@ interface RoomPageProps {
   room: IRoom | null;
   onShuffle: () => void;
   isJoining: boolean;
+  blameDictionary: BlameDictionary;
 }
 
 export default function RoomPage(props: RoomPageProps) {
-  const { room, onShuffle, isJoining } = props;
+  const { room, onShuffle, isJoining, blameDictionary } = props;
 
   return (
     <div className={classes.root}>
@@ -19,6 +21,7 @@ export default function RoomPage(props: RoomPageProps) {
         room={room}
         onShuffle={onShuffle}
         isJoining={isJoining}
+        blameDictionary={blameDictionary}
       />
       <Controls localParticipant={room?.localParticipant ?? null} />
     </div>

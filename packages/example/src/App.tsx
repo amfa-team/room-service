@@ -1,36 +1,41 @@
-import { useUserService } from "@amfa-team/user-service";
+import { UserServiceSettings } from "@amfa-team/user-service";
 import type { ReactElement } from "react";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Admin from "./Admin";
-import LangSwitch from "./LangSwitch";
-import Room from "./Room";
+import Nav from "./Nav/Nav";
+import Public from "./Public/Public";
+import User from "./User";
 
 const endpoint = process.env.API_ENDPOINT ?? "";
 
-const userApiEndpoint = process.env.USER_API_ENDPOINT ?? "";
+const userEndpoint = process.env.USER_API_ENDPOINT ?? "";
+
 const userSettings = {
-  endpoint: userApiEndpoint,
+  endpoint: userEndpoint,
   secure: process.env.NODE_ENV === "production",
+  resetPath: "/",
+  invitePath: "/invite",
+  getSpacePath: (spaceSlug: string) => `/${spaceSlug}`,
 };
 
 function App(): ReactElement | null {
-  const ready = useUserService(userSettings);
-  if (!ready) {
-    return null;
-  }
-
   return (
-    <Switch>
-      <Route path="/admin/:page?">
-        <Admin endpoint={endpoint} />
-      </Route>
-      <Route path={`/:lang(en|fr)/:roomName?`}>
-        <LangSwitch />
-        <Room space={{ id: "my-space" }} endpoint={endpoint} />
-      </Route>
-      <Redirect to="/en" />
-    </Switch>
+    <UserServiceSettings settings={userSettings}>
+      <User />
+      <Nav />
+      <Switch>
+        <Route path="/admin/:pageName">
+          <Admin endpoint={endpoint} />
+        </Route>
+        <Route path="/admin">
+          <Redirect to="/admin/room" />
+        </Route>
+        <Route path="/">
+          <Public />
+        </Route>
+      </Switch>
+    </UserServiceSettings>
   );
 }
 

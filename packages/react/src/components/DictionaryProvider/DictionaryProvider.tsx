@@ -1,11 +1,11 @@
 import React from "react";
 import type { ReactNode } from "react";
-import type { Dictionary } from "../../i18n/dictionary";
+import type { RoomDictionary } from "../../i18n/dictionary";
 import { useSetDictionary } from "../../i18n/dictionary";
 
 interface DictionaryProviderProps {
   children: JSX.Element | JSX.Element[] | ReactNode;
-  dictionary: Dictionary;
+  dictionary: RoomDictionary;
 }
 
 export function DictionaryProvider(

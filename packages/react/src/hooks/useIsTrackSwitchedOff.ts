@@ -24,8 +24,9 @@ export default function useIsTrackSwitchedOff(
       track.on("switchedOff", handleSwitchedOff);
       track.on("switchedOn", handleSwitchedOn);
       return () => {
-        track.off("switchedOff", handleSwitchedOff);
-        track.off("switchedOn", handleSwitchedOn);
+        // TODO
+        // track.off("switchedOff", handleSwitchedOff);
+        // track.off("switchedOn", handleSwitchedOn);
       };
     }
 

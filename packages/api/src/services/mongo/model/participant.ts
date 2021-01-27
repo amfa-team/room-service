@@ -1,5 +1,5 @@
-import type { IParticipant } from "@amfa-team/types";
-import { ParticipantStatus } from "@amfa-team/types";
+import type { IParticipant } from "@amfa-team/room-service-types";
+import { ParticipantStatus } from "@amfa-team/room-service-types";
 import type { Document } from "mongoose";
 import mongoose, { Schema } from "mongoose";
 

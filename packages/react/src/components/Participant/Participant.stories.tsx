@@ -1,3 +1,4 @@
+import { defaultBlameDictionary } from "@amfa-team/user-service";
 import React, { useEffect, useState } from "react";
 import {
   generateRawLocalParticipant,
@@ -32,6 +33,7 @@ export function NoVideo(): JSX.Element | null {
     <Participant
       participant={generateRawLocalParticipant()}
       participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -64,6 +66,7 @@ export function Local(): JSX.Element | null {
       participant={participant}
       isLocalParticipant
       participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -94,7 +97,13 @@ export function ScreenShare(): JSX.Element | null {
     return null;
   }
 
-  return <Participant participant={participant} participants={[]} />;
+  return (
+    <Participant
+      participant={participant}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }
 
 export function Hide(): JSX.Element | null {
@@ -122,7 +131,12 @@ export function Hide(): JSX.Element | null {
   }
 
   return (
-    <Participant participant={participant} hideParticipant participants={[]} />
+    <Participant
+      participant={participant}
+      hideParticipant
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
   );
 }
 
@@ -177,20 +191,45 @@ export function AsyncVideo(): JSX.Element | null {
     return null;
   }
 
-  return <Participant participant={participant} participants={[]} />;
+  return (
+    <Participant
+      participant={participant}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }
 
 export function SeatAvailable(): JSX.Element | null {
-  return <Participant participant={null} participants={[]} />;
+  return (
+    <Participant
+      participant={null}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }
 
 export function Loading(): JSX.Element | null {
-  return <Participant participant={null} loading participants={[]} />;
+  return (
+    <Participant
+      participant={null}
+      loading
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }
 
 export function Reconnecting(): JSX.Element | null {
   const participant = generateRawRemoteParticipant();
   participant.setState("reconnecting");
 
-  return <Participant participant={participant} participants={[]} />;
+  return (
+    <Participant
+      participant={participant}
+      participants={[]}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }

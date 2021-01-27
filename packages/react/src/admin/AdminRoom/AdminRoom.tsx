@@ -1,4 +1,4 @@
-import type { IRoom, PaginationData } from "@amfa-team/types";
+import type { IRoom, PaginationData } from "@amfa-team/room-service-types";
 import React, { useCallback, useEffect, useState } from "react";
 import type { AdminApiSettings } from "../../api/api";
 import { apiPost } from "../../api/api";

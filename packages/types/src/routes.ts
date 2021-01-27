@@ -33,10 +33,18 @@ export interface JoinData {
   roomName: string | null;
 }
 
-export interface JoinPayload {
+export interface JoinFailPayload {
+  success: false;
+  full?: true;
+  notFound?: true;
+}
+export interface JoinSuccessPayload {
+  success: true;
   room: IRoom;
   token: string;
 }
+
+export type JoinPayload = JoinFailPayload | JoinSuccessPayload;
 
 export interface AdminData {
   secret: string;
@@ -70,7 +78,7 @@ export type GetRoutes = {
 };
 
 export type PublicPostRoutes = {
-  join: PostRoute<JoinData, JoinPayload | null>;
+  join: PostRoute<JoinData, JoinPayload>;
   "webhook/twilio/status": PostRoute<string, boolean>;
 };
 

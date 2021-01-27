@@ -1,3 +1,6 @@
+@value mediaQueries: '../../../theme/mediaQueries.module.css';
+@value sm-up, sm-down from mediaQueries;
+
 /* 5/6 PI --> x = -sqrt(3)/2 ; y = 1/2 */
 @value v5Pi6Top: 25%;
 @value v5Pi6Left: 6.7%;
@@ -12,23 +15,47 @@
   color: #fff;
   background-color: #ff7d70;
 
-  top: v5Pi6Top;
-  left: v5Pi6Left;
-
-  width: 40px;
-  height: 40px;
-
   display: flex;
   justify-content: center;
   align-items: center;
 
-  transform: translate(-20px, -20px);
-
   border-radius: 100%;
   border: 1px solid transparent;
+}
 
-  box-shadow: 0px 0px 0px 0px #c7c7c7, 0px 0px 0px 6px #fdfdfd,
-    0px 0px 0px 0px #dfdfdf, 0px 0px 5px 6px #dfdfdf;
+@media (sm-up) {
+  .control {
+    width: 40px;
+    height: 40px;
+    transform: translate(-20px, -20px);
+    box-shadow: 0px 0px 0px 0px #c7c7c7, 0px 0px 0px 6px #fdfdfd,
+      0px 0px 0px 0px #dfdfdf, 0px 0px 5px 6px #dfdfdf;
+
+    top: v5Pi6Top;
+    right: v5Pi6Left;
+  }
+}
+
+@media (sm-down) {
+  .control {
+    width: 20px;
+    height: 20px;
+    transform: translate(-10px, -10px);
+    box-shadow: 0px 0px 0px 0px #c7c7c7, 0px 0px 0px 1px #fdfdfd,
+      0px 0px 0px 0px #dfdfdf, 0px 0px 1px 2px #dfdfdf;
+    top: 25px;
+    left: 25px;
+  }
+
+  .isOdd {
+    left: auto;
+    /* uses 5 because of transform */
+    right: 5px;
+  }
+
+  .control i {
+    font-size: 26px !important;
+  }
 }
 
 .control:nth-child(1) {

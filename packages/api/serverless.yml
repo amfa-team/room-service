@@ -32,12 +32,15 @@ provider:
     API_ENDPOINT: "${env:API_ENDPOINT}"
     USER_SERVICE_API_SECRET: "${env:USER_SERVICE_API_SECRET}"
     USER_SERVICE_API_ENDPOINT: "${env:USER_SERVICE_API_ENDPOINT}"
+    SPACE_SERVICE_API_ENDPOINT: "${env:SPACE_SERVICE_API_ENDPOINT}"
     NGROK: "${env:NGROK}"
   apiGateway:
     shouldStartNameWithService: true
+  tracing:
+    apiGateway: true
 
 package:
-  individually: true
+  individually: false
 
 functions:
   join:
@@ -110,7 +113,7 @@ custom:
   ngrokTunnel:
     envPath: "./.env"
     tunnels:
-      - port: 4000 # required
+      - port: 4002 # required
         envProp: API_ENDPOINT
         ngrokOptions:
           auth: "user:pwd"
@@ -119,7 +122,8 @@ custom:
 
   serverless-offline:
     useChildProcesses: true
-    httpPort: 4000
+    httpPort: 4002
+    lambdaPort: 3005
 
   webpack:
     webpackConfig: "webpack.config.js"

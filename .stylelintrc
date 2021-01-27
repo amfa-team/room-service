@@ -21,6 +21,7 @@
         "ignorePartialSupport": true
       }
     ],
+    "media-feature-name-no-unknown": null,
     "plugin/declaration-block-no-ignored-properties": true,
     "css-modules/composed-class-names": true,
     "color-no-invalid-hex": true

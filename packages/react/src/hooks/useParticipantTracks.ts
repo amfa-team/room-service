@@ -46,8 +46,9 @@ export function useParticipantVideoTrack<T extends IParticipant>(
       participant.on("trackPublished", trackPublished);
       participant.on("trackUnpublished", trackUnpublished);
       return () => {
-        participant.off("trackPublished", trackPublished);
-        participant.off("trackUnpublished", trackUnpublished);
+        // TODO
+        // participant.off("trackPublished", trackPublished);
+        // participant.off("trackUnpublished", trackUnpublished);
       };
     }
     return () => {
@@ -67,8 +68,9 @@ export function useParticipantVideoTrack<T extends IParticipant>(
     videoPublication?.on("subscribed", onSubscribed);
     videoPublication?.on("unsubscribed", onUnSubscribed);
     return () => {
-      videoPublication?.off("subscribed", onSubscribed);
-      videoPublication?.off("unsubscribed", onUnSubscribed);
+      // TODO
+      // videoPublication?.off("subscribed", onSubscribed);
+      // videoPublication?.off("unsubscribed", onUnSubscribed);
     };
   }, [videoPublication]);
 
@@ -108,8 +110,9 @@ export function useParticipantAudioTrack<T extends IParticipant>(
       participant.on("trackPublished", trackPublished);
       participant.on("trackUnpublished", trackUnpublished);
       return () => {
-        participant.off("trackPublished", trackPublished);
-        participant.off("trackUnpublished", trackUnpublished);
+        // TODO
+        // participant.off("trackPublished", trackPublished);
+        // participant.off("trackUnpublished", trackUnpublished);
       };
     }
     return () => {
@@ -129,8 +132,9 @@ export function useParticipantAudioTrack<T extends IParticipant>(
     audioPublication?.on("subscribed", onSubscribed);
     audioPublication?.on("unsubscribed", onUnSubscribed);
     return () => {
-      audioPublication?.off("subscribed", onSubscribed);
-      audioPublication?.off("unsubscribed", onUnSubscribed);
+      // TODO
+      // audioPublication?.off("subscribed", onSubscribed);
+      // audioPublication?.off("unsubscribed", onUnSubscribed);
     };
   }, [audioPublication]);
 

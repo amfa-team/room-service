@@ -19,10 +19,11 @@ export default function useParticipantNetworkQualityLevel(
       handleNetworkQualityLevelChange,
     );
     return () => {
-      participant.off(
-        "networkQualityLevelChanged",
-        handleNetworkQualityLevelChange,
-      );
+      // TODO
+      // participant.off(
+      //   "networkQualityLevelChanged",
+      //   handleNetworkQualityLevelChange,
+      // );
     };
   }, [participant]);
 

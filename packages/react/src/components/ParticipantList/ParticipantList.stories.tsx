@@ -1,3 +1,4 @@
+import { defaultBlameDictionary } from "@amfa-team/user-service";
 import { action } from "@storybook/addon-actions";
 import React, { useCallback, useEffect, useState } from "react";
 import { generateRawRemoteParticipant } from "../../entities/fixtures/participants.fixture";
@@ -13,14 +14,26 @@ export default {
 
 export function NoVideo(): JSX.Element | null {
   const room = generateRawRoom();
-  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
+  return (
+    <ParticipantList
+      room={room}
+      onShuffle={action("onShuffle")}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }
 
 export function SingleParticipant(): JSX.Element | null {
   const room = generateRawRoom();
   room.addParticipant(generateRawRemoteParticipant({ identity: "antoine" }));
 
-  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
+  return (
+    <ParticipantList
+      room={room}
+      onShuffle={action("onShuffle")}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }
 
 export function TwoParticipant(): JSX.Element | null {
@@ -43,7 +56,13 @@ export function TwoParticipant(): JSX.Element | null {
       .catch(console.error);
   }, [room]);
 
-  return <ParticipantList room={room} onShuffle={action("onShuffle")} />;
+  return (
+    <ParticipantList
+      room={room}
+      onShuffle={action("onShuffle")}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }
 
 export function Joining(): JSX.Element | null {
@@ -76,10 +95,21 @@ export function Joining(): JSX.Element | null {
   }, []);
 
   return (
-    <ParticipantList room={room} onShuffle={onShuffle} isJoining={isJoining} />
+    <ParticipantList
+      room={room}
+      onShuffle={onShuffle}
+      isJoining={isJoining}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
   );
 }
 
 export function LoadingRoom(): JSX.Element | null {
-  return <ParticipantList room={null} onShuffle={action("shuffle")} />;
+  return (
+    <ParticipantList
+      room={null}
+      onShuffle={action("shuffle")}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
 }

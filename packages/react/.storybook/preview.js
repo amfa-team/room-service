@@ -1,6 +1,11 @@
 import React from "react";
+import { ModalRoot } from "@amfa-team/theme-service";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { RecoilRoot } from "recoil";
+import "normalize.css/normalize.css";
+import "react-datepicker/dist/react-datepicker.css";
+import "@amfa-team/theme-service/dist/index.css";
+import "@amfa-team/user-service/dist/index.css";
 
 const customViewports = Object.keys(MINIMAL_VIEWPORTS).reduce((acc, key) => {
   acc[`${key}Rotated`] = {
@@ -27,6 +32,7 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <RecoilRoot>
+      <ModalRoot />
       <Story />
     </RecoilRoot>
   ),

@@ -12,11 +12,13 @@ export default function useIsTrackEnabled(track: ITrack | null) {
     if (track) {
       const setEnabled = () => setIsEnabled(true);
       const setDisabled = () => setIsEnabled(false);
-      track.on("enabled", setEnabled);
+      console.log(track.on("enabled", setEnabled));
       track.on("disabled", setDisabled);
       return () => {
-        track.off("enabled", setEnabled);
-        track.off("disabled", setDisabled);
+        // TODO
+        // console.log(track);
+        // track.off("enabled", setEnabled);
+        // track.off("disabled", setDisabled);
       };
     }
 

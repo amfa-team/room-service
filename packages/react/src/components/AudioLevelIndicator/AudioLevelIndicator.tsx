@@ -70,7 +70,8 @@ export function AudioLevelIndicator(props: AudioLevelIndicatorProps) {
       return () => {
         stopAllMediaStreamTracks();
         window.removeEventListener("focus", reinitializeAnalyser);
-        audioTrack?.off("stopped", stopAllMediaStreamTracks);
+        // TODO
+        // audioTrack?.off("stopped", stopAllMediaStreamTracks);
       };
     }
 
