@@ -106,7 +106,7 @@ export default function WaitingPage(props: WaitingPageProps) {
         />
       </div>
       <Controls localParticipant={localParticipant} />
-      <div>{dictionary.cgu}</div>
+      <div className={styles.notice}>{dictionary.cgu}</div>
       <div className={styles.joinContainer}>
         <button
           className={classnames(styles.join, {

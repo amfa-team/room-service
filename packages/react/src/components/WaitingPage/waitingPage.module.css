@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+.notice {
+  text-align: center;
+}
+
 .video {
   height: 100%;
   position: relative;
