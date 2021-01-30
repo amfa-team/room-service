@@ -46,9 +46,8 @@ export function useParticipantVideoTrack<T extends IParticipant>(
       participant.on("trackPublished", trackPublished);
       participant.on("trackUnpublished", trackUnpublished);
       return () => {
-        // TODO
-        // participant.off("trackPublished", trackPublished);
-        // participant.off("trackUnpublished", trackUnpublished);
+        participant.removeListener("trackPublished", trackPublished);
+        participant.removeListener("trackUnpublished", trackUnpublished);
       };
     }
     return () => {
@@ -68,9 +67,8 @@ export function useParticipantVideoTrack<T extends IParticipant>(
     videoPublication?.on("subscribed", onSubscribed);
     videoPublication?.on("unsubscribed", onUnSubscribed);
     return () => {
-      // TODO
-      // videoPublication?.off("subscribed", onSubscribed);
-      // videoPublication?.off("unsubscribed", onUnSubscribed);
+      videoPublication?.removeListener("subscribed", onSubscribed);
+      videoPublication?.removeListener("unsubscribed", onUnSubscribed);
     };
   }, [videoPublication]);
 
@@ -110,9 +108,8 @@ export function useParticipantAudioTrack<T extends IParticipant>(
       participant.on("trackPublished", trackPublished);
       participant.on("trackUnpublished", trackUnpublished);
       return () => {
-        // TODO
-        // participant.off("trackPublished", trackPublished);
-        // participant.off("trackUnpublished", trackUnpublished);
+        participant.removeListener("trackPublished", trackPublished);
+        participant.removeListener("trackUnpublished", trackUnpublished);
       };
     }
     return () => {
@@ -132,9 +129,8 @@ export function useParticipantAudioTrack<T extends IParticipant>(
     audioPublication?.on("subscribed", onSubscribed);
     audioPublication?.on("unsubscribed", onUnSubscribed);
     return () => {
-      // TODO
-      // audioPublication?.off("subscribed", onSubscribed);
-      // audioPublication?.off("unsubscribed", onUnSubscribed);
+      audioPublication?.removeListener("subscribed", onSubscribed);
+      audioPublication?.removeListener("unsubscribed", onUnSubscribed);
     };
   }, [audioPublication]);
 

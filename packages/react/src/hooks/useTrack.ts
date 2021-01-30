@@ -15,9 +15,8 @@ export default function useTrack(publication: ITrackPublication | undefined) {
       publication.on("subscribed", setTrack);
       publication.on("unsubscribed", removeTrack);
       return () => {
-        // TODO
-        // publication.off("subscribed", setTrack);
-        // publication.off("unsubscribed", removeTrack);
+        publication.removeListener("subscribed", setTrack);
+        publication.removeListener("unsubscribed", removeTrack);
       };
     }
 

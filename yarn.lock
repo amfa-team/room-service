@@ -4157,11 +4157,6 @@
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-4.0.0.tgz#fef1904e4668b6e5ecee60c52cc6a078ffa6697d"
   integrity sha512-I99sngh224D0M7XgW1s120zxCt3VYQ3IQsuw3P3jbq5GG4yc79+ZjyKznyOGIQrflfylLgcfekeZW/vk0yng6A==
 
-"@types/twilio-video@^2.7.3":
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/@types/twilio-video/-/twilio-video-2.7.3.tgz#24a7a8caa97bc536f40d1d02105b84a7fff17fde"
-  integrity sha512-IDqG3hB1GSbtAoMqIV/sOT02hstBhGUrejpNd+1PbKm3tyhO62T2wwd4rFC2A+nKXTY3aC+2FoQwvR68d5j08g==
-
 "@types/uglify-js@*":
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.11.0.tgz#2868d405cc45cd9dc3069179052103032c33afbc"
