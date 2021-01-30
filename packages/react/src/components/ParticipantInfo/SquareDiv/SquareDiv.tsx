@@ -39,9 +39,10 @@ export function SquareDiv(props: SquareDivProps) {
     >
       {({ width, height, targetRef }: RenderProps) => {
         const size = Math.min(
-          Number.isNaN(height) ? 10 : height,
-          Number.isNaN(width) ? 10 : width,
+          Number.isFinite(height) ? height : 0,
+          Number.isFinite(width) ? width : 0,
         );
+        const style = size === 0 ? {} : { height: size, width: size };
         return (
           <motion.div
             initial={initial}
@@ -52,10 +53,7 @@ export function SquareDiv(props: SquareDivProps) {
             })}
             ref={targetRef}
           >
-            <div
-              className={classes.content}
-              style={{ height: size, width: size }}
-            >
+            <div className={classes.content} style={style}>
               {props.children}
             </div>
           </motion.div>
