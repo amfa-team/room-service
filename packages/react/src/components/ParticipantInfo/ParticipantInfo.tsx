@@ -48,6 +48,7 @@ function ParticipantInfoInner({
           {participant === null && (
             <div className={styles.typo}>{dictionary.availableSeat}</div>
           )}
+          {children}
         </div>
       </div>
     );
