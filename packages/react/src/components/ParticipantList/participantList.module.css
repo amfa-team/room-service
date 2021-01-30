@@ -38,7 +38,7 @@
   font-weight: 300;
   color: white;
   cursor: pointer;
-  z-index: 20;
+  z-index: 90;
 }
 
 @media (sm-up) {
