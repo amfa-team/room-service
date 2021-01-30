@@ -44,7 +44,7 @@ async function validateRoom(room: IRoomDocument) {
             ParticipantModel.findById(twilioState.participants[i])
               .then(async (p) => {
                 if (p) {
-                  await disconnectParticipant(p, true);
+                  await disconnectParticipant(p);
                 }
               })
               .catch((e) =>
@@ -68,7 +68,7 @@ async function validateRoom(room: IRoomDocument) {
             );
 
             tasks.push(
-              disconnectParticipant(participants[i], true).catch((e) =>
+              disconnectParticipant(participants[i]).catch((e) =>
                 logger.error(
                   e,
                   "cron.validateRoom: unable to disconnect participant",

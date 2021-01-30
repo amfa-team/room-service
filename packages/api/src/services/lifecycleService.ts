@@ -1,5 +1,6 @@
 import type { IParticipant } from "@amfa-team/room-service-types";
 import { ParticipantStatus } from "@amfa-team/room-service-types";
+import { Types } from "mongoose";
 import type { FilterQuery } from "mongoose";
 import {
   adjectives,
@@ -105,101 +106,92 @@ export async function onParticipantConnected(event: ParticipantConnectedEvent) {
   );
 }
 
-export async function onParticipantDisconnected(
-  event: ParticipantDisconnectedEvent,
-) {
-  const [room, participant] = await Promise.all([
+async function updateDbOnDisconnect(roomId: string, participantId: string) {
+  await Promise.all([
     RoomModel.findOneAndUpdate(
-      { _id: event.RoomSid },
-      { $inc: { size: -1 } },
+      {
+        _id: roomId,
+        participants: { $in: [participantId] },
+      },
+      {
+        $inc: { size: -1 },
+        $pull: { participants: participantId },
+      },
       { new: true },
     ),
     ParticipantModel.findOneAndUpdate(
       // we need to use room filter to prevent race condition when shuffle is used
-      { _id: event.ParticipantIdentity, room: event.RoomSid },
+      // i.e. it's already connected to another room
+      { _id: participantId, room: roomId },
       {
         $set: {
           status: ParticipantStatus.disconnected,
           statusValidUntil: null,
+          room: null,
         },
       },
     ),
   ]);
+}
 
-  const tasks: Promise<unknown>[] = [];
-  if (room) {
-    room.participants = room.participants.filter(
-      (p) => p.toString() !== event.ParticipantIdentity,
-    );
-    tasks.push(room.save());
-  }
-  if (participant) {
-    participant.room = null;
-    participant.roomVisits.push({
-      id: event.RoomSid,
-      duration: Number(event.ParticipantDuration),
-      timestamp: new Date(event.Timestamp),
-    });
-    tasks.push(participant.save());
-  }
-
-  await Promise.all(tasks);
+export async function onParticipantDisconnected(
+  event: ParticipantDisconnectedEvent,
+) {
+  await Promise.all([
+    updateDbOnDisconnect(event.RoomSid, event.ParticipantIdentity),
+    ParticipantModel.findOneAndUpdate(
+      { _id: event.ParticipantIdentity },
+      {
+        $push: {
+          roomVisits: {
+            _id: Types.ObjectId(),
+            id: event.RoomSid,
+            duration: Number(event.ParticipantDuration),
+            timestamp: new Date(event.Timestamp),
+          },
+        },
+      },
+    ),
+  ]);
 }
 
 export async function disconnectParticipant(
   participant: IParticipantDocument,
-  autoSave: boolean = true,
-): Promise<IParticipantDocument> {
+): Promise<void> {
   if (participant.room) {
     const oldRoomId = participant.room;
 
-    // eslint-disable-next-line no-param-reassign
-    participant.status = ParticipantStatus.disconnected;
-    // eslint-disable-next-line no-param-reassign
-    participant.statusValidUntil = null;
-    // eslint-disable-next-line no-param-reassign
-    participant.room = null;
-
-    const oldRoom = await RoomModel.findOneAndUpdate(
-      { _id: oldRoomId },
-      {
-        $inc: { size: -1 },
-      },
-      { new: true },
-    );
-
-    if (oldRoom) {
-      oldRoom.participants = oldRoom.participants.filter(
-        (p) => p !== participant.id,
-      );
-      await oldRoom.save();
-    }
-
-    await disconnectTwilioParticipant({
-      roomSid: oldRoomId,
-      participantSid: participant.id,
-    });
-
-    if (autoSave) {
-      await participant.save();
-    }
+    await Promise.all([
+      updateDbOnDisconnect(oldRoomId, participant.id),
+      disconnectTwilioParticipant({
+        roomSid: oldRoomId,
+        participantSid: participant.id,
+      }),
+    ]);
   }
-
-  return participant;
 }
 
 async function setParticipantPending(
   roomId: string,
-  participant: IParticipantDocument,
-) {
-  // eslint-disable-next-line no-param-reassign
-  participant.room = roomId;
-  // eslint-disable-next-line no-param-reassign
-  participant.status = ParticipantStatus.pending;
-  // eslint-disable-next-line no-param-reassign
-  participant.statusValidUntil = new Date(Date.now() + 60_000);
+  participantId: string,
+): Promise<IParticipantDocument> {
+  const participant = await ParticipantModel.findOneAndUpdate(
+    { _id: participantId },
+    {
+      $set: {
+        status: ParticipantStatus.pending,
+        room: roomId,
+        statusValidUntil: new Date(Date.now() + 60_000),
+      },
+    },
+    { new: true },
+  );
 
-  await participant.save();
+  if (!participant) {
+    throw new Error(
+      "[lifecycleService/setParticipantPending]: participant not found",
+    );
+  }
 
   return participant;
 }
@@ -224,16 +216,17 @@ export async function joinRoom(
     query._id = { $ne: participant.room };
   }
 
-  const [room, p] = await Promise.all([
+  const [room] = await Promise.all([
     RoomModel.findOneAndUpdate(
       query,
-      { $inc: { size: 1 } },
+      // @ts-ignore
+      { $inc: { size: 1 }, $push: { participants: [participant._id] } },
       {
         new: true,
         sort: { spaceId: 1, webhookUrl: 1, live: 1, size: -1 },
       },
     ),
-    disconnectParticipant(participant, false),
+    disconnectParticipant(participant),
   ]);
 
   if (room === null && roomName !== null) {
@@ -242,12 +235,10 @@ export async function joinRoom(
 
   if (room === null) {
     const r = await createRoom(spaceId, participant);
-    return [r, await setParticipantPending(r.id, p)];
+    return [r, await setParticipantPending(r.id, participant._id)];
   }
 
-  room.participants.push(p.id);
-
-  await Promise.all([setParticipantPending(room.id, p), room.save()]);
+  const p = await setParticipantPending(room.id, participant._id);
 
   return [room, p];
 }
