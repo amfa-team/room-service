@@ -116,7 +116,7 @@ custom:
       - port: 4002 # required
         envProp: API_ENDPOINT
         ngrokOptions:
-          auth: "user:pwd"
+          # auth: "user:pwd"
           authtoken: "${env:NGROK}"
           region: "eu"
 
