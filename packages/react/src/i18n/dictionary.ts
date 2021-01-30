@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import type { ReactNode } from "react";
 import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 
 export interface ControlsDictionary {
@@ -29,6 +30,7 @@ export interface ParticipantListDictionary {
 export interface WaitingPageDictionary {
   join: string;
   roomFull: string;
+  cgu: ReactNode;
 }
 
 export interface MediaErrorDictionary {
@@ -52,6 +54,7 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
     waitingPage: {
       roomFull: "Room is full, click on Join to go in another room",
       join: "Join",
+      cgu: "By clicking on join, I accept the CGUs",
     },
     loading: {
       loading: "Loading...",
@@ -90,6 +93,7 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
       roomFull:
         "Le salon est plein, cliquer sur rejoindre pour changer de salon",
       join: "Rejoindre",
+      cgu: "En cliquant sur rejoindre j'accepte les cgu",
     },
     loading: {
       loading: "Chargement...",

@@ -12,7 +12,10 @@ interface IBaseTrack {
 
   on(event: "enabled" | "disabled" | "stopped", listener: () => void): void;
 
-  off(event: "enabled" | "disabled" | "stopped", listener: () => void): void;
+  removeListener(
+    event: "enabled" | "disabled" | "stopped",
+    listener: () => void,
+  ): void;
 }
 
 export interface IBaseAudioTrack extends IBaseTrack {
@@ -36,7 +39,7 @@ export interface IRemoteAudioTrack extends IBaseAudioTrack {
     listener: () => void,
   ): void;
 
-  off(
+  removeListener(
     event: "enabled" | "disabled" | "switchedOff" | "switchedOn" | "stopped",
     listener: () => void,
   ): void;
@@ -62,7 +65,7 @@ export interface IRemoteVideoTrack extends IBaseVideoTrack {
     listener: () => void,
   ): void;
 
-  off(
+  removeListener(
     event: "enabled" | "disabled" | "switchedOff" | "switchedOn" | "stopped",
     listener: () => void,
   ): void;
@@ -162,7 +165,7 @@ abstract class RawBaseVideoTrack implements IBaseVideoTrack {
     }
   }
 
-  off(event: "enabled" | "disabled", listener: () => void) {
+  removeListener(event: "enabled" | "disabled", listener: () => void) {
     if (event === "enabled") {
       this.#enabledEvents.delete(listener);
     }
@@ -223,11 +226,11 @@ export class RawRemoteVideoTrack
     }
   }
 
-  off(
+  removeListener(
     event: "switchedOff" | "switchedOn" | "enabled" | "disabled",
     listener: () => void,
   ) {
-    super.off(event as "enabled" | "disabled", listener);
+    super.removeListener(event as "enabled" | "disabled", listener);
 
     if (event === "switchedOn") {
       this.#switchOnEvents.delete(listener);
@@ -356,7 +359,10 @@ abstract class RawBaseAudioTrack implements IBaseAudioTrack {
     }
   }
 
-  off(event: "enabled" | "disabled" | "stopped", listener: () => void) {
+  removeListener(
+    event: "enabled" | "disabled" | "stopped",
+    listener: () => void,
+  ) {
     if (event === "enabled") {
       this.#enabledEvents.delete(listener);
     }
@@ -420,11 +426,11 @@ export class RawRemoteAudioTrack
     }
   }
 
-  off(
+  removeListener(
     event: "switchedOff" | "switchedOn" | "enabled" | "disabled" | "stopped",
     listener: () => void,
   ) {
-    super.off(event as "enabled" | "disabled" | "stopped", listener);
+    super.removeListener(event as "enabled" | "disabled" | "stopped", listener);
 
     if (event === "switchedOn") {
       this.#switchOnEvents.delete(listener);

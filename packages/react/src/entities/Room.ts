@@ -36,12 +36,12 @@ export interface IRoom {
     listener: TrackPublishedListener,
   ): void;
 
-  off(
+  removeListener(
     event: "participantConnected" | "participantDisconnected",
     listener: ParticipantConnectedListener,
   ): void;
-  off(event: "disconnected", listener: () => void): void;
-  off(
+  removeListener(event: "disconnected", listener: () => void): void;
+  removeListener(
     event: "trackPublished" | "trackUnpublished",
     listener: TrackPublishedListener,
   ): void;
@@ -127,7 +127,7 @@ export class RawRoom implements IRoom {
     }
   }
 
-  off(
+  removeListener(
     event:
       | "trackPublished"
       | "trackUnpublished"

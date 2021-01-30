@@ -52,11 +52,15 @@ export default function ParticipantList(
     return fn;
   }, [onShuffle]);
 
-  const onShuffleButtonClicked = useCallback(() => {
-    if (!isJoining) {
-      debouncedShuffle();
-    }
-  }, [isJoining, debouncedShuffle]);
+  const onShuffleButtonClicked = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (!isJoining) {
+        debouncedShuffle();
+      }
+    },
+    [isJoining, debouncedShuffle],
+  );
 
   const loading = room === null || isJoining;
 

@@ -21,9 +21,8 @@ export default function useParticipants(
     room?.on("participantConnected", participantConnected);
     room?.on("participantDisconnected", participantDisconnected);
     return () => {
-      // TODO
-      // room?.off("participantConnected", participantConnected);
-      // room?.off("participantDisconnected", participantDisconnected);
+      room?.removeListener("participantConnected", participantConnected);
+      room?.removeListener("participantDisconnected", participantDisconnected);
     };
   }, [room]);
 

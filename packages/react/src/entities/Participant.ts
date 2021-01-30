@@ -43,15 +43,18 @@ interface IBaseParticipant<
   ): void;
   on(event: "reconnected" | "reconnecting", listener: () => void): void;
 
-  off(
+  removeListener(
     event: "networkQualityLevelChanged",
     listener: NetworkQualityLevelChangedListener,
   ): void;
-  off(
+  removeListener(
     event: "trackPublished" | "trackUnpublished",
     listener: TrackPublishedListener,
   ): void;
-  off(event: "reconnected" | "reconnecting", listener: () => void): void;
+  removeListener(
+    event: "reconnected" | "reconnecting",
+    listener: () => void,
+  ): void;
 }
 
 export type IRemoteParticipant = IBaseParticipant<
@@ -228,7 +231,7 @@ export class RawBaseParticipant<
     }
   }
 
-  off(
+  removeListener(
     event:
       | "networkQualityLevelChanged"
       | "trackPublished"
