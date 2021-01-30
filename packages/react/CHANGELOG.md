@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.2.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.2.0-beta.1...@amfa-team/room-service@1.2.0-beta.2) (2021-01-30)
+
+
+### Bug Fixes
+
+* fix sound issue ([656d8e7](https://github.com/amfa-team/room-service/commit/656d8e7d47b61735571733ae999125704b9bdefd))
+
 # @amfa-team/room-service [1.2.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.1.0...@amfa-team/room-service@1.2.0-beta.1) (2021-01-30)
 
 
