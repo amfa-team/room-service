@@ -60,7 +60,6 @@ export default function useTwilioLocalTracks() {
     }
 
     setIsAcquiringVideoTracks(true);
-    console.log("setIsAcquiringVideoTracks:will");
     Video.createLocalVideoTrack({
       ...(DEFAULT_VIDEO_CONSTRAINTS as Record<string, unknown>),
       name: `camera-${Date.now()}`,
@@ -74,7 +73,6 @@ export default function useTwilioLocalTracks() {
       .catch((e) => setVideoError(e))
       .finally(() => {
         setIsAcquiringVideoTracks(false);
-        console.log("setIsAcquiringVideoTracks:did");
       });
   }, [hasVideo, setVideoTrack, videoTrack]);
 

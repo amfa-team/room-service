@@ -1,3 +1,33 @@
+# @amfa-team/room-service [1.2.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.2.0-beta.1...@amfa-team/room-service@1.2.0-beta.2) (2021-01-30)
+
+
+### Bug Fixes
+
+* fix sound issue ([656d8e7](https://github.com/amfa-team/room-service/commit/656d8e7d47b61735571733ae999125704b9bdefd))
+
+# @amfa-team/room-service [1.2.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.1.0...@amfa-team/room-service@1.2.0-beta.1) (2021-01-30)
+
+
+### Bug Fixes
+
+* properly remove listeners ([f7e043d](https://github.com/amfa-team/room-service/commit/f7e043d7472af3d0c6551de337d0eb31e8d13413))
+* shuffle btn should be clickable ([cf49ed9](https://github.com/amfa-team/room-service/commit/cf49ed9b129b3a2a5693fff011ce5b509462ba4d))
+* square div style ([d111f41](https://github.com/amfa-team/room-service/commit/d111f41acf06f79d851293147f5f6b419b5e6fb5))
+
+
+### Features
+
+* add CGU warning ([a297658](https://github.com/amfa-team/room-service/commit/a297658a7a33ed40774581753fd16aa48257348b))
+* upgrade dependencies ([4dc2bd3](https://github.com/amfa-team/room-service/commit/4dc2bd3f236c8d8321b015d3005daefc716bfd78))
+
+
+
+
+
+### Dependencies
+
+* **@amfa-team/room-service-types:** upgraded to 1.1.0-beta.1
+
 # @amfa-team/room-service [1.1.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.0.1...@amfa-team/room-service@1.1.0) (2021-01-27)
 
 

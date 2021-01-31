@@ -24,7 +24,7 @@ export interface IBaseVideoTrackPublication<T extends IVideoTrack> {
     listener: SubscribedListener<T>,
   ): void;
 
-  off(
+  removeListener(
     event: "subscribed" | "unsubscribed",
     listener: SubscribedListener<T>,
   ): void;
@@ -42,7 +42,7 @@ export interface IBaseAudioTrackPublication<T extends IAudioTrack> {
     listener: SubscribedListener<T>,
   ): void;
 
-  off(
+  removeListener(
     event: "subscribed" | "unsubscribed",
     listener: SubscribedListener<T>,
   ): void;
@@ -97,7 +97,10 @@ export class RawVideoTrackPublication<T extends IVideoTrack>
     }
   }
 
-  off(event: "subscribed" | "unsubscribed", listener: SubscribedListener<T>) {
+  removeListener(
+    event: "subscribed" | "unsubscribed",
+    listener: SubscribedListener<T>,
+  ) {
     if (event === "subscribed") {
       this.#subscribedListeners.delete(listener);
     }
@@ -133,7 +136,10 @@ export class RawVAudioTrackPublication<T extends IAudioTrack>
     }
   }
 
-  off(event: "subscribed" | "unsubscribed", listener: SubscribedListener<T>) {
+  removeListener(
+    event: "subscribed" | "unsubscribed",
+    listener: SubscribedListener<T>,
+  ) {
     if (event === "subscribed") {
       this.#subscribedListeners.delete(listener);
     }
