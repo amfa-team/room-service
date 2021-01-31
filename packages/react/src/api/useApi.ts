@@ -1,4 +1,5 @@
 import type { IRoom, JoinPayload } from "@amfa-team/room-service-types";
+import isEqual from "lodash.isequal";
 import { useCallback, useEffect, useState } from "react";
 import {
   atom,
@@ -60,6 +61,10 @@ export function useJoin(
       setNotFound(false);
 
       try {
+        if (signal.aborted) {
+          return { success: false };
+        }
+
         const data = await apiPost(
           settings,
           "join",
@@ -72,9 +77,18 @@ export function useJoin(
           signal,
         );
 
+        if (signal.aborted) {
+          return { success: false };
+        }
+
         if (data.success) {
-          setRoom(data.room);
-          setToken(data.token);
+          setRoom((prevRoom) => {
+            // prevent useless re-render
+            return isEqual(data.room, prevRoom) ? prevRoom : data.room;
+          });
+          setToken((prevToken) => {
+            return prevToken === data.token ? prevToken : data.token;
+          });
         } else {
           setIsFull(data.full ?? false);
           setNotFound(data.notFound ?? false);

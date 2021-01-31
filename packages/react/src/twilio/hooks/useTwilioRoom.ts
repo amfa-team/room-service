@@ -47,39 +47,63 @@ export function useConnectTwilioRoom(token: string): AsyncData<Room> {
   const { videoTrack, audioTrack } = useTwilioLocalTracks();
 
   useEffect(() => {
+    const abortController = new AbortController();
     if (!token) {
       setRoom((prevRoom) => {
-        if (prevRoom) {
+        if (prevRoom && prevRoom.state !== "disconnected") {
           prevRoom.disconnect();
         }
         return null;
       });
-      return;
+      return () => {
+        // no-op
+      };
     }
 
     setIsLoading(true);
-
     connect(token)
       .then((newRoom) => {
+        if (abortController.signal.aborted) {
+          newRoom.disconnect();
+          return;
+        }
+
+        const disconnect = () => {
+          newRoom.disconnect();
+          abortController.signal.removeEventListener("abort", disconnect);
+        };
+        abortController.signal.addEventListener("abort", disconnect);
+
         setRoom((prevRoom) => {
-          if (prevRoom) {
+          if (prevRoom && prevRoom.state !== "disconnected") {
             prevRoom.disconnect();
           }
           return newRoom;
         });
+
         setIsLoading(false);
       })
       .catch((err) => {
         setError(err);
         setIsLoading(false);
       });
+
+    return () => {
+      abortController.abort();
+    };
   }, [token, setRoom]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     if (room && videoTrack) {
-      room.localParticipant.publishTrack(videoTrack).catch(setError);
+      room.localParticipant.publishTrack(videoTrack).catch((e) => {
+        if (!abortController.signal.aborted) {
+          setError(e);
+        }
+      });
     }
     return () => {
+      abortController.abort();
       if (room && videoTrack) {
         room.localParticipant.unpublishTrack(videoTrack);
       }
@@ -87,10 +111,16 @@ export function useConnectTwilioRoom(token: string): AsyncData<Room> {
   }, [room, videoTrack]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     if (room && audioTrack) {
-      room.localParticipant.publishTrack(audioTrack).catch(setError);
+      room.localParticipant.publishTrack(audioTrack).catch((e) => {
+        if (!abortController.signal.aborted) {
+          setError(e);
+        }
+      });
     }
     return () => {
+      abortController.abort();
       if (room && audioTrack) {
         room.localParticipant.unpublishTrack(audioTrack);
       }
