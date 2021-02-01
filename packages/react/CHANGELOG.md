@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.3.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.2.0...@amfa-team/room-service@1.3.0) (2021-02-01)
+
+
+### Features
+
+* prevent useless room re-render ([8c8d199](https://github.com/amfa-team/room-service/commit/8c8d19920ab7a67c62e6aa689793aaafbfc5b3fb))
+
 # @amfa-team/room-service [1.3.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.2.0...@amfa-team/room-service@1.3.0-beta.1) (2021-02-01)
 
 
