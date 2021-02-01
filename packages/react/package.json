@@ -19,6 +19,7 @@
     "d3-timer": "^2.0.0",
     "framer-motion": "^3.2.1",
     "lodash.debounce": "^4.0.8",
+    "lodash.isequal": "^4.5.0",
     "react-resize-detector": "^6.2.1",
     "react-table": "^7.6.3",
     "twilio-video": "^2.11.0",
@@ -30,8 +31,8 @@
     "access": "restricted"
   },
   "devDependencies": {
-    "@amfa-team/theme-service": "^1.1.0",
     "@amfa-team/room-service-types": "^1.0.0",
+    "@amfa-team/theme-service": "^1.1.0",
     "@amfa-team/user-service": "^1.5.0",
     "@amfa-team/user-service-types": "^1.2.0",
     "@babel/core": "^7.12.10",
@@ -53,6 +54,7 @@
     "@types/classnames": "^2.2.11",
     "@types/lodash-es": "^4.17.4",
     "@types/lodash.debounce": "^4.0.6",
+    "@types/lodash.isequal": "^4.5.5",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "@types/react-resize-detector": "^5.0.0",
@@ -80,8 +82,8 @@
     "typescript-plugin-css-modules": "^3.1.0"
   },
   "peerDependencies": {
-    "@amfa-team/theme-service": "^1.1.0",
     "@amfa-team/room-service-types": "^1.0.0",
+    "@amfa-team/theme-service": "^1.1.0",
     "@amfa-team/user-service": "^1.5.0",
     "@amfa-team/user-service-types": "^1.2.0",
     "@sentry/react": "^5.30.0",
