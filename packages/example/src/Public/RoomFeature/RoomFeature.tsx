@@ -29,6 +29,26 @@ function RoomFeature(): ReactElement {
     [history, spaceName],
   );
 
+  const render = useCallback(
+    (space) => {
+      if (space === null) {
+        return <p>Not found</p>;
+      }
+
+      return (
+        <TwilioApp
+          space={space}
+          settings={settings}
+          onRoomChanged={onRoomChanged}
+          roomName={roomName ?? null}
+          dictionary={defaultRoomDictionary.fr}
+          blameDictionary={defaultBlameDictionary.fr}
+        />
+      );
+    },
+    [onRoomChanged, roomName],
+  );
+
   return (
     <div style={{ height: "calc(100% - 250px)" }}>
       <h3>Room Feature</h3>
@@ -41,22 +61,7 @@ function RoomFeature(): ReactElement {
         dictionary={defaultRestrictedPageDictionary.fr}
         LoadingComponent={DotLoader}
       >
-        {(space) => {
-          if (space === null) {
-            return <p>Not found</p>;
-          }
-
-          return (
-            <TwilioApp
-              space={space}
-              settings={settings}
-              onRoomChanged={onRoomChanged}
-              roomName={roomName ?? null}
-              dictionary={defaultRoomDictionary.fr}
-              blameDictionary={defaultBlameDictionary.fr}
-            />
-          );
-        }}
+        {render}
       </SpacePage>
     </div>
   );

@@ -60,7 +60,7 @@ async function validateRoom(room: IRoomDocument) {
       for (let i = 0; i < participants.length; i += 1) {
         if (!twilioState.participants.includes(participants[i].id)) {
           // If participant is pending do nothing, as it might be a race condition
-          if (participants[i].status === ParticipantStatus.connected) {
+          if (participants[i].status !== ParticipantStatus.pending) {
             logger.error(
               new Error(
                 "cron.validateRoom: participant disconnected without error",
@@ -68,7 +68,32 @@ async function validateRoom(room: IRoomDocument) {
             );
 
             tasks.push(
-              disconnectParticipant(participants[i]).catch((e) =>
+              // do not use disconnect here, in case participant.room !== room.id
+              Promise.all([
+                RoomModel.findOneAndUpdate(
+                  {
+                    _id: room.id,
+                    participants: { $in: [participants[i].id] },
+                  },
+                  {
+                    $inc: { size: -1 },
+                    $pull: { participants: participants[i].id },
+                  },
+                  { new: true },
+                ),
+                ParticipantModel.findOneAndUpdate(
+                  // we need to use room filter to prevent race condition when shuffle is used
+                  // i.e. it's already connected to another room
+                  { _id: participants[i].id, room: room.id },
+                  {
+                    $set: {
+                      status: ParticipantStatus.disconnected,
+                      statusValidUntil: null,
+                      room: null,
+                    },
+                  },
+                ),
+              ]).catch((e) =>
                 logger.error(
                   e,
                   "cron.validateRoom: unable to disconnect participant",
