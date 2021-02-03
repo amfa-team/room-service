@@ -1,5 +1,5 @@
 import type { Document } from "mongoose";
-import mongoose, { Schema } from "mongoose";
+import { Schema } from "mongoose";
 import type { RoomStatusEvent } from "../../../twilio/webhook";
 
 interface IRoomStatusDocument extends Document {
@@ -33,10 +33,5 @@ const RoomStatusSchema: Schema = new Schema(
   },
 );
 
-const RoomStatusModel = mongoose.model<IRoomStatusDocument>(
-  "RoomStatus",
-  RoomStatusSchema,
-);
-
 export type { IRoomStatusDocument };
-export { RoomStatusModel };
+export { RoomStatusSchema };

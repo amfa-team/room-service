@@ -3,35 +3,65 @@ import mongoose from "mongoose";
 import type { Mongoose } from "mongoose";
 import { getEnv, getEnvName } from "../../utils/env";
 import { logger } from "../io/logger";
+import type { IParticipantDocument } from "./model/participant";
+import { ParticipantSchema } from "./model/participant";
+import type { IRoomDocument } from "./model/room";
+import { RoomSchema } from "./model/room";
+import type { IRoomStatusDocument } from "./model/roomStatus";
+import { RoomStatusSchema } from "./model/roomStatus";
 
 const cachedClientMap: Map<string, Promise<Mongoose>> = new Map();
-let closing = false;
+
+function discardClient(url: string, client?: Mongoose) {
+  cachedClientMap.delete(url);
+  if (client) {
+    setTimeout(() => {
+      // Do not discard immediately to not fail currently running operations
+      client.disconnect().catch((e) => {
+        logger.error(e, "[mongo/client:discardClient]: disconnect failed");
+      });
+    }, 30_000);
+  }
+}
 
 async function getClient(url: string): Promise<Mongoose> {
   logger.info("[mongo/client:getClient]: connecting to mongodb");
 
   let cachedClient = cachedClientMap.get(url) ?? null;
   if (cachedClient) {
-    const client: Promise<Mongoose> = cachedClient.catch(async (e) => {
-      logger.error(e, "[mongo/client:connect]: cache failed");
-      cachedClientMap.delete(url);
-      return getClient(url);
-    });
+    const client: Promise<Mongoose> = cachedClient
+      .then((c) => {
+        if (c.connection.readyState === 1) {
+          return c;
+        }
+        discardClient(url, c);
+        return getClient(url);
+      })
+      .catch(async (e) => {
+        logger.error(e, "[mongo/client:connect]: cache failed");
+        discardClient(url);
+        return getClient(url);
+      });
     logger.info("[mongo/client:getClient]: using cached mongodb client");
     return client;
   }
 
   try {
-    cachedClient = mongoose.connect(url, {
-      appname: `room-service-${getEnvName()}`,
+    const instance = new mongoose.Mongoose();
+    cachedClient = instance.connect(url, {
+      appname: `email-service-${getEnvName()}`,
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      connectTimeoutMS: 30_000,
-      socketTimeoutMS: 30_000,
+      connectTimeoutMS: 10_000,
+      poolSize: 5, // Maintain up to 5 socket connections
+      serverSelectionTimeoutMS: 5_000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 600_000, // Close sockets after 10 minutes of inactivity
       keepAlive: true,
       keepAliveInitialDelay: 30_000,
       useFindAndModify: false,
       useCreateIndex: true,
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0, // and MongoDB driver buffering
     });
 
     cachedClientMap.set(url, cachedClient);
@@ -55,7 +85,7 @@ async function getClient(url: string): Promise<Mongoose> {
     });
 
     client.connection.on("disconnected", () => {
-      logger.info("[mongo/client:event]: disconnected");
+      logger.warn("[mongo/client:event]: disconnected");
     });
 
     client.connection.on("connected", () => {
@@ -63,15 +93,16 @@ async function getClient(url: string): Promise<Mongoose> {
     });
 
     client.connection.on("reconnected", () => {
-      logger.info("[mongo/client:event]: reconnected");
+      logger.warn("[mongo/client:event]: reconnected");
+    });
+
+    client.connection.on("reconnectTries", () => {
+      logger.warn("[mongo/client:event]: reconnectTries");
     });
 
     client.connection.on("close", () => {
       logger.warn("[mongo/client:event]: close");
-      cachedClientMap.delete(url);
-      if (!closing) {
-        getClient(url).catch((e) => logger.error(e));
-      }
+      discardClient(url, client);
     });
 
     return client;
@@ -82,7 +113,7 @@ async function getClient(url: string): Promise<Mongoose> {
   }
 }
 
-export async function connect(context: Context | null): Promise<Mongoose> {
+export async function connect(context?: Context | null): Promise<Mongoose> {
   if (context) {
     // eslint-disable-next-line no-param-reassign
     context.callbackWaitsForEmptyEventLoop = false;
@@ -92,10 +123,25 @@ export async function connect(context: Context | null): Promise<Mongoose> {
   return getClient(getEnv("MONGO_DB_URL"));
 }
 
-export function close(context: Context | null) {
+export function close(context?: Context | null) {
   if (context) {
     // eslint-disable-next-line no-param-reassign
     context.callbackWaitsForEmptyEventLoop = true;
   }
-  closing = true;
+}
+
+export async function getModels() {
+  const client = await connect();
+
+  return {
+    ParticipantModel: client.model<IParticipantDocument>(
+      "Participant",
+      ParticipantSchema,
+    ),
+    RoomModel: client.model<IRoomDocument>("Room", RoomSchema),
+    RoomStatusModel: client.model<IRoomStatusDocument>(
+      "RoomStatus",
+      RoomStatusSchema,
+    ),
+  };
 }
