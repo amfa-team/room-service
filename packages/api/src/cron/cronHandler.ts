@@ -1,13 +1,13 @@
 import { ParticipantStatus } from "@amfa-team/room-service-types";
 import { logger } from "../services/io/logger";
 import { disconnectParticipant } from "../services/lifecycleService";
-import { ParticipantModel } from "../services/mongo/model/participant";
+import { getModels } from "../services/mongo/client";
 import type { IRoomDocument } from "../services/mongo/model/room";
-import { RoomModel } from "../services/mongo/model/room";
 import { getTwilioRoomState } from "../twilio/client";
 
 async function validateRoom(room: IRoomDocument) {
   try {
+    const { RoomModel, ParticipantModel } = await getModels();
     const [twilioState, participants] = await Promise.all([
       room.live
         ? getTwilioRoomState(room.id)
@@ -113,6 +113,7 @@ async function validateRoom(room: IRoomDocument) {
 
 async function validateParticipants() {
   try {
+    const { ParticipantModel } = await getModels();
     const [p1, p2] = await Promise.all([
       ParticipantModel.find({
         status: ParticipantStatus.pending,
@@ -145,6 +146,7 @@ async function validateParticipants() {
 }
 
 async function validateRooms() {
+  const { RoomModel } = await getModels();
   const { modifiedCount } = await RoomModel.collection.updateMany({}, [
     {
       $set: {

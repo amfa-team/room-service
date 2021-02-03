@@ -8,7 +8,7 @@ import {
   onRoomCreated,
   onRoomEnded,
 } from "../services/lifecycleService";
-import { RoomStatusModel } from "../services/mongo/model/roomStatus";
+import { getModels } from "../services/mongo/client";
 import { verifyWebhook } from "../twilio/client";
 import type { RoomStatusEvent } from "../twilio/webhook";
 import { roomStatusEventDecoder } from "../twilio/webhook";
@@ -29,6 +29,7 @@ export async function handleTwilioWebhook(
 
   const data = querystring.parse(params);
   const result = roomStatusEventDecoder.decode(data);
+  const { RoomStatusModel } = await getModels();
 
   if (!result.isOk()) {
     logger.error(

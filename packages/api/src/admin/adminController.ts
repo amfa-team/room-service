@@ -7,8 +7,7 @@ import type {
 } from "@amfa-team/room-service-types";
 import { JsonDecoder } from "ts.data.json";
 import type { HandlerResult } from "../services/io/types";
-import { ParticipantModel } from "../services/mongo/model/participant";
-import { RoomModel } from "../services/mongo/model/room";
+import { getModels } from "../services/mongo/client";
 
 export const paginationDecoder = JsonDecoder.object(
   {
@@ -30,6 +29,7 @@ export async function handleAdminRooms(
   data: AdminRoomData,
 ): Promise<HandlerResult<PaginationPayload<IRoom>>> {
   const { pageSize, pageIndex } = data.pagination;
+  const { RoomModel } = await getModels();
   const [roomCount, rooms] = await Promise.all([
     RoomModel.countDocuments({}),
     RoomModel.find({}, null, {
@@ -56,6 +56,7 @@ export async function handleAdminParticipants(
   data: AdminParticipantData,
 ): Promise<HandlerResult<PaginationPayload<IParticipant>>> {
   const { pageSize, pageIndex } = data.pagination;
+  const { ParticipantModel } = await getModels();
   const [participantCount, participants] = await Promise.all([
     ParticipantModel.countDocuments({}),
     ParticipantModel.find({}, null, {
