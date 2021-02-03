@@ -1,6 +1,6 @@
 import type { IRoom } from "@amfa-team/room-service-types";
 import type { Document } from "mongoose";
-import mongoose, { Schema } from "mongoose";
+import { Schema } from "mongoose";
 
 interface IRoomDocument extends IRoom, Document {
   _id: string;
@@ -69,7 +69,5 @@ RoomSchema.index(
   { name: "room-webhook" }, // for onParticipantDisconnected
 );
 
-const RoomModel = mongoose.model<IRoomDocument>("Room", RoomSchema);
-
 export type { IRoomDocument };
-export { RoomModel };
+export { RoomSchema };

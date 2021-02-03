@@ -1,7 +1,7 @@
 import type { IParticipant } from "@amfa-team/room-service-types";
 import { ParticipantStatus } from "@amfa-team/room-service-types";
 import type { Document } from "mongoose";
-import mongoose, { Schema } from "mongoose";
+import { Schema } from "mongoose";
 
 interface IParticipantDocument extends IParticipant, Document {
   _id: string;
@@ -72,10 +72,5 @@ ParticipantSchema.index(
   },
 );
 
-const ParticipantModel = mongoose.model<IParticipantDocument>(
-  "Participant",
-  ParticipantSchema,
-);
-
 export type { IParticipantDocument };
-export { ParticipantModel };
+export { ParticipantSchema };

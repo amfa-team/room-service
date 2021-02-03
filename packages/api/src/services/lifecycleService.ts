@@ -21,10 +21,9 @@ import type {
   RoomCreatedEvent,
   RoomEndedEvent,
 } from "../twilio/webhook";
+import { getModels } from "./mongo/client";
 import type { IParticipantDocument } from "./mongo/model/participant";
-import { ParticipantModel } from "./mongo/model/participant";
 import type { IRoomDocument } from "./mongo/model/room";
-import { RoomModel } from "./mongo/model/room";
 
 function generateRoomName() {
   return uniqueNamesGenerator({
@@ -46,6 +45,7 @@ export async function createRoom(
     uniqueName: getTwilioUniqueName(spaceId, name),
   });
 
+  const { RoomModel } = await getModels();
   const room = new RoomModel({
     _id: twilioSid,
     name,
@@ -64,6 +64,7 @@ export async function createRoom(
 export async function findOrCreateParticipant(
   participantId: string,
 ): Promise<IParticipantDocument> {
+  const { ParticipantModel } = await getModels();
   const existingParticipant = await ParticipantModel.findById(participantId);
   if (existingParticipant) {
     return existingParticipant;
@@ -82,10 +83,12 @@ export async function findOrCreateParticipant(
 export async function getParticipantRoom(
   participant: IParticipant,
 ): Promise<IRoomDocument | null> {
+  const { RoomModel } = await getModels();
   return participant.room ? RoomModel.findById(participant.room) : null;
 }
 
 export async function onRoomCreated(event: RoomCreatedEvent) {
+  const { RoomModel } = await getModels();
   await RoomModel.findOneAndUpdate(
     { _id: event.RoomSid },
     { $set: { live: true } },
@@ -93,6 +96,7 @@ export async function onRoomCreated(event: RoomCreatedEvent) {
 }
 
 export async function onRoomEnded(event: RoomEndedEvent) {
+  const { RoomModel } = await getModels();
   await RoomModel.findOneAndUpdate(
     { _id: event.RoomSid },
     { $set: { live: false } },
@@ -100,6 +104,7 @@ export async function onRoomEnded(event: RoomEndedEvent) {
 }
 
 export async function onParticipantConnected(event: ParticipantConnectedEvent) {
+  const { ParticipantModel } = await getModels();
   await ParticipantModel.findOneAndUpdate(
     { _id: event.ParticipantIdentity },
     { $set: { status: ParticipantStatus.connected, statusValidUntil: null } },
@@ -107,6 +112,7 @@ export async function onParticipantConnected(event: ParticipantConnectedEvent) {
 }
 
 async function updateDbOnDisconnect(roomId: string, participantId: string) {
+  const { ParticipantModel, RoomModel } = await getModels();
   await Promise.all([
     RoomModel.findOneAndUpdate(
       {
@@ -137,6 +143,7 @@ async function updateDbOnDisconnect(roomId: string, participantId: string) {
 export async function onParticipantDisconnected(
   event: ParticipantDisconnectedEvent,
 ) {
+  const { ParticipantModel } = await getModels();
   await Promise.all([
     updateDbOnDisconnect(event.RoomSid, event.ParticipantIdentity),
     ParticipantModel.findOneAndUpdate(
@@ -175,6 +182,7 @@ async function setParticipantPending(
   roomId: string,
   participantId: string,
 ): Promise<IParticipantDocument> {
+  const { ParticipantModel } = await getModels();
   const participant = await ParticipantModel.findOneAndUpdate(
     { _id: participantId },
     {
@@ -216,6 +224,7 @@ export async function joinRoom(
     query._id = { $ne: participant.room };
   }
 
+  const { RoomModel } = await getModels();
   const [room] = await Promise.all([
     RoomModel.findOneAndUpdate(
       query,
