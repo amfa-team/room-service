@@ -1,5 +1,6 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import { useConnect, useToken as useJwtToken } from "@amfa-team/user-service";
+import { captureException } from "@sentry/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useJoin } from "../../api/useApi";
 import WaitingPage from "../../components/WaitingPage/WaitingPage";
@@ -32,12 +33,19 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
     setChangeRoom(change);
     setStep("connect");
   }, []);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     // Restart
     setStep("setup");
     setChangeRoom(false);
+    setRetryCount(0);
   }, [roomName]);
+
+  useEffect(() => {
+    // Reset at each step
+    setRetryCount(0);
+  }, [step]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -52,9 +60,14 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
             }
           })
           .catch((err) => {
-            console.error(err);
             if (!abortController.signal.aborted) {
-              setStep("setup");
+              console.error(err);
+              captureException(err);
+              if (retryCount > 3) {
+                setStep("setup");
+              } else {
+                setRetryCount(retryCount + 1);
+              }
             }
           });
       }
@@ -63,7 +76,7 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
     return () => {
       abortController.abort();
     };
-  }, [step, connect, jwtToken]);
+  }, [step, connect, jwtToken, retryCount]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -80,9 +93,14 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
           }
         })
         .catch((err) => {
-          console.error(err);
           if (!abortController.signal.aborted) {
-            setStep("setup");
+            console.error(err);
+            captureException(err);
+            if (retryCount > 3) {
+              setStep("setup");
+            } else {
+              setRetryCount(retryCount + 1);
+            }
           }
         });
     }
@@ -90,7 +108,7 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
     return () => {
       abortController.abort();
     };
-  }, [step, join, roomName, onRoomChanged, jwtToken]);
+  }, [step, join, roomName, onRoomChanged, jwtToken, retryCount]);
 
   return (
     <WaitingPage

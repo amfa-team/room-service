@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/react";
 import { useEffect, useState } from "react";
 import { atom, useRecoilState } from "recoil";
 import type { Room } from "twilio-video";
@@ -45,6 +46,11 @@ export function useConnectTwilioRoom(token: string): AsyncData<Room> {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { videoTrack, audioTrack } = useTwilioLocalTracks();
+  const [retryCount, setRetryCount] = useState(0);
+
+  useEffect(() => {
+    setRetryCount(0);
+  }, [token]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -84,14 +90,21 @@ export function useConnectTwilioRoom(token: string): AsyncData<Room> {
         setIsLoading(false);
       })
       .catch((err) => {
-        setError(err);
-        setIsLoading(false);
+        if (!abortController.signal.aborted) {
+          setIsLoading(false);
+          if (retryCount > 3) {
+            captureException(err);
+            setError(err);
+          } else {
+            setRetryCount(retryCount + 1);
+          }
+        }
       });
 
     return () => {
       abortController.abort();
     };
-  }, [token, setRoom]);
+  }, [token, setRoom, retryCount]);
 
   useEffect(() => {
     const abortController = new AbortController();
