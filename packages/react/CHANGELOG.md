@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.4.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.3.0...@amfa-team/room-service@1.4.0-beta.1) (2021-02-05)
+
+
+### Features
+
+* add retry shuffle & connect ([91b46f6](https://github.com/amfa-team/room-service/commit/91b46f61df4b4b1972212d7c6f4af09dcff1f55a))
+
 # @amfa-team/room-service [1.3.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.2.0...@amfa-team/room-service@1.3.0) (2021-02-01)
 
 
