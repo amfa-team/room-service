@@ -1,8 +1,8 @@
 import classnames from "classnames";
 import { motion } from "framer-motion";
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 import React, { useMemo } from "react";
-import { useResizeDetector } from "react-resize-detector/build/withPolyfill";
+import { useResizeDetector } from "react-resize-detector";
 import classes from "./squareDiv.module.css";
 
 interface SquareDivProps {
@@ -30,8 +30,8 @@ export function SquareDiv(props: SquareDivProps) {
   });
 
   const size = Math.min(
-    Number.isFinite(height) ? height : 0,
-    Number.isFinite(width) ? width : 0,
+    height && Number.isFinite(height) ? height : 0,
+    width && Number.isFinite(width) ? width : 0,
   );
   const style = useMemo(() => {
     return size === 0 ? {} : { height: size, width: size };
@@ -45,7 +45,7 @@ export function SquareDiv(props: SquareDivProps) {
       className={classnames(classes.root, {
         [classes.hidden]: hidden,
       })}
-      ref={targetRef}
+      ref={targetRef as RefObject<HTMLDivElement>}
     >
       <div className={classes.content} style={style}>
         {children}
