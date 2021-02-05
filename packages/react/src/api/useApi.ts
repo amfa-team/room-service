@@ -1,4 +1,5 @@
 import type { IRoom, JoinPayload } from "@amfa-team/room-service-types";
+import { captureException } from "@sentry/react";
 import isEqual from "lodash.isequal";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -53,6 +54,7 @@ export function useJoin(
   const [isJoining, setIsJoining] = useState(false);
   const [isFull, setIsFull] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const join = useCallback(
     async (jwtToken: string, signal: AbortSignal): Promise<JoinPayload> => {
@@ -100,8 +102,14 @@ export function useJoin(
       } catch (e) {
         if (!signal.aborted) {
           console.error("useApi/useJoin: fail", e);
-          setIsJoining(false);
-          throw e;
+          captureException(e);
+
+          if (retryCount > 3) {
+            setIsJoining(false);
+            throw e;
+          } else {
+            setRetryCount(retryCount + 1);
+          }
         }
 
         return {
@@ -109,7 +117,7 @@ export function useJoin(
         };
       }
     },
-    [settings, setRoom, setToken, spaceId, change, roomName],
+    [settings, setRoom, setToken, spaceId, change, roomName, retryCount],
   );
 
   return {
