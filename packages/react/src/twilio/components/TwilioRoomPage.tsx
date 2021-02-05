@@ -27,12 +27,15 @@ export default function TwilioRoomPage(props: TwilioRoomPageProps) {
   const { join, isJoining } = useJoin(spaceId, true, roomName);
 
   const onShuffleClicked = useCallback(async () => {
-    const abortController = new AbortController();
-    const joinData = await join(userJwtToken, abortController.signal);
-    if (joinData.success) {
-      onRoomChanged(joinData.room.name);
+    if (!isJoining) {
+      // Do not shuffle when joining
+      const abortController = new AbortController();
+      const joinData = await join(userJwtToken, abortController.signal);
+      if (joinData.success) {
+        onRoomChanged(joinData.room.name);
+      }
     }
-  }, [join, onRoomChanged, userJwtToken]);
+  }, [join, onRoomChanged, userJwtToken, isJoining]);
 
   // Room type from twilio is badly written ==> need PR on @types/twilio-video
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
