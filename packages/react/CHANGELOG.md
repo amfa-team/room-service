@@ -1,3 +1,16 @@
+# @amfa-team/room-service [1.4.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.0-beta.1...@amfa-team/room-service@1.4.0-beta.2) (2021-02-05)
+
+
+### Bug Fixes
+
+* add missing ResizeObserver polyfill ([b384597](https://github.com/amfa-team/room-service/commit/b384597164264dd3361ebc1a89270f83a39ebbf8))
+* prevent shuffle spawn ([9b3989f](https://github.com/amfa-team/room-service/commit/9b3989f60c74a38d622e972562f6220802ce96dd))
+
+
+### Features
+
+* rm admin ([797df46](https://github.com/amfa-team/room-service/commit/797df46261b3aa74dea7b947ed3735ed2fa9899f))
+
 # @amfa-team/room-service [1.4.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.3.0...@amfa-team/room-service@1.4.0-beta.1) (2021-02-05)
 
 
