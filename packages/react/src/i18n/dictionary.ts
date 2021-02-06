@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import type { ReactNode } from "react";
 import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 
 export interface ControlsDictionary {
@@ -30,7 +29,7 @@ export interface ParticipantListDictionary {
 export interface WaitingPageDictionary {
   join: string;
   roomFull: string;
-  cgu: ReactNode;
+  cgu: string;
 }
 
 export interface MediaErrorDictionary {
@@ -41,6 +40,7 @@ export interface MediaErrorDictionary {
 }
 
 export interface RoomDictionary {
+  seo: any;
   waitingPage: WaitingPageDictionary;
   loading: LoadingDictionary;
   participantInfo: ParticipantInfoDictionary;
@@ -51,6 +51,18 @@ export interface RoomDictionary {
 
 export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
   en: {
+    seo: {
+      title: "| SideBySide",
+      description: "",
+      canonical: "https://www.sidebyside.live/",
+      siteName: "SideBySide",
+      ogimage: {
+        title: "** SideBySide **",
+        width: 2048,
+        height: 1170,
+        alt: "Thumnail",
+      },
+    },
     waitingPage: {
       roomFull: "Room is full, click on Join to go in another room",
       join: "Join",
@@ -89,6 +101,18 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
     },
   },
   fr: {
+    seo: {
+      title: "| SideBySide",
+      description: "",
+      canonical: "https://www.sidebyside.live/",
+      siteName: "SideBySide",
+      ogimage: {
+        title: "**SideBySide**",
+        width: 2048,
+        height: 1170,
+        alt: "Miniature",
+      },
+    },
     waitingPage: {
       roomFull:
         "Le salon est plein, cliquer sur rejoindre pour changer de salon",
@@ -150,5 +174,6 @@ export function useSetDictionary(dictionary: RoomDictionary) {
 export function useDictionary<K extends keyof RoomDictionary>(
   key: K,
 ): RoomDictionary[K] {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return useRecoilValue(dictionaryAtom)[key];
 }
