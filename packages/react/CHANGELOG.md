@@ -1,3 +1,10 @@
+## @amfa-team/room-service [1.4.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.0...@amfa-team/room-service@1.4.1) (2021-02-06)
+
+
+### Bug Fixes
+
+* dictionary ([254cc39](https://github.com/amfa-team/room-service/commit/254cc394a69818fd2ee0a96ae732e545f330a296))
+
 ## @amfa-team/room-service [1.4.1-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.0...@amfa-team/room-service@1.4.1-beta.1) (2021-02-06)
 
 
