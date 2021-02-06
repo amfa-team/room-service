@@ -2,12 +2,12 @@ import { UserServiceSettings } from "@amfa-team/user-service";
 import type { ReactElement } from "react";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Admin from "./Admin";
+// import Admin from "./Admin";
 import Nav from "./Nav/Nav";
 import Public from "./Public/Public";
 import User from "./User";
 
-const endpoint = process.env.API_ENDPOINT ?? "";
+// const endpoint = process.env.API_ENDPOINT ?? "";
 
 const userEndpoint = process.env.USER_API_ENDPOINT ?? "";
 
@@ -25,9 +25,9 @@ function App(): ReactElement | null {
       <User />
       <Nav />
       <Switch>
-        <Route path="/admin/:pageName">
+        {/* <Route path="/admin/:pageName">
           <Admin endpoint={endpoint} />
-        </Route>
+        </Route> */}
         <Route path="/admin">
           <Redirect to="/admin/room" />
         </Route>
