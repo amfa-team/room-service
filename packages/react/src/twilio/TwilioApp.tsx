@@ -1,6 +1,7 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import { useToken as useJwtToken } from "@amfa-team/user-service";
 import React from "react";
+import Video from "twilio-video";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
 import { DictionaryProvider } from "../components/DictionaryProvider/DictionaryProvider";
@@ -52,6 +53,10 @@ export default function TwilioAppContainer(props: TwilioAppProps) {
 
   if (!ready) {
     return null;
+  }
+
+  if (!Video.isSupported) {
+    return <div>Not supported</div>;
   }
 
   return (
