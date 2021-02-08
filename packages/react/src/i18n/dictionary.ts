@@ -41,7 +41,7 @@ export interface MediaErrorDictionary {
 
 export interface NotSupportedPageDictionary {
   title: string;
-  desc: ReactNode;
+  desc: string;
   force: string;
 }
 
@@ -71,9 +71,10 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
       },
     },
     notSupported: {
-      title: 'Browser not supported',
-      desc: 'We support recent versions of Chrome, Firefox, Edge or Safari. Please open this application in one of the supported browser',
-      force: 'Let me try',
+      title: "Browser not supported",
+      desc:
+        "We support recent versions of Chrome, Firefox, Edge or Safari. Please open this application in one of the supported browser",
+      force: "Let me try",
     },
     waitingPage: {
       roomFull: "Room is full, click on Join to go in another room",
@@ -126,9 +127,10 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
       },
     },
     notSupported: {
-      title: 'Votre navigateur n\'est pas compatible',
-      desc: 'Nous supportons les versions récentes de Chrome, Firefox, Edge et Safari. Pour une expérience optimale, veuillez utiliser une version supportée.',
-      force: 'Essayer quand même',
+      title: "Votre navigateur n'est pas compatible",
+      desc:
+        "Nous supportons les versions récentes de Chrome, Firefox, Edge et Safari. Pour une expérience optimale, veuillez utiliser une version supportée.",
+      force: "Essayer quand même",
     },
     waitingPage: {
       roomFull:
