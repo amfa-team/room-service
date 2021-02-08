@@ -1,15 +1,38 @@
+@value mediaQueries: '../../node_modules/@amfa-team/theme-service/lib/theme/mediaQueries.module.css';
+@value sm-up, sm-down from mediaQueries;
+
 .container {
   height: 100%;
   display: grid;
-  grid-template-rows: auto 50px 20px 5px;
   position: relative;
-  gap: 30px;
   padding-top: 20px;
   box-sizing: border-box;
 }
 
+@media (sm-up) {
+  .container {
+    grid-template-rows: auto 50px 20px 5px;
+    gap: 30px;
+  }
+}
+
+@media (sm-down) {
+  .container {
+    grid-template-rows: auto 50px 85px 50px;
+    gap: 25px;
+  }
+}
+
 .notice {
   text-align: center;
+}
+
+@media (sm-down) {
+  .notice {
+    background-color: white;
+    padding: 15px;
+    font-size: 0.8em;
+  }
 }
 
 .video {
@@ -24,13 +47,25 @@
 .join {
   color: #ffffff;
   background-color: #0ee997;
-  width: 400px;
-  height: 50px;
-  border: 0;
-  position: absolute;
-  bottom: -45px;
-  left: calc(50% - 200px);
-  border-radius: 5px;
+}
+
+@media (sm-up) {
+  .join {
+    width: 400px;
+    height: 50px;
+    border: 0;
+    position: absolute;
+    bottom: -45px;
+    left: calc(50% - 200px);
+    border-radius: 5px;
+  }
+}
+
+@media (sm-down) {
+  .join {
+    width: 100%;
+    height: 50px;
+  }
 }
 
 .disabled {
