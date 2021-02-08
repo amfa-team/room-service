@@ -2,7 +2,6 @@ import alias from "@rollup/plugin-alias";
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import postCssValues from "postcss-modules-values";
-import polyfill from "rollup-plugin-polyfill";
 import postcss from "rollup-plugin-postcss";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
@@ -46,7 +45,6 @@ export default [
         extensions,
         plugins: [["@babel/plugin-transform-runtime", { useESModules: true }]],
       }),
-      polyfill(["webrtc-adapter", "abortcontroller-polyfill"]),
       ...extraPlugins,
     ],
   },
@@ -84,7 +82,6 @@ export default [
         extensions,
         plugins: [["@babel/plugin-transform-runtime", { useESModules: false }]],
       }),
-      polyfill(["webrtc-adapter", "abortcontroller-polyfill"]),
       ...extraPlugins,
     ],
   },

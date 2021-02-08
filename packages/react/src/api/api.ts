@@ -1,5 +1,4 @@
 import type { PostRoutes, Response } from "@amfa-team/room-service-types";
-import { fetch as fetchPolyfill } from "whatwg-fetch";
 
 export interface ApiSettings {
   endpoint: string;
@@ -15,7 +14,7 @@ export async function apiPost<P extends keyof PostRoutes>(
   data: PostRoutes[P]["in"],
   signal: AbortSignal | null = null,
 ): Promise<PostRoutes[P]["out"]> {
-  const res = await fetchPolyfill(settings.endpoint + path, {
+  const res = await fetch(settings.endpoint + path, {
     method: "POST",
     body: JSON.stringify(data),
     signal,

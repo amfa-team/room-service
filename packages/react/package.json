@@ -13,7 +13,6 @@
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "@types/d3-timer": "^2.0.0",
-    "abortcontroller-polyfill": "^1.7.1",
     "classnames": "^2.2.6",
     "core-js": "^3.8.3",
     "d3-timer": "^2.0.0",
@@ -23,9 +22,7 @@
     "react-resize-detector": "^6.2.1",
     "react-table": "^7.6.3",
     "twilio-video": "^2.11.0",
-    "uuid": "^8.3.2",
-    "webrtc-adapter": "^7.7.0",
-    "whatwg-fetch": "^3.5.0"
+    "uuid": "^8.3.2"
   },
   "publishConfig": {
     "access": "restricted"
@@ -70,7 +67,6 @@
     "react-dom": "^16.14.0",
     "recoil": "^0.1.2",
     "rollup": "^2.38.1",
-    "rollup-plugin-polyfill": "^3.0.0",
     "rollup-plugin-postcss": "^3.1.8",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-terser": "^7.0.2",
@@ -89,9 +85,12 @@
     "@sentry/react": "^5.30.0",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
+    "abortcontroller-polyfill": "^1.7.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "recoil": "^0.1.2"
+    "recoil": "^0.1.2",
+    "whatwg-fetch": "^3.5.0",
+    "webrtc-adapter": "^7.7.0"
   },
   "peerDependenciesMeta": {
     "@types/react": {
