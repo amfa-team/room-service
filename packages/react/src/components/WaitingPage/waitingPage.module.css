@@ -1,4 +1,4 @@
-@value mediaQueries: '../../node_modules/@amfa-team/theme-service/lib/theme/mediaQueries.module.css';
+@value mediaQueries: '../../theme/mediaQueries.module.css';
 @value sm-up, sm-down from mediaQueries;
 
 .container {
