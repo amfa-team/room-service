@@ -1,3 +1,4 @@
+import alias from "@rollup/plugin-alias";
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import postCssValues from "postcss-modules-values";
@@ -21,12 +22,17 @@ export default [
       },
     ],
     plugins: [
+      alias({
+        entries: {
+          "react-resize-detector": "react-resize-detector/build/withPolyfill",
+        },
+      }),
       resolve({
         extensions,
         browser: true,
         preferBuiltins: false,
         modulesOnly: true,
-        resolveOnly: [/^@amfa-team\/user-service.*$/],
+        resolveOnly: [/^@amfa-team\/room-service.*$/],
       }),
       sourcemaps(),
       postcss({
@@ -54,12 +60,17 @@ export default [
       },
     ],
     plugins: [
+      alias({
+        entries: {
+          "react-resize-detector": "react-resize-detector/build/withPolyfill",
+        },
+      }),
       resolve({
         extensions,
         browser: true,
         preferBuiltins: false,
         modulesOnly: true,
-        resolveOnly: [/^@amfa-team\/user-service.*$/],
+        resolveOnly: [/^@amfa-team\/room-service.*$/],
       }),
       sourcemaps(),
       postcss({

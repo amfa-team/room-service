@@ -17,8 +17,6 @@
     "@amfa-team/user-service-types": "^1.2.0",
     "@sentry/react": "^5.30.0",
     "@sentry/tracing": "^5.30.0",
-    "@types/crypto-js": "^4.0.1",
-    "crypto-js": "^4.0.0",
     "qs": "^6.9.6",
     "normalize.css": "^8.0.1",
     "react": "^16.14.0",
