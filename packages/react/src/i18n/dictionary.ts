@@ -41,7 +41,7 @@ export interface MediaErrorDictionary {
 
 export interface NotSupportedPageDictionary {
   title: string;
-  desc: ReactNode;
+  desc: string;
   force: string;
 }
 
