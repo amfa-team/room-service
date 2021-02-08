@@ -1,3 +1,11 @@
+## @amfa-team/room-service [1.4.4-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.3...@amfa-team/room-service@1.4.4-beta.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* add not supported message ([b67c17d](https://github.com/amfa-team/room-service/commit/b67c17d677f6eb95298438a504ce6a4f6047b1e1))
+* use react-resize-detector polyfill ([5abfc12](https://github.com/amfa-team/room-service/commit/5abfc12a7ff3dbc6fcbdd885edf90e6c140e9c69))
+
 ## @amfa-team/room-service [1.4.3](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.2...@amfa-team/room-service@1.4.3) (2021-02-08)
 
 
