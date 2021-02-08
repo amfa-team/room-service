@@ -1,3 +1,10 @@
+## @amfa-team/room-service [1.4.4-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.4-beta.1...@amfa-team/room-service@1.4.4-beta.2) (2021-02-08)
+
+
+### Bug Fixes
+
+* polyfills ([291fea8](https://github.com/amfa-team/room-service/commit/291fea82fc8ae331b073a821a02def2347540e4e))
+
 ## @amfa-team/room-service [1.4.4-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.3...@amfa-team/room-service@1.4.4-beta.1) (2021-02-08)
 
 
