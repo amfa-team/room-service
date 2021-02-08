@@ -1,10 +1,11 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import { useToken as useJwtToken } from "@amfa-team/user-service";
-import React from "react";
+import React, { useEffect } from "react";
 import Video from "twilio-video";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
 import { DictionaryProvider } from "../components/DictionaryProvider/DictionaryProvider";
+import { NotSupported } from "../components/NotSupported/NotSupported";
 import type { ISpace } from "../entities/Space";
 import type { RoomDictionary } from "../i18n/dictionary";
 import TwilioRoomPage from "./components/TwilioRoomPage";
@@ -22,6 +23,22 @@ export interface TwilioAppProps {
 function TwilioAppRaw(props: TwilioAppProps) {
   const token = useToken();
   const jwtToken = useJwtToken();
+  const [ignoreSupport, setIgnoreSupport] = useState(false);
+
+  useEffect(() => {
+    setIgnoreSupport(false);
+  }, []);
+
+  if (!ignoreSupport && !Video.isSupported) {
+    return (
+      <NotSupported
+        onForce={() => {
+          setIgnoreSupport(true);
+        }}
+        dictionary={props.dictionary.notSupported}
+      />
+    );
+  }
 
   if (!token || props.roomName === null || jwtToken === null) {
     return (
@@ -53,10 +70,6 @@ export default function TwilioAppContainer(props: TwilioAppProps) {
 
   if (!ready) {
     return null;
-  }
-
-  if (!Video.isSupported) {
-    return <div>Not supported</div>;
   }
 
   return (
