@@ -1,3 +1,10 @@
+## @amfa-team/room-service [1.4.3](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.2...@amfa-team/room-service@1.4.3) (2021-02-08)
+
+
+### Bug Fixes
+
+* mediaqueries ([c2c6719](https://github.com/amfa-team/room-service/commit/c2c67195a21f29e5121fd1391ed0a633a4fb4aaa))
+
 ## @amfa-team/room-service [1.4.3-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.2...@amfa-team/room-service@1.4.3-beta.1) (2021-02-08)
 
 
