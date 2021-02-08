@@ -1,3 +1,10 @@
+## @amfa-team/room-service [1.4.2-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.1...@amfa-team/room-service@1.4.2-beta.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* layout waiting page mobile ([d027d5c](https://github.com/amfa-team/room-service/commit/d027d5cb28bb988b59ec25858005e63372a70ac2))
+
 ## @amfa-team/room-service [1.4.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.0...@amfa-team/room-service@1.4.1) (2021-02-06)
 
 
