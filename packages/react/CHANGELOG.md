@@ -1,3 +1,17 @@
+# @amfa-team/room-service [1.5.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.4-beta.2...@amfa-team/room-service@1.5.0-beta.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* lint ([062d62e](https://github.com/amfa-team/room-service/commit/062d62eb24075beb9b65ca646a3f432e24ae00da))
+* polyfill ([407c16f](https://github.com/amfa-team/room-service/commit/407c16fa6b97e8d209da65ecb64589602295ed4d))
+* prettier ([cbfb13a](https://github.com/amfa-team/room-service/commit/cbfb13abf1cbe65f2c057f41d6b163885603d4e2))
+
+
+### Features
+
+* add not supported browser warning ([ac79b95](https://github.com/amfa-team/room-service/commit/ac79b9551d71f9a9c88e45343f350ef5167f4407))
+
 ## @amfa-team/room-service [1.4.4-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.4-beta.1...@amfa-team/room-service@1.4.4-beta.2) (2021-02-08)
 
 
