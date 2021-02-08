@@ -1,0 +1,18 @@
+.root {
+  background: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.desc {
+  font-size: 1.5rem;
+  text-align: center;
+}
