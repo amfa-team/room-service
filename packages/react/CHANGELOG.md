@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.5.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.5.0-beta.1...@amfa-team/room-service@1.5.0-beta.2) (2021-02-09)
+
+
+### Bug Fixes
+
+* css for NotSupported warning ([1c97752](https://github.com/amfa-team/room-service/commit/1c97752b0cc4bdb5e0f50a35487cee2a5ae08212))
+
 # @amfa-team/room-service [1.5.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.4-beta.2...@amfa-team/room-service@1.5.0-beta.1) (2021-02-08)
 
 
