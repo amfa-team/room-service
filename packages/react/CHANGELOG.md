@@ -1,3 +1,39 @@
+# @amfa-team/room-service [1.5.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.5.0-beta.1...@amfa-team/room-service@1.5.0-beta.2) (2021-02-09)
+
+
+### Bug Fixes
+
+* css for NotSupported warning ([1c97752](https://github.com/amfa-team/room-service/commit/1c97752b0cc4bdb5e0f50a35487cee2a5ae08212))
+
+# @amfa-team/room-service [1.5.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.4-beta.2...@amfa-team/room-service@1.5.0-beta.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* lint ([062d62e](https://github.com/amfa-team/room-service/commit/062d62eb24075beb9b65ca646a3f432e24ae00da))
+* polyfill ([407c16f](https://github.com/amfa-team/room-service/commit/407c16fa6b97e8d209da65ecb64589602295ed4d))
+* prettier ([cbfb13a](https://github.com/amfa-team/room-service/commit/cbfb13abf1cbe65f2c057f41d6b163885603d4e2))
+
+
+### Features
+
+* add not supported browser warning ([ac79b95](https://github.com/amfa-team/room-service/commit/ac79b9551d71f9a9c88e45343f350ef5167f4407))
+
+## @amfa-team/room-service [1.4.4-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.4-beta.1...@amfa-team/room-service@1.4.4-beta.2) (2021-02-08)
+
+
+### Bug Fixes
+
+* polyfills ([291fea8](https://github.com/amfa-team/room-service/commit/291fea82fc8ae331b073a821a02def2347540e4e))
+
+## @amfa-team/room-service [1.4.4-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.3...@amfa-team/room-service@1.4.4-beta.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* add not supported message ([b67c17d](https://github.com/amfa-team/room-service/commit/b67c17d677f6eb95298438a504ce6a4f6047b1e1))
+* use react-resize-detector polyfill ([5abfc12](https://github.com/amfa-team/room-service/commit/5abfc12a7ff3dbc6fcbdd885edf90e6c140e9c69))
+
 ## @amfa-team/room-service [1.4.3](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.2...@amfa-team/room-service@1.4.3) (2021-02-08)
 
 

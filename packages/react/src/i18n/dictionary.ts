@@ -39,8 +39,15 @@ export interface MediaErrorDictionary {
   unknown: string;
 }
 
+export interface NotSupportedPageDictionary {
+  title: string;
+  desc: string;
+  force: string;
+}
+
 export interface RoomDictionary {
   seo: any;
+  notSupported: NotSupportedPageDictionary;
   waitingPage: WaitingPageDictionary;
   loading: LoadingDictionary;
   participantInfo: ParticipantInfoDictionary;
@@ -62,6 +69,12 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
         height: 1170,
         alt: "Thumnail",
       },
+    },
+    notSupported: {
+      title: "Browser not supported",
+      desc:
+        "We support recent versions of Chrome, Firefox, Edge or Safari. Please open this application in one of the supported browser",
+      force: "Let me try",
     },
     waitingPage: {
       roomFull: "Room is full, click on Join to go in another room",
@@ -112,6 +125,12 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
         height: 1170,
         alt: "Miniature",
       },
+    },
+    notSupported: {
+      title: "Votre navigateur n'est pas compatible",
+      desc:
+        "Nous supportons les versions récentes de Chrome, Firefox, Edge et Safari. Pour une expérience optimale, veuillez utiliser une version supportée.",
+      force: "Essayer quand même",
     },
     waitingPage: {
       roomFull:
