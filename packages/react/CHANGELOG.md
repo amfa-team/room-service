@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.6.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.5.0...@amfa-team/room-service@1.6.0-beta.1) (2021-02-12)
+
+
+### Features
+
+* landscape layout ([3f86468](https://github.com/amfa-team/room-service/commit/3f864685c078ba288e7443d9cbfe52396e696f57))
+
 # @amfa-team/room-service [1.5.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.4.3...@amfa-team/room-service@1.5.0) (2021-02-10)
 
 
