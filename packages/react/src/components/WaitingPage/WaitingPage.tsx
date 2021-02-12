@@ -105,20 +105,22 @@ export default function WaitingPage(props: WaitingPageProps) {
           blameDictionary={blameDictionary}
         />
       </div>
-      <Controls localParticipant={localParticipant} />
-      <div className={styles.notice}>{dictionary.cgu}</div>
-      <div className={styles.joinContainer}>
-        <button
-          className={classnames(styles.join, {
-            [styles.disabled]:
-              disabled || audioTrack === null || isAcquiringLocalTracks,
-          })}
-          type="button"
-          onClick={onJoinClicked}
-          disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
-        >
-          {dictionary.join}
-        </button>
+      <div className={styles.controls}>
+        <Controls localParticipant={localParticipant} />
+        <div className={styles.notice}>{dictionary.cgu}</div>
+        <div className={styles.joinContainer}>
+          <button
+            className={classnames(styles.join, {
+              [styles.disabled]:
+                disabled || audioTrack === null || isAcquiringLocalTracks,
+            })}
+            type="button"
+            onClick={onJoinClicked}
+            disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
+          >
+            {dictionary.join}
+          </button>
+        </div>
       </div>
       <SnackbarContainer>
         {roomFull && (
