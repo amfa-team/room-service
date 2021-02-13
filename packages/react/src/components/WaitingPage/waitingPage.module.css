@@ -1,5 +1,5 @@
 @value mediaQueries: '../../theme/mediaQueries.module.css';
-@value sm-up, sm-down from mediaQueries;
+@value smartphonePortrait, smartphoneLandscape from mediaQueries;
 
 .container {
   height: 100%;
@@ -13,7 +13,7 @@
   display: grid;
 }
 
-@media (sm-up) {
+@media not (smartphoneportrait) and not (smartphonelandscape) {
   .container {
     grid-template-rows: auto auto;
     gap: 30px;
@@ -26,7 +26,7 @@
   }
 }
 
-@media (sm-down) and (orientation: portrait) {
+@media smartphonePortrait {
   .container {
     grid-template-rows: auto 225px;
     gap: 25px;
@@ -39,16 +39,15 @@
   }
 }
 
-@media (sm-down) and (orientation: landscape) {
+@media smartphoneLandscape {
   .container {
     grid-template-rows: 100%;
     grid-template-columns: auto 50%;
     gap: 25px;
-    padding: 20px;
   }
 
   .controls {
-    grid-template-rows: 50px 85px 50px;
+    grid-template-rows: auto 85px 50px;
     gap: 20px;
   }
 }
@@ -57,8 +56,9 @@
   text-align: center;
 }
 
-@media (sm-down) {
+@media smartphonePortrait, smartphoneLandscape {
   .notice {
+    z-index: 1000;
     background-color: white;
     padding: 15px;
     font-size: 0.8em;
@@ -79,7 +79,7 @@
   background-color: #0ee997;
 }
 
-@media (sm-up) {
+@media not (smartphoneportrait) and not (smartphonelandscape) {
   .join {
     width: 400px;
     height: 50px;
@@ -91,7 +91,7 @@
   }
 }
 
-@media (sm-down) {
+@media smartphonePortrait, smartphoneLandscape {
   .join {
     width: 100%;
     height: 50px;

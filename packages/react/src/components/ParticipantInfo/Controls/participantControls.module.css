@@ -1,5 +1,5 @@
 @value mediaQueries: '../../../theme/mediaQueries.module.css';
-@value sm-up, sm-down from mediaQueries;
+@value smartphonePortrait, smartphoneLandscape from mediaQueries;
 
 /* 5/6 PI --> x = -sqrt(3)/2 ; y = 1/2 */
 @value v5Pi6Top: 25%;
@@ -23,7 +23,7 @@
   border: 1px solid transparent;
 }
 
-@media (sm-up) {
+@media not (smartphoneportrait) and not (smartphonelandscape) {
   .control {
     width: 40px;
     height: 40px;
@@ -36,7 +36,7 @@
   }
 }
 
-@media (sm-down) {
+@media smartphonePortrait, smartphoneLandscape {
   .control {
     width: 20px;
     height: 20px;

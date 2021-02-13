@@ -1,5 +1,5 @@
 @value mediaQueries: '../../theme/mediaQueries.module.css';
-@value sm-up, sm-down from mediaQueries;
+@value smartphoneLandscape from mediaQueries;
 
 .root {
   width: 100%;
@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }
 
-@media (sm-down) and (orientation: landscape) {
+@media smartphoneLandscape {
   .root {
     grid-template-rows: 100%;
     grid-template-columns: auto 50%;
