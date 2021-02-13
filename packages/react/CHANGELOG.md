@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.6.0-beta.4](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0-beta.3...@amfa-team/room-service@1.6.0-beta.4) (2021-02-13)
+
+
+### Bug Fixes
+
+* control ([e30daba](https://github.com/amfa-team/room-service/commit/e30dabaa17f505e93181fa95d177e67a5aaa5f2e))
+
 # @amfa-team/room-service [1.6.0-beta.3](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0-beta.2...@amfa-team/room-service@1.6.0-beta.3) (2021-02-13)
 
 
