@@ -1,5 +1,5 @@
 @value mediaQueries: '../../theme/mediaQueries.module.css';
-@value smartphonePortrait, smartphoneLandscape from mediaQueries;
+@value desktop, smartphonePortrait, smartphoneLandscape from mediaQueries;
 
 .container {
   height: 100%;
@@ -13,15 +13,15 @@
   display: grid;
 }
 
-@media not (smartphoneportrait) and not (smartphonelandscape) {
+@media desktop {
   .container {
-    grid-template-rows: auto auto;
+    grid-template-rows: auto 155px;
     gap: 30px;
     padding-top: 20px;
   }
 
   .controls {
-    grid-template-rows: 50px 20px 5px;
+    grid-template-rows: 50px 40px 5px;
     gap: 30px;
   }
 }
@@ -54,13 +54,13 @@
 
 .notice {
   text-align: center;
+  background-color: white;
+  padding: 10px;
 }
 
 @media smartphonePortrait, smartphoneLandscape {
   .notice {
     z-index: 1000;
-    background-color: white;
-    padding: 15px;
     font-size: 0.8em;
   }
 }
@@ -79,7 +79,7 @@
   background-color: #0ee997;
 }
 
-@media not (smartphoneportrait) and not (smartphonelandscape) {
+@media desktop {
   .join {
     width: 400px;
     height: 50px;
