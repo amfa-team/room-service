@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.6.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0-beta.1...@amfa-team/room-service@1.6.0-beta.2) (2021-02-13)
+
+
+### Features
+
+* support high dpi ([09fe065](https://github.com/amfa-team/room-service/commit/09fe06560568bef4643f734f98896925379494bb))
+
 # @amfa-team/room-service [1.6.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.5.0...@amfa-team/room-service@1.6.0-beta.1) (2021-02-12)
 
 
