@@ -1,5 +1,5 @@
 @value mediaQueries: '../../theme/mediaQueries.module.css';
-@value smartphonePortrait, smartphoneLandscape from mediaQueries;
+@value desktop, smartphonePortrait, smartphoneLandscape from mediaQueries;
 @value vSidebarMobileHeight: 90px;
 
 .root {
@@ -33,7 +33,7 @@
   position: relative;
 }
 
-@media not (smartphoneportrait) and not (smartphonelandscape) {
+@media desktop {
   .circleContainer {
     margin: 10px;
     width: calc(100% - 20px);
