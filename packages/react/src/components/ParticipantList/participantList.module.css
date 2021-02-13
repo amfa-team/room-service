@@ -1,5 +1,5 @@
 @value mediaQueries: '../../theme/mediaQueries.module.css';
-@value sm-up, sm-down from mediaQueries;
+@value smartphonePortrait, smartphoneLandscape from mediaQueries;
 
 .container {
   position: relative;
@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }
 
-@media (sm-up) {
+@media not (smartphoneportrait) and not (smartphonelandscape) {
   .container {
     gap: 40px;
     padding: 20px;
@@ -41,7 +41,7 @@
   z-index: 90;
 }
 
-@media (sm-up) {
+@media not (smartphoneportrait) and not (smartphonelandscape) {
   .shuffleCTA {
     border-radius: 100%;
     top: calc(50% - 45px);
@@ -53,7 +53,7 @@
   }
 }
 
-@media (sm-down) {
+@media smartphonePortrait, smartphoneLandscape {
   .shuffleCTA {
     border-radius: 10px;
     top: calc(50% - 25px);
