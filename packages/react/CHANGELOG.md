@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.6.0-beta.3](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0-beta.2...@amfa-team/room-service@1.6.0-beta.3) (2021-02-13)
+
+
+### Bug Fixes
+
+* desktop layout ([fb068a5](https://github.com/amfa-team/room-service/commit/fb068a58128e08c4c04f6d4b3f6213cf28d5bfb2))
+
 # @amfa-team/room-service [1.6.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0-beta.1...@amfa-team/room-service@1.6.0-beta.2) (2021-02-13)
 
 
