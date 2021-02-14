@@ -1,5 +1,5 @@
 @value mediaQueries: '../../theme/mediaQueries.module.css';
-@value sm-up, sm-down from mediaQueries;
+@value desktop, smartphonePortrait, smartphoneLandscape from mediaQueries;
 @value vSidebarMobileHeight: 90px;
 
 .root {
@@ -33,7 +33,7 @@
   position: relative;
 }
 
-@media (sm-up) {
+@media desktop {
   .circleContainer {
     margin: 10px;
     width: calc(100% - 20px);
@@ -44,7 +44,7 @@
   }
 }
 
-@media (sm-down) {
+@media smartphonePortrait, smartphoneLandscape {
   .circleContainer {
     width: 100%;
     height: 100%;

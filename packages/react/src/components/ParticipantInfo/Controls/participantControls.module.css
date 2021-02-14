@@ -1,5 +1,5 @@
 @value mediaQueries: '../../../theme/mediaQueries.module.css';
-@value sm-up, sm-down from mediaQueries;
+@value desktop, smartphonePortrait, smartphoneLandscape from mediaQueries;
 
 /* 5/6 PI --> x = -sqrt(3)/2 ; y = 1/2 */
 @value v5Pi6Top: 25%;
@@ -21,28 +21,23 @@
 
   border-radius: 100%;
   border: 1px solid transparent;
+
+  width: 20px;
+  height: 20px;
+  transform: translate(-10px, -10px);
+  box-shadow: 0px 0px 0px 0px #c7c7c7, 0px 0px 0px 1px #fdfdfd,
+    0px 0px 0px 0px #dfdfdf, 0px 0px 1px 2px #dfdfdf;
 }
 
-@media (sm-up) {
+@media desktop {
   .control {
-    width: 40px;
-    height: 40px;
-    transform: translate(-20px, -20px);
-    box-shadow: 0px 0px 0px 0px #c7c7c7, 0px 0px 0px 6px #fdfdfd,
-      0px 0px 0px 0px #dfdfdf, 0px 0px 5px 6px #dfdfdf;
-
     top: v5Pi6Top;
     right: v5Pi6Left;
   }
 }
 
-@media (sm-down) {
+@media smartphonePortrait, smartphoneLandscape {
   .control {
-    width: 20px;
-    height: 20px;
-    transform: translate(-10px, -10px);
-    box-shadow: 0px 0px 0px 0px #c7c7c7, 0px 0px 0px 1px #fdfdfd,
-      0px 0px 0px 0px #dfdfdf, 0px 0px 1px 2px #dfdfdf;
     top: 25px;
     left: 25px;
   }
