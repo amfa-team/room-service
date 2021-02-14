@@ -1,3 +1,17 @@
+# @amfa-team/room-service [1.6.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.5.0...@amfa-team/room-service@1.6.0) (2021-02-14)
+
+
+### Bug Fixes
+
+* control ([e30daba](https://github.com/amfa-team/room-service/commit/e30dabaa17f505e93181fa95d177e67a5aaa5f2e))
+* desktop layout ([fb068a5](https://github.com/amfa-team/room-service/commit/fb068a58128e08c4c04f6d4b3f6213cf28d5bfb2))
+
+
+### Features
+
+* landscape layout ([3f86468](https://github.com/amfa-team/room-service/commit/3f864685c078ba288e7443d9cbfe52396e696f57))
+* support high dpi ([09fe065](https://github.com/amfa-team/room-service/commit/09fe06560568bef4643f734f98896925379494bb))
+
 # @amfa-team/room-service [1.6.0-beta.4](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0-beta.3...@amfa-team/room-service@1.6.0-beta.4) (2021-02-13)
 
 
