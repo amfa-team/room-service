@@ -34,6 +34,10 @@ async function getClient(url: string): Promise<Mongoose> {
         if (c.connection.readyState === 1) {
           return c;
         }
+        logger.info(
+          "[mongo/client:getClient]: discard client; connection not connected",
+          { readyState: c.connection.readyState },
+        );
         discardClient(url, c);
         return getClient(url);
       })
@@ -49,7 +53,7 @@ async function getClient(url: string): Promise<Mongoose> {
   try {
     const instance = new mongoose.Mongoose();
     cachedClient = instance.connect(url, {
-      appname: `email-service-${getEnvName()}`,
+      appname: `room-service-${getEnvName()}`,
       useNewUrlParser: true,
       useUnifiedTopology: true,
       connectTimeoutMS: 10_000,

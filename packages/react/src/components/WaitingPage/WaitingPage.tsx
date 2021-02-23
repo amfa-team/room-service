@@ -1,5 +1,5 @@
+import { Button } from "@amfa-team/theme-service";
 import type { BlameDictionary } from "@amfa-team/user-service";
-import classnames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RawLocalParticipant,
@@ -21,6 +21,7 @@ interface WaitingPageProps {
   join: (change: boolean) => void;
   disabled: boolean;
   roomFull: boolean;
+  isJoining: boolean;
   videoError: Error | null;
   audioError: Error | null;
   isAcquiringLocalTracks: boolean;
@@ -34,6 +35,7 @@ export default function WaitingPage(props: WaitingPageProps) {
     join,
     disabled,
     roomFull,
+    isJoining,
     videoError,
     audioError,
     isAcquiringLocalTracks,
@@ -109,17 +111,15 @@ export default function WaitingPage(props: WaitingPageProps) {
         <Controls localParticipant={localParticipant} />
         <div className={styles.notice}>{dictionary.cgu}</div>
         <div className={styles.joinContainer}>
-          <button
-            className={classnames(styles.join, {
-              [styles.disabled]:
-                disabled || audioTrack === null || isAcquiringLocalTracks,
-            })}
+          <Button
             type="button"
+            className={styles.join}
             onClick={onJoinClicked}
             disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
+            loading={isJoining}
           >
             {dictionary.join}
-          </button>
+          </Button>
         </div>
       </div>
       <SnackbarContainer>
@@ -146,6 +146,7 @@ export default function WaitingPage(props: WaitingPageProps) {
 WaitingPage.defaultProps = {
   disabled: false,
   roomFull: false,
+  isJoining: false,
   videoError: null,
   audioError: null,
   isAcquiringLocalTracks: false,

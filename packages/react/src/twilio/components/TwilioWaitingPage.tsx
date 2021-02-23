@@ -28,7 +28,11 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
     audioError,
   } = useTwilioLocalTracks();
   const [changeRoom, setChangeRoom] = useState(false);
-  const { join, isFull } = useJoin(spaceId, changeRoom, props.roomName);
+  const { join, isFull, isJoining } = useJoin(
+    spaceId,
+    changeRoom,
+    props.roomName,
+  );
   const onJoinClicked = useCallback((change: boolean) => {
     setChangeRoom(change);
     setStep("connect");
@@ -118,6 +122,7 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
       disabled={step !== "setup"}
       isAcquiringLocalTracks={isAcquiringLocalTracks}
       roomFull={isFull}
+      isJoining={isJoining}
       audioError={audioError}
       videoError={videoError}
       blameDictionary={blameDictionary}
