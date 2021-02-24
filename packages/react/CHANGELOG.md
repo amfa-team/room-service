@@ -1,3 +1,11 @@
+# @amfa-team/room-service [1.7.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.7.0-beta.1...@amfa-team/room-service@1.7.0-beta.2) (2021-02-24)
+
+
+### Bug Fixes
+
+* prevent useless re-render ([4c8d553](https://github.com/amfa-team/room-service/commit/4c8d553096c219cdbb0af830a4ab77b1b3769628))
+* prevent useless re-render of big components ([19558f4](https://github.com/amfa-team/room-service/commit/19558f44bb6bfc28f19a1ed3b826a3aa8f65451f))
+
 # @amfa-team/room-service [1.7.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0...@amfa-team/room-service@1.7.0-beta.1) (2021-02-24)
 
 
