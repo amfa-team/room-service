@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.7.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0...@amfa-team/room-service@1.7.0-beta.1) (2021-02-24)
+
+
+### Features
+
+* add join loading animation ([4fb475b](https://github.com/amfa-team/room-service/commit/4fb475bf082940a5a72cbe5ed3fc774dabb5ec8a))
+
 # @amfa-team/room-service [1.6.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.5.0...@amfa-team/room-service@1.6.0) (2021-02-14)
 
 
