@@ -14,7 +14,7 @@ interface TwilioRoomPageProps {
   blameDictionary: BlameDictionary;
 }
 
-export default function TwilioRoomPage(props: TwilioRoomPageProps) {
+function TwilioRoomPage(props: TwilioRoomPageProps) {
   const {
     token,
     onRoomChanged,
@@ -50,3 +50,5 @@ export default function TwilioRoomPage(props: TwilioRoomPageProps) {
     />
   );
 }
+
+export default React.memo<TwilioRoomPageProps>(TwilioRoomPage);

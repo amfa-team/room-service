@@ -4,21 +4,24 @@ import type { IParticipant } from "../../entities/Participant";
 import ParticipantInfo from "../ParticipantInfo/ParticipantInfo";
 import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
 
-interface ParticipantProps {
+export interface ParticipantProps {
   participant: IParticipant | null;
-  participants: IParticipant[];
-  isLocalParticipant: boolean;
-  hideParticipant: boolean;
-  loading: boolean;
+  participants?: IParticipant[];
+  isLocalParticipant?: boolean;
+  hideParticipant?: boolean;
+  loading?: boolean;
   blameDictionary: BlameDictionary;
 }
 
-export default function Participant({
+// Prevent useless re-render
+const emptyParticipantList: IParticipant[] = [];
+
+function Participant({
   participant,
-  participants,
-  isLocalParticipant,
-  hideParticipant,
-  loading,
+  participants = emptyParticipantList,
+  isLocalParticipant = false,
+  hideParticipant = false,
+  loading = false,
   blameDictionary,
 }: ParticipantProps) {
   return (
@@ -40,8 +43,4 @@ export default function Participant({
   );
 }
 
-Participant.defaultProps = {
-  isLocalParticipant: false,
-  hideParticipant: false,
-  loading: false,
-};
+export default React.memo<ParticipantProps>(Participant);

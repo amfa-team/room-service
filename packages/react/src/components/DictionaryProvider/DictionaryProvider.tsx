@@ -8,11 +8,13 @@ interface DictionaryProviderProps {
   dictionary: RoomDictionary;
 }
 
-export function DictionaryProvider(
-  props: DictionaryProviderProps,
-): JSX.Element {
+function RawDictionaryProvider(props: DictionaryProviderProps): JSX.Element {
   useSetDictionary(props.dictionary);
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{props.children}</>;
 }
+
+export const DictionaryProvider = React.memo<DictionaryProviderProps>(
+  RawDictionaryProvider,
+);

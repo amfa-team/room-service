@@ -15,7 +15,7 @@ interface TwilioWaitingPageProps {
 
 type Step = "setup" | "connect" | "join" | "ready";
 
-export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
+function TwilioWaitingPage(props: TwilioWaitingPageProps) {
   const { spaceId, roomName, onRoomChanged, blameDictionary } = props;
   const [step, setStep] = useState<Step>("setup");
   const jwtToken = useJwtToken();
@@ -122,7 +122,7 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
       disabled={step !== "setup"}
       isAcquiringLocalTracks={isAcquiringLocalTracks}
       roomFull={isFull}
-      isJoining={isJoining}
+      isJoining={isJoining || step !== "setup"}
       audioError={audioError}
       videoError={videoError}
       blameDictionary={blameDictionary}
@@ -133,3 +133,5 @@ export default function TwilioWaitingPage(props: TwilioWaitingPageProps) {
 TwilioWaitingPage.defaultProps = {
   roomName: null,
 };
+
+export default React.memo<TwilioWaitingPageProps>(TwilioWaitingPage);
