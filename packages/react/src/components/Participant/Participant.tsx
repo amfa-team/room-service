@@ -13,7 +13,7 @@ interface ParticipantProps {
   blameDictionary: BlameDictionary;
 }
 
-export default function Participant({
+function Participant({
   participant,
   participants,
   isLocalParticipant,
@@ -45,3 +45,5 @@ Participant.defaultProps = {
   hideParticipant: false,
   loading: false,
 };
+
+export default React.memo(Participant);

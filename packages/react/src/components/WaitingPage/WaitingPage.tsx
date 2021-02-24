@@ -28,7 +28,7 @@ interface WaitingPageProps {
   blameDictionary: BlameDictionary;
 }
 
-export default function WaitingPage(props: WaitingPageProps) {
+function WaitingPage(props: WaitingPageProps) {
   const {
     videoTrack,
     audioTrack,
@@ -151,3 +151,5 @@ WaitingPage.defaultProps = {
   audioError: null,
   isAcquiringLocalTracks: false,
 };
+
+export default React.memo(WaitingPage);
