@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import type { IAudioTrack } from "../../entities/Track";
 
-interface AudioTrackProps {
+export interface AudioTrackProps {
   track: IAudioTrack;
 }
 
@@ -24,4 +24,4 @@ function AudioTrack({ track }: AudioTrackProps) {
   return <audio ref={ref} autoPlay />;
 }
 
-export default React.memo(AudioTrack);
+export default React.memo<AudioTrackProps>(AudioTrack);

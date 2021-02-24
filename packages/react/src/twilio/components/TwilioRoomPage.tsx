@@ -51,4 +51,4 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
   );
 }
 
-export default React.memo(TwilioRoomPage);
+export default React.memo<TwilioRoomPageProps>(TwilioRoomPage);

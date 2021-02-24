@@ -1,3 +1,4 @@
+import isEqual from "lodash.isequal";
 import { useEffect, useState } from "react";
 import type { IRemoteParticipant } from "../entities/Participant";
 import type { IRoom } from "../entities/Room";
@@ -10,7 +11,12 @@ export default function useParticipants(
   );
 
   useEffect(() => {
-    setParticipants(Array.from(room?.participants.values() ?? []));
+    setParticipants((prevParticipants) => {
+      const newParticipants = Array.from(room?.participants.values() ?? []);
+      return isEqual(prevParticipants, newParticipants)
+        ? prevParticipants
+        : newParticipants;
+    });
 
     const participantConnected = (participant: IRemoteParticipant) =>
       setParticipants((prevParticipants) => [...prevParticipants, participant]);

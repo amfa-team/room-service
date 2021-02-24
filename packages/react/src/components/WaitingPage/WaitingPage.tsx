@@ -15,16 +15,16 @@ import { SnackbarContainer } from "../Snackbar/ScnackbarContainer";
 import { Snackbar } from "../Snackbar/Snackbar";
 import styles from "./waitingPage.module.css";
 
-interface WaitingPageProps {
+export interface WaitingPageProps {
   videoTrack: ILocalVideoTrack | null;
   audioTrack: ILocalAudioTrack | null;
   join: (change: boolean) => void;
-  disabled: boolean;
-  roomFull: boolean;
-  isJoining: boolean;
-  videoError: Error | null;
-  audioError: Error | null;
-  isAcquiringLocalTracks: boolean;
+  disabled?: boolean;
+  roomFull?: boolean;
+  isJoining?: boolean;
+  videoError?: Error | null;
+  audioError?: Error | null;
+  isAcquiringLocalTracks?: boolean;
   blameDictionary: BlameDictionary;
 }
 
@@ -33,12 +33,12 @@ function WaitingPage(props: WaitingPageProps) {
     videoTrack,
     audioTrack,
     join,
-    disabled,
-    roomFull,
-    isJoining,
-    videoError,
-    audioError,
-    isAcquiringLocalTracks,
+    disabled = false,
+    roomFull = false,
+    isJoining = false,
+    videoError = null,
+    audioError = null,
+    isAcquiringLocalTracks = false,
     blameDictionary,
   } = props;
   const dictionary = useDictionary("waitingPage");
@@ -101,7 +101,6 @@ function WaitingPage(props: WaitingPageProps) {
       <div className={styles.video}>
         <Participant
           participant={localParticipant}
-          participants={[]}
           isLocalParticipant
           loading={localParticipant === null}
           blameDictionary={blameDictionary}
@@ -143,13 +142,4 @@ function WaitingPage(props: WaitingPageProps) {
   );
 }
 
-WaitingPage.defaultProps = {
-  disabled: false,
-  roomFull: false,
-  isJoining: false,
-  videoError: null,
-  audioError: null,
-  isAcquiringLocalTracks: false,
-};
-
-export default React.memo(WaitingPage);
+export default React.memo<WaitingPageProps>(WaitingPage);

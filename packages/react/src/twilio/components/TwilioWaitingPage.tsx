@@ -122,7 +122,7 @@ function TwilioWaitingPage(props: TwilioWaitingPageProps) {
       disabled={step !== "setup"}
       isAcquiringLocalTracks={isAcquiringLocalTracks}
       roomFull={isFull}
-      isJoining={isJoining}
+      isJoining={isJoining || step !== "setup"}
       audioError={audioError}
       videoError={videoError}
       blameDictionary={blameDictionary}
@@ -134,4 +134,4 @@ TwilioWaitingPage.defaultProps = {
   roomName: null,
 };
 
-export default React.memo(TwilioWaitingPage);
+export default React.memo<TwilioWaitingPageProps>(TwilioWaitingPage);

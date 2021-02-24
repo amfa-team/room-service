@@ -5,12 +5,12 @@ import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
 import style from "./videoTracks.module.css";
 
-interface VideoTrackProps {
+export interface VideoTrackProps {
   isLocal?: boolean;
   track: IVideoTrack;
 }
 
-function VideoTrack({ track, isLocal }: VideoTrackProps) {
+function VideoTrack({ track, isLocal = false }: VideoTrackProps) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const media = track.mediaStreamTrack;
   const isFrontFacing = media?.getSettings().facingMode !== "environment";
@@ -41,8 +41,5 @@ function VideoTrack({ track, isLocal }: VideoTrackProps) {
     />
   );
 }
-VideoTrack.defaultProps = {
-  isLocal: false,
-};
 
-export default React.memo(VideoTrack);
+export default React.memo<VideoTrackProps>(VideoTrack);
