@@ -86,6 +86,25 @@ export function Disabled(): JSX.Element | null {
   );
 }
 
+export function Joining(): JSX.Element | null {
+  const [track, setTrack] = useState<ILocalVideoTrack | null>(null);
+  useEffect(() => {
+    generateLocalVideoTrack().then(setTrack).catch(console.error);
+  }, []);
+
+  return (
+    <WaitingPage
+      videoTrack={track}
+      join={action("join")}
+      audioTrack={null}
+      disabled
+      isJoining
+      isAcquiringLocalTracks={track === null}
+      blameDictionary={defaultBlameDictionary.fr}
+    />
+  );
+}
+
 export function WithAudioError(): JSX.Element | null {
   const [track, setTrack] = useState<ILocalVideoTrack | null>(null);
   useEffect(() => {
