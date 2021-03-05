@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import type { IAudioTrack } from "../../entities/Track";
 
-interface AudioTrackProps {
+export interface AudioTrackProps {
   track: IAudioTrack;
 }
 
-export default function AudioTrack({ track }: AudioTrackProps) {
+function AudioTrack({ track }: AudioTrackProps) {
   const ref = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -23,3 +23,5 @@ export default function AudioTrack({ track }: AudioTrackProps) {
   // eslint-disable-next-line jsx-a11y/media-has-caption
   return <audio ref={ref} autoPlay />;
 }
+
+export default React.memo<AudioTrackProps>(AudioTrack);

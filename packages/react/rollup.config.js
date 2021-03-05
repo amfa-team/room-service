@@ -4,11 +4,9 @@ import resolve from "@rollup/plugin-node-resolve";
 import postCssValues from "postcss-modules-values";
 import postcss from "rollup-plugin-postcss";
 import sourcemaps from "rollup-plugin-sourcemaps";
-import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
 
 export const extensions = [".js", ".jsx", ".ts", ".tsx"];
-const extraPlugins = process.env.ROLLUP_WATCH ? [] : [terser()];
 
 export default [
   {
@@ -45,7 +43,6 @@ export default [
         extensions,
         plugins: [["@babel/plugin-transform-runtime", { useESModules: true }]],
       }),
-      ...extraPlugins,
     ],
   },
   {
@@ -82,7 +79,6 @@ export default [
         extensions,
         plugins: [["@babel/plugin-transform-runtime", { useESModules: false }]],
       }),
-      ...extraPlugins,
     ],
   },
 ];

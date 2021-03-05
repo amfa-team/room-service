@@ -1,5 +1,5 @@
+import { Button } from "@amfa-team/theme-service";
 import type { BlameDictionary } from "@amfa-team/user-service";
-import classnames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RawLocalParticipant,
@@ -15,28 +15,30 @@ import { SnackbarContainer } from "../Snackbar/ScnackbarContainer";
 import { Snackbar } from "../Snackbar/Snackbar";
 import styles from "./waitingPage.module.css";
 
-interface WaitingPageProps {
+export interface WaitingPageProps {
   videoTrack: ILocalVideoTrack | null;
   audioTrack: ILocalAudioTrack | null;
   join: (change: boolean) => void;
-  disabled: boolean;
-  roomFull: boolean;
-  videoError: Error | null;
-  audioError: Error | null;
-  isAcquiringLocalTracks: boolean;
+  disabled?: boolean;
+  roomFull?: boolean;
+  isJoining?: boolean;
+  videoError?: Error | null;
+  audioError?: Error | null;
+  isAcquiringLocalTracks?: boolean;
   blameDictionary: BlameDictionary;
 }
 
-export default function WaitingPage(props: WaitingPageProps) {
+function WaitingPage(props: WaitingPageProps) {
   const {
     videoTrack,
     audioTrack,
     join,
-    disabled,
-    roomFull,
-    videoError,
-    audioError,
-    isAcquiringLocalTracks,
+    disabled = false,
+    roomFull = false,
+    isJoining = false,
+    videoError = null,
+    audioError = null,
+    isAcquiringLocalTracks = false,
     blameDictionary,
   } = props;
   const dictionary = useDictionary("waitingPage");
@@ -99,7 +101,6 @@ export default function WaitingPage(props: WaitingPageProps) {
       <div className={styles.video}>
         <Participant
           participant={localParticipant}
-          participants={[]}
           isLocalParticipant
           loading={localParticipant === null}
           blameDictionary={blameDictionary}
@@ -109,17 +110,15 @@ export default function WaitingPage(props: WaitingPageProps) {
         <Controls localParticipant={localParticipant} />
         <div className={styles.notice}>{dictionary.cgu}</div>
         <div className={styles.joinContainer}>
-          <button
-            className={classnames(styles.join, {
-              [styles.disabled]:
-                disabled || audioTrack === null || isAcquiringLocalTracks,
-            })}
+          <Button
             type="button"
+            className={styles.join}
             onClick={onJoinClicked}
             disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
+            loading={isJoining}
           >
             {dictionary.join}
-          </button>
+          </Button>
         </div>
       </div>
       <SnackbarContainer>
@@ -143,10 +142,4 @@ export default function WaitingPage(props: WaitingPageProps) {
   );
 }
 
-WaitingPage.defaultProps = {
-  disabled: false,
-  roomFull: false,
-  videoError: null,
-  audioError: null,
-  isAcquiringLocalTracks: false,
-};
+export default React.memo<WaitingPageProps>(WaitingPage);

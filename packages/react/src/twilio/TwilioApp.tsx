@@ -1,6 +1,6 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import { useToken as useJwtToken } from "@amfa-team/user-service";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Video from "twilio-video";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
@@ -65,16 +65,17 @@ function TwilioAppRaw(props: TwilioAppProps) {
 
 const TwilioApp = React.memo(TwilioAppRaw);
 
-export default function TwilioAppContainer(props: TwilioAppProps) {
+export default React.memo(function TwilioAppContainer(props: TwilioAppProps) {
   const ready = useSetApiSettings(props.settings);
+  const app = useMemo(() => {
+    return <TwilioApp {...props} />;
+  }, [props]);
 
   if (!ready) {
     return null;
   }
 
   return (
-    <DictionaryProvider dictionary={props.dictionary}>
-      <TwilioApp {...props} />
-    </DictionaryProvider>
+    <DictionaryProvider dictionary={props.dictionary}>{app}</DictionaryProvider>
   );
-}
+});
