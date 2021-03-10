@@ -1,9 +1,9 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
+import { Grid } from "@chakra-ui/react";
 import React from "react";
 import type { IRoom } from "../../entities/Room";
 import Controls from "../Controls/Controls";
 import ParticipantList from "../ParticipantList/ParticipantList";
-import classes from "./room.module.css";
 
 interface RoomPageProps {
   room: IRoom | null;
@@ -16,15 +16,17 @@ export default function RoomPage(props: RoomPageProps) {
   const { room, onShuffle, isJoining, blameDictionary } = props;
 
   return (
-    <div className={classes.root}>
+    <Grid templateColumns="1" templateRows="calc(100% - 80px) 80px" h="full">
       <ParticipantList
         room={room}
-        onShuffle={onShuffle}
         isJoining={isJoining}
         blameDictionary={blameDictionary}
       />
-      <Controls localParticipant={room?.localParticipant ?? null} />
-    </div>
+      <Controls
+        onShuffle={onShuffle}
+        localParticipant={room?.localParticipant ?? null}
+      />
+    </Grid>
   );
 }
 RoomPage.defaultProps = {

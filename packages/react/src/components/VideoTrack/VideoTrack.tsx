@@ -1,45 +1,44 @@
-import classnames from "classnames";
-import React, { useEffect, useRef } from "react";
+import { VideoTrack as ThemeVideoTrack } from "@amfa-team/theme-service";
+import React, { useCallback } from "react";
 import type { IVideoTrack } from "../../entities/Track";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
-import style from "./videoTracks.module.css";
 
 export interface VideoTrackProps {
   isLocal?: boolean;
   track: IVideoTrack;
 }
 
-function VideoTrack({ track, isLocal = false }: VideoTrackProps) {
-  const ref = useRef<HTMLVideoElement | null>(null);
+export default function VideoTrack({
+  track,
+  isLocal = false,
+}: VideoTrackProps) {
   const media = track.mediaStreamTrack;
   const isFrontFacing = media?.getSettings().facingMode !== "environment";
   const isVideoSwitchedOff = useIsTrackSwitchedOff(track);
   const isVideoEnabled = useIsTrackEnabled(track);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (el) {
-      track.attach(el);
-    }
-    return () => {
+  const attachEffect = useCallback(
+    (el: HTMLVideoElement | null) => {
       if (el) {
-        track.detach(el);
+        track.attach(el);
       }
-    };
-  }, [track]);
+      return () => {
+        if (el) {
+          track.detach(el);
+        }
+      };
+    },
+    [track],
+  );
 
   return (
-    <video
-      className={classnames(style.video, {
-        [style.isFlipped]: isLocal && isFrontFacing,
-        [style.hidden]: isVideoSwitchedOff || !isVideoEnabled,
-      })}
-      ref={ref}
-      muted
-      autoPlay
+    <ThemeVideoTrack
+      isLocal={isLocal}
+      isFrontFacing={isFrontFacing}
+      isVideoSwitchedOff={isVideoSwitchedOff}
+      isVideoEnabled={isVideoEnabled}
+      attachEffect={attachEffect}
     />
   );
 }
-
-export default React.memo<VideoTrackProps>(VideoTrack);

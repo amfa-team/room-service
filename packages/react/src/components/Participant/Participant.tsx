@@ -1,8 +1,18 @@
+import {
+  AvailableSeat,
+  Participant as ParticipantUI,
+} from "@amfa-team/theme-service";
 import type { BlameDictionary } from "@amfa-team/user-service";
-import React from "react";
+import React, { useCallback } from "react";
 import type { IParticipant } from "../../entities/Participant";
-import ParticipantInfo from "../ParticipantInfo/ParticipantInfo";
-import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
+import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
+import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
+import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting";
+import {
+  useParticipantAudioTrack,
+  useParticipantVideoTrack,
+} from "../../hooks/useParticipantTracks";
+import { useDictionary } from "../../i18n/dictionary";
 
 export interface ParticipantProps {
   participant: IParticipant | null;
@@ -14,32 +24,82 @@ export interface ParticipantProps {
 }
 
 // Prevent useless re-render
-const emptyParticipantList: IParticipant[] = [];
+// const emptyParticipantList: IParticipant[] = [];
 
 function Participant({
   participant,
-  participants = emptyParticipantList,
+  // participants = emptyParticipantList,
   isLocalParticipant = false,
-  hideParticipant = false,
+  // hideParticipant = false,
   loading = false,
-  blameDictionary,
-}: ParticipantProps) {
+}: // blameDictionary,
+ParticipantProps) {
+  const dictionary = useDictionary("participantInfo");
+  const onReportClicked = useCallback(() => {
+    alert("todo");
+  }, []);
+
+  const audio = useParticipantAudioTrack(participant);
+  const video = useParticipantVideoTrack(participant);
+
+  const isFrontFacing =
+    video?.mediaStreamTrack?.getSettings().facingMode !== "environment";
+  const isVideoSwitchedOff = useIsTrackSwitchedOff(video);
+  const isVideoEnabled = useIsTrackEnabled(video);
+  const isParticipantReconnecting = useParticipantIsReconnecting(participant);
+
+  const attachAudioEffect = useCallback(
+    (el: HTMLAudioElement | null) => {
+      if (el) {
+        audio?.attach(el);
+      }
+      return () => {
+        if (el) {
+          audio?.detach(el);
+        }
+      };
+    },
+    [audio],
+  );
+  const attachVideoEffect = useCallback(
+    (el: HTMLVideoElement | null) => {
+      if (el) {
+        video?.attach(el);
+      }
+      return () => {
+        if (el) {
+          video?.detach(el);
+        }
+      };
+    },
+    [video],
+  );
+
+  if (participant === null) {
+    return (
+      <AvailableSeat
+        label={dictionary.availableSeat}
+        onClick={() => {
+          alert("todo");
+        }}
+      />
+    );
+  }
+
   return (
-    <ParticipantInfo
-      participant={participant}
-      participants={participants}
-      hideParticipant={hideParticipant}
-      loading={loading}
-      isLocalParticipant={isLocalParticipant}
-      blameDictionary={blameDictionary}
-    >
-      {participant && (
-        <ParticipantTracks
-          participant={participant}
-          isLocalParticipant={isLocalParticipant}
-        />
-      )}
-    </ParticipantInfo>
+    <ParticipantUI
+      isLocal={isLocalParticipant}
+      isFrontFacing={isFrontFacing}
+      isVideoSwitchedOff={isVideoSwitchedOff}
+      isVideoEnabled={isVideoEnabled}
+      isAudioEnabled={audio !== null}
+      attachAudioEffect={attachAudioEffect}
+      attachVideoEffect={attachVideoEffect}
+      name="TODO"
+      onReportClicked={onReportClicked}
+      isLoading={loading}
+      isReconnecting={isParticipantReconnecting}
+    />
   );
 }
 
