@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
+// const webpack = require("webpack");
 const { merge } = require("webpack-merge");
 const commonPaths = require("./common-paths");
 const common = require("./webpack.common");
@@ -13,8 +13,8 @@ module.exports = merge(common, {
   devtool: "inline-source-map",
   devServer: {
     writeToDisk: true,
-    hot: true,
-    liveReload: false,
+    // hot: true,
+    liveReload: true,
     contentBase: commonPaths.outputPath,
     publicPath: commonPaths.outputPath,
     host,
@@ -38,6 +38,6 @@ module.exports = merge(common, {
       inject: true,
       template: `${commonPaths.contentBasePath}/index.html`,
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
   ],
 });

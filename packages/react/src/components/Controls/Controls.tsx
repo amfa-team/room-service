@@ -20,7 +20,7 @@ interface ControlsProps {
 }
 
 export default function Controls(props: ControlsProps) {
-  const { localParticipant, onShuffle = null } = props;
+  const { localParticipant, onShuffle } = props;
   const dictionary = useDictionary("participantList");
   const videoTrack = useParticipantVideoTrack(localParticipant);
   const audioTrack = useParticipantAudioTrack(localParticipant);
@@ -93,3 +93,7 @@ export default function Controls(props: ControlsProps) {
     </Flex>
   );
 }
+
+Controls.defaultProps = {
+  onShuffle: null,
+};

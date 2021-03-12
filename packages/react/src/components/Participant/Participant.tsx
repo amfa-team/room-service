@@ -6,7 +6,6 @@ import type { BlameDictionary } from "@amfa-team/user-service";
 import React, { useCallback } from "react";
 import type { IParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
-import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting";
 import {
   useParticipantAudioTrack,
@@ -44,8 +43,8 @@ ParticipantProps) {
 
   const isFrontFacing =
     video?.mediaStreamTrack?.getSettings().facingMode !== "environment";
-  const isVideoSwitchedOff = useIsTrackSwitchedOff(video);
   const isVideoEnabled = useIsTrackEnabled(video);
+  const isAudioEnabled = useIsTrackEnabled(audio);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const attachAudioEffect = useCallback(
@@ -90,9 +89,8 @@ ParticipantProps) {
     <ParticipantUI
       isLocal={isLocalParticipant}
       isFrontFacing={isFrontFacing}
-      isVideoSwitchedOff={isVideoSwitchedOff}
       isVideoEnabled={isVideoEnabled}
-      isAudioEnabled={audio !== null}
+      isAudioEnabled={isAudioEnabled}
       attachAudioEffect={attachAudioEffect}
       attachVideoEffect={attachVideoEffect}
       name="TODO"

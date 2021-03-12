@@ -4,7 +4,6 @@ import React, { useCallback } from "react";
 import type { ILocalAudioTrack, ILocalVideoTrack } from "../../entities";
 import type { IParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
-import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
 import {
   useParticipantAudioTrack,
   useParticipantVideoTrack,
@@ -28,8 +27,6 @@ function ParticipantSetup({
 
   const isFrontFacing =
     video?.mediaStreamTrack?.getSettings().facingMode !== "environment";
-  const isVideoSwitchedOff = useIsTrackSwitchedOff(video);
-  const isAudioSwitchedOff = useIsTrackSwitchedOff(audio);
   const isVideoEnabled = useIsTrackEnabled(video);
   const isAudioEnabled = useIsTrackEnabled(audio);
 
@@ -61,24 +58,26 @@ function ParticipantSetup({
   );
 
   const toggleAudio = useCallback(
-    debounce(() => {
-      audio?.enable(!audio.isEnabled);
-    }, 300),
+    () =>
+      debounce(() => {
+        audio?.enable(!audio.isEnabled);
+      }, 300),
     [audio],
   );
 
   const toggleVideo = useCallback(
-    debounce(() => {
-      video?.enable(!video.isEnabled);
-    }, 300),
+    () =>
+      debounce(() => {
+        video?.enable(!video.isEnabled);
+      }, 300),
     [video],
   );
 
   return (
     <ParticipantSetupUI
       isFrontFacing={isFrontFacing}
-      isVideoSwitchedOff={isVideoSwitchedOff}
-      isAudioSwitchedOff={isAudioSwitchedOff}
+      hasAudioDevice={audio !== null}
+      hasVideoDevice={video !== null}
       isVideoEnabled={isVideoEnabled}
       isAudioEnabled={isAudioEnabled}
       attachAudioEffect={attachAudioEffect}

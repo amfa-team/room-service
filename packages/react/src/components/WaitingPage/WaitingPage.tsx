@@ -1,5 +1,4 @@
-import { Flex, Grid, Button, Text } from "@chakra-ui/react";
-import type { BlameDictionary } from "@amfa-team/user-service";
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RawLocalParticipant,
@@ -23,7 +22,6 @@ export interface WaitingPageProps {
   videoError?: Error | null;
   audioError?: Error | null;
   isAcquiringLocalTracks?: boolean;
-  blameDictionary: BlameDictionary;
 }
 
 function WaitingPage(props: WaitingPageProps) {
@@ -37,7 +35,6 @@ function WaitingPage(props: WaitingPageProps) {
     videoError = null,
     audioError = null,
     isAcquiringLocalTracks = false,
-    blameDictionary,
   } = props;
   const dictionary = useDictionary("waitingPage");
   const videoErrorMessage = useMediaErrorMessage(
@@ -100,9 +97,8 @@ function WaitingPage(props: WaitingPageProps) {
       templateRows="minmax(0, 1fr) 100px"
       h="full"
       w="full"
-      maxW="container.lg"
+      maxW="container.md"
       m="auto"
-      paddingTop="100px"
     >
       <Grid column="1" templateRows="minmax(0, 1fr) 48px" w="full">
         <ParticipantSetup
@@ -115,7 +111,7 @@ function WaitingPage(props: WaitingPageProps) {
           size="lg"
           onClick={onJoinClicked}
           disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
-          loading={isJoining}
+          isLoading={isJoining}
         >
           {dictionary.join}
         </Button>

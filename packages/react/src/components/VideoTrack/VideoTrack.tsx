@@ -2,7 +2,6 @@ import { VideoTrack as ThemeVideoTrack } from "@amfa-team/theme-service";
 import React, { useCallback } from "react";
 import type { IVideoTrack } from "../../entities/Track";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
-import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff";
 
 export interface VideoTrackProps {
   isLocal?: boolean;
@@ -15,7 +14,6 @@ export default function VideoTrack({
 }: VideoTrackProps) {
   const media = track.mediaStreamTrack;
   const isFrontFacing = media?.getSettings().facingMode !== "environment";
-  const isVideoSwitchedOff = useIsTrackSwitchedOff(track);
   const isVideoEnabled = useIsTrackEnabled(track);
 
   const attachEffect = useCallback(
@@ -36,7 +34,6 @@ export default function VideoTrack({
     <ThemeVideoTrack
       isLocal={isLocal}
       isFrontFacing={isFrontFacing}
-      isVideoSwitchedOff={isVideoSwitchedOff}
       isVideoEnabled={isVideoEnabled}
       attachEffect={attachEffect}
     />
