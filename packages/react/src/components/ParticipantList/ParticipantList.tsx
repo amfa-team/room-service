@@ -22,7 +22,14 @@ export default function ParticipantList(
   const loading = room === null || isJoining;
 
   return (
-    <Grid templateColumns="50% 50%" templateRows="50% 50%" w="full" h="full">
+    <Grid
+      maxW="container.lg"
+      templateColumns="50% 50%"
+      templateRows="50% 50%"
+      w="full"
+      h="full"
+      m="auto"
+    >
       {participants.map((participant) => (
         <Participant
           key={participant.sid}

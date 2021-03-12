@@ -16,7 +16,7 @@ export default function RoomPage(props: RoomPageProps) {
   const { room, onShuffle, isJoining, blameDictionary } = props;
 
   return (
-    <Grid templateColumns="1" templateRows="calc(100% - 80px) 80px" h="full">
+    <Grid column="1" templateRows="calc(100% - 80px) 80px" h="full">
       <ParticipantList
         room={room}
         isJoining={isJoining}

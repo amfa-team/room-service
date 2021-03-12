@@ -49,9 +49,10 @@ export default function Controls(props: ControlsProps) {
     >
       <SimpleGrid
         maxW="container.lg"
+        m="auto"
         w="full"
         h="full"
-        column="3"
+        column="2"
         templateColumns="1fr 180px"
       >
         <Flex h="full" justifyContent="center" alignItems="center">
