@@ -1,5 +1,4 @@
-import { Button } from "@amfa-team/theme-service";
-import type { BlameDictionary } from "@amfa-team/user-service";
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RawLocalParticipant,
@@ -9,11 +8,9 @@ import {
 import type { ILocalAudioTrack, ILocalVideoTrack } from "../../entities/Track";
 import { useMediaErrorMessage } from "../../hooks/useMediaErrorMessage";
 import { useDictionary } from "../../i18n/dictionary";
-import Controls from "../Controls/Controls";
-import Participant from "../Participant/Participant";
+import ParticipantSetup from "../ParticipantSetup/ParticipantSetup";
 import { SnackbarContainer } from "../Snackbar/ScnackbarContainer";
 import { Snackbar } from "../Snackbar/Snackbar";
-import styles from "./waitingPage.module.css";
 
 export interface WaitingPageProps {
   videoTrack: ILocalVideoTrack | null;
@@ -25,7 +22,6 @@ export interface WaitingPageProps {
   videoError?: Error | null;
   audioError?: Error | null;
   isAcquiringLocalTracks?: boolean;
-  blameDictionary: BlameDictionary;
 }
 
 function WaitingPage(props: WaitingPageProps) {
@@ -39,7 +35,6 @@ function WaitingPage(props: WaitingPageProps) {
     videoError = null,
     audioError = null,
     isAcquiringLocalTracks = false,
-    blameDictionary,
   } = props;
   const dictionary = useDictionary("waitingPage");
   const videoErrorMessage = useMediaErrorMessage(
@@ -97,30 +92,33 @@ function WaitingPage(props: WaitingPageProps) {
   }, [join, roomFull]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.video}>
-        <Participant
+    <Grid
+      column="1"
+      templateRows="minmax(0, 1fr) 100px"
+      h="full"
+      w="full"
+      maxW="container.md"
+      m="auto"
+    >
+      <Grid column="1" templateRows="minmax(0, 1fr) 48px" w="full">
+        <ParticipantSetup
           participant={localParticipant}
-          isLocalParticipant
-          loading={localParticipant === null}
-          blameDictionary={blameDictionary}
+          isLoading={localParticipant === null}
         />
-      </div>
-      <div className={styles.controls}>
-        <Controls localParticipant={localParticipant} />
-        <div className={styles.notice}>{dictionary.cgu}</div>
-        <div className={styles.joinContainer}>
-          <Button
-            type="button"
-            className={styles.join}
-            onClick={onJoinClicked}
-            disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
-            loading={isJoining}
-          >
-            {dictionary.join}
-          </Button>
-        </div>
-      </div>
+        <Button
+          colorScheme="secondary"
+          w="full"
+          size="lg"
+          onClick={onJoinClicked}
+          disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
+          isLoading={isJoining}
+        >
+          {dictionary.join}
+        </Button>
+      </Grid>
+      <Flex justifyContent="center" alignItems="center">
+        <Text textAlign="center">{dictionary.cgu}</Text>
+      </Flex>
       <SnackbarContainer>
         {roomFull && (
           <Snackbar>
@@ -138,7 +136,7 @@ function WaitingPage(props: WaitingPageProps) {
           </Snackbar>
         )}
       </SnackbarContainer>
-    </div>
+    </Grid>
   );
 }
 

@@ -1,6 +1,5 @@
 import { defaultBlameDictionary } from "@amfa-team/user-service";
-import { action } from "@storybook/addon-actions";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { generateRawRemoteParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
 import { generateRawRoom } from "../../entities/fixtures/rooms.fixture";
@@ -15,11 +14,7 @@ export default {
 export function NoVideo(): JSX.Element | null {
   const room = generateRawRoom();
   return (
-    <ParticipantList
-      room={room}
-      onShuffle={action("onShuffle")}
-      blameDictionary={defaultBlameDictionary.fr}
-    />
+    <ParticipantList room={room} blameDictionary={defaultBlameDictionary.fr} />
   );
 }
 
@@ -28,11 +23,7 @@ export function SingleParticipant(): JSX.Element | null {
   room.addParticipant(generateRawRemoteParticipant({ identity: "antoine" }));
 
   return (
-    <ParticipantList
-      room={room}
-      onShuffle={action("onShuffle")}
-      blameDictionary={defaultBlameDictionary.fr}
-    />
+    <ParticipantList room={room} blameDictionary={defaultBlameDictionary.fr} />
   );
 }
 
@@ -57,11 +48,7 @@ export function TwoParticipant(): JSX.Element | null {
   }, [room]);
 
   return (
-    <ParticipantList
-      room={room}
-      onShuffle={action("onShuffle")}
-      blameDictionary={defaultBlameDictionary.fr}
-    />
+    <ParticipantList room={room} blameDictionary={defaultBlameDictionary.fr} />
   );
 }
 
@@ -88,16 +75,9 @@ export function Joining(): JSX.Element | null {
       .catch(console.error);
   }, [room]);
 
-  const onShuffle = useCallback((...args) => {
-    action("onShuffle")(...args);
-    setIsJoining(true);
-    setTimeout(() => setIsJoining(false), 3000);
-  }, []);
-
   return (
     <ParticipantList
       room={room}
-      onShuffle={onShuffle}
       isJoining={isJoining}
       blameDictionary={defaultBlameDictionary.fr}
     />
@@ -106,10 +86,6 @@ export function Joining(): JSX.Element | null {
 
 export function LoadingRoom(): JSX.Element | null {
   return (
-    <ParticipantList
-      room={null}
-      onShuffle={action("shuffle")}
-      blameDictionary={defaultBlameDictionary.fr}
-    />
+    <ParticipantList room={null} blameDictionary={defaultBlameDictionary.fr} />
   );
 }

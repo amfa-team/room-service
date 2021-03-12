@@ -43,7 +43,6 @@ function TwilioAppRaw(props: TwilioAppProps) {
   if (!token || props.roomName === null || jwtToken === null) {
     return (
       <TwilioWaitingPage
-        blameDictionary={props.blameDictionary}
         spaceId={props.space._id}
         roomName={props.roomName}
         onRoomChanged={props.onRoomChanged}

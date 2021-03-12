@@ -1,4 +1,3 @@
-import { defaultBlameDictionary } from "@amfa-team/user-service";
 import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
 import {
@@ -25,7 +24,6 @@ export function NoVideo(): JSX.Element | null {
       join={action("join")}
       audioTrack={audioTrack}
       isAcquiringLocalTracks={audioTrack === null}
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -46,7 +44,6 @@ export function WithVideoAndAudio(): JSX.Element | null {
       join={action("join")}
       audioTrack={audioTrack}
       isAcquiringLocalTracks={audioTrack === null || videoTrack === null}
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -63,7 +60,6 @@ export function NoAudio(): JSX.Element | null {
       join={action("join")}
       audioTrack={null}
       isAcquiringLocalTracks={videoTrack === null}
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -81,7 +77,6 @@ export function Disabled(): JSX.Element | null {
       audioTrack={null}
       disabled
       isAcquiringLocalTracks={track === null}
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -100,7 +95,6 @@ export function Joining(): JSX.Element | null {
       disabled
       isJoining
       isAcquiringLocalTracks={track === null}
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -119,7 +113,6 @@ export function WithAudioError(): JSX.Element | null {
       audioError={new Error()}
       disabled
       isAcquiringLocalTracks={track === null}
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -137,7 +130,6 @@ export function WithVideoError(): JSX.Element | null {
       audioTrack={audioTrack}
       videoError={new Error()}
       isAcquiringLocalTracks={audioTrack === null}
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
@@ -152,7 +144,6 @@ export function WithAllErrors(): JSX.Element | null {
       audioError={new Error()}
       roomFull
       disabled
-      blameDictionary={defaultBlameDictionary.fr}
     />
   );
 }
