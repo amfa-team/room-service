@@ -1,3 +1,26 @@
+# @amfa-team/room-service [1.8.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.7.0...@amfa-team/room-service@1.8.0-beta.1) (2021-03-12)
+
+
+### Bug Fixes
+
+* stories ([5a49516](https://github.com/amfa-team/room-service/commit/5a4951634709e5ca0078b730d7e4e8d0cb048fa8))
+* typescript ([6e62c75](https://github.com/amfa-team/room-service/commit/6e62c75770d49c6c273d5b156f2943286fd72770))
+
+
+### Features
+
+* room layout ([2d9da7e](https://github.com/amfa-team/room-service/commit/2d9da7e52a946e568ba58485b91533e05a5c4846))
+* room layout ([981cb69](https://github.com/amfa-team/room-service/commit/981cb69f803d970ad835ab9522ccade6afd22324))
+* start implementing new design ([18aa2b5](https://github.com/amfa-team/room-service/commit/18aa2b52fcb10fb8868e860df619da5aec4d8005))
+
+
+
+
+
+### Dependencies
+
+* **@amfa-team/room-service-types:** upgraded to 1.2.0-beta.1
+
 # @amfa-team/room-service [1.7.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.6.0...@amfa-team/room-service@1.7.0) (2021-03-05)
 
 
