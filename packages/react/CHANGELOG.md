@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.8.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0-beta.1...@amfa-team/room-service@1.8.0-beta.2) (2021-03-13)
+
+
+### Features
+
+* improve room layout ([c7a6738](https://github.com/amfa-team/room-service/commit/c7a6738f85d8ddfb9a2febcc3d81c7428fa5694b))
+
 # @amfa-team/room-service [1.8.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.7.0...@amfa-team/room-service@1.8.0-beta.1) (2021-03-12)
 
 
