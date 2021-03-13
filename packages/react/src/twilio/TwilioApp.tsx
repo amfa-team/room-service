@@ -16,6 +16,7 @@ export interface TwilioAppProps {
   settings: ApiSettings;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
+  onHangUp: () => void;
   dictionary: RoomDictionary;
   blameDictionary: BlameDictionary;
 }
@@ -58,6 +59,7 @@ function TwilioAppRaw(props: TwilioAppProps) {
       spaceId={props.space._id}
       roomName={props.roomName}
       onRoomChanged={props.onRoomChanged}
+      onHangUp={props.onHangUp}
     />
   );
 }

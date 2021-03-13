@@ -11,6 +11,7 @@ interface TwilioRoomPageProps {
   token: string;
   roomName: string;
   onRoomChanged: (roomName: string) => void;
+  onHangUp: () => void;
   blameDictionary: BlameDictionary;
 }
 
@@ -18,6 +19,7 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
   const {
     token,
     onRoomChanged,
+    onHangUp,
     spaceId,
     userJwtToken,
     roomName,
@@ -45,6 +47,7 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
     <RoomPage
       room={room}
       onShuffle={onShuffleClicked}
+      onHangUp={onHangUp}
       isJoining={isJoining}
       blameDictionary={blameDictionary}
     />
