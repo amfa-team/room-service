@@ -39,10 +39,10 @@
     lodash.isequal "^4.5.0"
     whatwg-fetch "^3.5.0"
 
-"@amfa-team/theme-service@^1.5.0-beta.4":
-  version "1.5.0-beta.4"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/theme-service/1.5.0-beta.4/620c2384df4b544069178f4f8d38ccc3edae7abc757371c1b9dc6951356c3514#220d7a4f96509101ac27c9f1c93f942123da2848"
-  integrity sha512-S532FBdxez7jQBuJoh/3iay4tHUeYv+Tcs2Opu33FBbPbnyTVnmjwQSHY6CTNQVSk8iq2LMW0VyTjhlKhySrFQ==
+"@amfa-team/theme-service@^1.5.0-beta.6":
+  version "1.5.0-beta.6"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/theme-service/1.5.0-beta.6/da62d47a06e9b9aa1e88e1e90088b1ee2cad46a72eca805993038ee82c2dbded#e9f5b40661bff79b74e3b44c78abca6c89cd98af"
+  integrity sha512-14Lt0n4zuGDQBLgBXmoWZWnVtq7h+s/Y+VAI791vSc7fbw9/UQw+mk3hoHu2aOMu1PG8k646HzRKAzTKbVEIIA==
   dependencies:
     "@babel/runtime" "^7.13.10"
     "@chakra-ui/react" "^1.3.4"
@@ -70,20 +70,23 @@
   resolved "https://npm.pkg.github.com/download/@amfa-team/user-service-types/1.3.0/a7b471740dfa8ad3816851fbaad88da491ba89059d3e2290f993d996aeb070cc#c591fb0ed4298dfc36d480f5f9981632516e809b"
   integrity sha512-zY+/pt/xODcyEt5HY8Zi+k2hlXGDI+BLAO5TrZuU1geNuCjsTa/DwIqha7qeGk7hkr9yxntbEcYwqYsD4sLvWQ==
 
-"@amfa-team/user-service@^1.9.0":
-  version "1.9.0"
-  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.9.0/1f409a50da3d89edcedaadbfab786772259395f5f536ea591255006f63c564fb#49de6f2d1e8dac9d523cc64177611b40de2d8e43"
-  integrity sha512-MuZVsHIbK/rKzaJ4bI9UXDgWOwTkgUFguQx9fNnP/ryzzswUPWGS6pfkqVN3LaCAmCzNOnaEceAnoK5uMYsmhw==
+"@amfa-team/user-service@^1.10.0-beta.1":
+  version "1.10.0-beta.1"
+  resolved "https://npm.pkg.github.com/download/@amfa-team/user-service/1.10.0-beta.1/35e02a011c609214ee36cf5345dd8c71d2325ef579795fc62f4d45f48f77d1c4#9c1ac05d00cf239631383dd2f19d440be6b6719f"
+  integrity sha512-xj7TcfCp2DTy5wnH5T9+TPe8qbk8F+wUQaHn3y6Pw8voZLEpqF8lOxUcvmMWhm/fi/tUFISt190qMmqUCiybgQ==
   dependencies:
-    "@babel/runtime" "^7.12.13"
+    "@babel/runtime" "^7.13.10"
+    "@chakra-ui/react" "^1.3.4"
+    "@emotion/react" "^11.1.5"
+    "@emotion/styled" "^11.1.5"
     abortcontroller-polyfill "^1.7.1"
     classnames "^2.2.6"
-    core-js "^3.8.3"
+    core-js "^3.9.1"
     email-validator "^2.0.4"
     formik "^2.2.6"
+    framer-motion "^3.10.3"
     jwt-decode "^3.1.2"
-    react-table "^7.6.2"
-    whatwg-fetch "^3.5.0"
+    whatwg-fetch "^3.6.2"
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
@@ -18071,7 +18074,7 @@ react-syntax-highlighter@^13.5.3:
     prismjs "^1.21.0"
     refractor "^3.1.0"
 
-react-table@^7.6.2, react-table@^7.6.3:
+react-table@^7.6.3:
   version "7.6.3"
   resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.6.3.tgz#76434392b3f62344bdb704f5b227c2f29c1ffb14"
   integrity sha512-hfPF13zDLxPMpLKzIKCE8RZud9T/XrRTsaCIf8zXpWZIZ2juCl7qrGpo3AQw9eAetXV5DP7s2GDm+hht7qq5Dw==

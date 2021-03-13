@@ -1,5 +1,6 @@
 import { RoomControls } from "@amfa-team/theme-service";
-import React, { useCallback } from "react";
+import debounce from "lodash.debounce";
+import React, { useMemo } from "react";
 import type { ILocalParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import {
@@ -22,15 +23,23 @@ export default function Controls(props: ControlsProps) {
 
   const isAudioEnabled = useIsTrackEnabled(audioTrack);
   const hasAudioDevice = audioTrack !== null;
-  const onToggleAudio = useCallback(() => {
-    audioTrack?.enable(!audioTrack.isEnabled);
-  }, [audioTrack]);
+  const onToggleAudio = useMemo(
+    () =>
+      debounce(() => {
+        audioTrack?.enable(!audioTrack.isEnabled);
+      }, 300),
+    [audioTrack],
+  );
 
   const isVideoEnabled = useIsTrackEnabled(videoTrack);
   const hasVideoDevice = videoTrack !== null;
-  const onToggleVideo = useCallback(() => {
-    videoTrack?.enable(!videoTrack.isEnabled);
-  }, [videoTrack]);
+  const onToggleVideo = useMemo(
+    () =>
+      debounce(() => {
+        videoTrack?.enable(!videoTrack.isEnabled);
+      }, 300),
+    [videoTrack],
+  );
 
   return (
     <RoomControls

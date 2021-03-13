@@ -3,7 +3,8 @@ import {
   Participant as ParticipantUI,
 } from "@amfa-team/theme-service";
 import type { BlameDictionary } from "@amfa-team/user-service";
-import React, { useCallback } from "react";
+import { BlameAction } from "@amfa-team/user-service";
+import React, { useCallback, useMemo } from "react";
 import type { IParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting";
@@ -23,20 +24,17 @@ export interface ParticipantProps {
 }
 
 // Prevent useless re-render
-// const emptyParticipantList: IParticipant[] = [];
+const emptyParticipantList: IParticipant[] = [];
 
 function Participant({
   participant,
-  // participants = emptyParticipantList,
+  participants = emptyParticipantList,
   isLocalParticipant = false,
   // hideParticipant = false,
   loading = false,
-}: // blameDictionary,
-ParticipantProps) {
+  blameDictionary,
+}: ParticipantProps) {
   const dictionary = useDictionary("participantInfo");
-  const onReportClicked = useCallback(() => {
-    alert("todo");
-  }, []);
 
   const audio = useParticipantAudioTrack(participant);
   const video = useParticipantVideoTrack(participant);
@@ -46,6 +44,14 @@ ParticipantProps) {
   const isVideoEnabled = useIsTrackEnabled(video);
   const isAudioEnabled = useIsTrackEnabled(audio);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
+
+  const witnesses = useMemo(
+    () =>
+      participants
+        .filter((p) => p.identity !== participant?.identity)
+        .map((p) => p.identity),
+    [participants, participant],
+  );
 
   const attachAudioEffect = useCallback(
     (el: HTMLAudioElement | null) => {
@@ -94,9 +100,15 @@ ParticipantProps) {
       attachAudioEffect={attachAudioEffect}
       attachVideoEffect={attachVideoEffect}
       name="TODO"
-      onReportClicked={onReportClicked}
       isLoading={loading}
       isReconnecting={isParticipantReconnecting}
+      reportIcon={
+        <BlameAction
+          accusedId={participant.identity}
+          witnesses={witnesses}
+          dictionary={blameDictionary}
+        />
+      }
     />
   );
 }

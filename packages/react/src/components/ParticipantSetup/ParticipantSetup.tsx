@@ -1,6 +1,6 @@
 import { ParticipantSetup as ParticipantSetupUI } from "@amfa-team/theme-service";
 import debounce from "lodash.debounce";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import type { ILocalAudioTrack, ILocalVideoTrack } from "../../entities";
 import type { IParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
@@ -57,7 +57,7 @@ function ParticipantSetup({
     [video],
   );
 
-  const toggleAudio = useCallback(
+  const toggleAudio = useMemo(
     () =>
       debounce(() => {
         audio?.enable(!audio.isEnabled);
@@ -65,7 +65,7 @@ function ParticipantSetup({
     [audio],
   );
 
-  const toggleVideo = useCallback(
+  const toggleVideo = useMemo(
     () =>
       debounce(() => {
         video?.enable(!video.isEnabled);
