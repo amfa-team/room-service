@@ -46,7 +46,6 @@ export interface NotSupportedPageDictionary {
 }
 
 export interface RoomDictionary {
-  seo: any;
   notSupported: NotSupportedPageDictionary;
   waitingPage: WaitingPageDictionary;
   loading: LoadingDictionary;
@@ -58,18 +57,6 @@ export interface RoomDictionary {
 
 export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
   en: {
-    seo: {
-      title: "| SideBySide",
-      description: "",
-      canonical: "https://www.sidebyside.live/",
-      siteName: "SideBySide",
-      ogimage: {
-        title: "** SideBySide **",
-        width: 2048,
-        height: 1170,
-        alt: "Thumnail",
-      },
-    },
     notSupported: {
       title: "Browser not supported",
       desc:
@@ -114,18 +101,6 @@ export const defaultRoomDictionary: Record<"en" | "fr", RoomDictionary> = {
     },
   },
   fr: {
-    seo: {
-      title: "| SideBySide",
-      description: "",
-      canonical: "https://www.sidebyside.live/",
-      siteName: "SideBySide",
-      ogimage: {
-        title: "**SideBySide**",
-        width: 2048,
-        height: 1170,
-        alt: "Miniature",
-      },
-    },
     notSupported: {
       title: "Votre navigateur n'est pas compatible",
       desc:
@@ -193,6 +168,5 @@ export function useSetDictionary(dictionary: RoomDictionary) {
 export function useDictionary<K extends keyof RoomDictionary>(
   key: K,
 ): RoomDictionary[K] {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return useRecoilValue(dictionaryAtom)[key];
 }

@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import React, { useEffect, useState } from "react";
 import { generateRawLocalParticipant } from "../../entities/fixtures/participants.fixture";
 import { generateRawVideoPublication } from "../../entities/fixtures/publications.fixture";
@@ -11,7 +12,13 @@ export default {
 };
 
 export function NoVideoNoAudio(): JSX.Element | null {
-  return <Controls localParticipant={generateRawLocalParticipant()} />;
+  return (
+    <Controls
+      localParticipant={generateRawLocalParticipant()}
+      onHangUp={action("onHangUp")}
+      onShuffle={action("onShuffle")}
+    />
+  );
 }
 
 export function VideoOnlyNoAudio(): JSX.Element | null {
@@ -40,7 +47,13 @@ export function VideoOnlyNoAudio(): JSX.Element | null {
     };
   }, []);
 
-  return <Controls localParticipant={participant} />;
+  return (
+    <Controls
+      localParticipant={participant}
+      onHangUp={action("onHangUp")}
+      onShuffle={action("onShuffle")}
+    />
+  );
 }
 
 export function VideoOnlyDisabledNoAudio(): JSX.Element | null {
@@ -70,7 +83,13 @@ export function VideoOnlyDisabledNoAudio(): JSX.Element | null {
     };
   }, []);
 
-  return <Controls localParticipant={participant} />;
+  return (
+    <Controls
+      localParticipant={participant}
+      onHangUp={action("onHangUp")}
+      onShuffle={action("onShuffle")}
+    />
+  );
 }
 
 export function ChangingVideoDisabledNoAudio(): JSX.Element | null {
@@ -104,5 +123,11 @@ export function ChangingVideoDisabledNoAudio(): JSX.Element | null {
     };
   }, []);
 
-  return <Controls localParticipant={participant} />;
+  return (
+    <Controls
+      localParticipant={participant}
+      onHangUp={action("onHangUp")}
+      onShuffle={action("onShuffle")}
+    />
+  );
 }

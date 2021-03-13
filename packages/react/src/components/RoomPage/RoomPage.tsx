@@ -8,12 +8,13 @@ import ParticipantList from "../ParticipantList/ParticipantList";
 interface RoomPageProps {
   room: IRoom | null;
   onShuffle: () => void;
+  onHangUp: () => void;
   isJoining: boolean;
   blameDictionary: BlameDictionary;
 }
 
 export default function RoomPage(props: RoomPageProps) {
-  const { room, onShuffle, isJoining, blameDictionary } = props;
+  const { room, onShuffle, onHangUp, isJoining, blameDictionary } = props;
 
   return (
     <Grid column="1" templateRows="calc(100% - 80px) 80px" h="full">
@@ -24,6 +25,7 @@ export default function RoomPage(props: RoomPageProps) {
       />
       <Controls
         onShuffle={onShuffle}
+        onHangUp={onHangUp}
         localParticipant={room?.localParticipant ?? null}
       />
     </Grid>

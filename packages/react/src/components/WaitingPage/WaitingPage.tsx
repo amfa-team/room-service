@@ -92,15 +92,21 @@ function WaitingPage(props: WaitingPageProps) {
   }, [join, roomFull]);
 
   return (
-    <Grid
-      column="1"
-      templateRows="minmax(0, 1fr) 100px"
+    <Flex
       h="full"
       w="full"
-      maxW="container.md"
-      m="auto"
+      position="relative"
+      justifyContent="center"
+      alignItems="center"
     >
-      <Grid column="1" templateRows="minmax(0, 1fr) 48px" w="full">
+      <Grid
+        column="1"
+        templateRows="minmax(0, 1fr) 48px 100px"
+        w="full"
+        maxW="container.md"
+        m="auto"
+        h="80%"
+      >
         <ParticipantSetup
           participant={localParticipant}
           isLoading={localParticipant === null}
@@ -115,10 +121,10 @@ function WaitingPage(props: WaitingPageProps) {
         >
           {dictionary.join}
         </Button>
+        <Flex justifyContent="center" alignItems="center">
+          <Text textAlign="center">{dictionary.cgu}</Text>
+        </Flex>
       </Grid>
-      <Flex justifyContent="center" alignItems="center">
-        <Text textAlign="center">{dictionary.cgu}</Text>
-      </Flex>
       <SnackbarContainer>
         {roomFull && (
           <Snackbar>
@@ -136,7 +142,7 @@ function WaitingPage(props: WaitingPageProps) {
           </Snackbar>
         )}
       </SnackbarContainer>
-    </Grid>
+    </Flex>
   );
 }
 

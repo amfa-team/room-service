@@ -18,6 +18,7 @@ export function NoVideo(): JSX.Element | null {
     <RoomPage
       room={room}
       onShuffle={action("onShuffle")}
+      onHangUp={action("onHangUp")}
       blameDictionary={defaultBlameDictionary.fr}
     />
   );
@@ -31,6 +32,7 @@ export function SingleParticipant(): JSX.Element | null {
     <RoomPage
       room={room}
       onShuffle={action("onShuffle")}
+      onHangUp={action("onHangUp")}
       blameDictionary={defaultBlameDictionary.fr}
     />
   );
@@ -60,6 +62,7 @@ export function TwoParticipant(): JSX.Element | null {
     <RoomPage
       room={room}
       onShuffle={action("onShuffle")}
+      onHangUp={action("onHangUp")}
       blameDictionary={defaultBlameDictionary.fr}
     />
   );
@@ -98,6 +101,7 @@ export function Joining(): JSX.Element | null {
     <RoomPage
       room={room}
       onShuffle={onShuffle}
+      onHangUp={action("onHangUp")}
       isJoining={isJoining}
       blameDictionary={defaultBlameDictionary.fr}
     />
@@ -109,6 +113,7 @@ export function LoadingRoom(): JSX.Element | null {
     <RoomPage
       room={null}
       onShuffle={action("shuffle")}
+      onHangUp={action("onHangUp")}
       blameDictionary={defaultBlameDictionary.fr}
     />
   );
