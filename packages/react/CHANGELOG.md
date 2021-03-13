@@ -1,3 +1,10 @@
+# @amfa-team/room-service [1.8.0-beta.3](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0-beta.2...@amfa-team/room-service@1.8.0-beta.3) (2021-03-13)
+
+
+### Features
+
+* report icons ([c20e704](https://github.com/amfa-team/room-service/commit/c20e70426512c72b6a85b752d4802dd564c02d9a))
+
 # @amfa-team/room-service [1.8.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0-beta.1...@amfa-team/room-service@1.8.0-beta.2) (2021-03-13)
 
 
