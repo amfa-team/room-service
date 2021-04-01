@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Text } from "@chakra-ui/react";
+import { Button, Flex, Grid, Link, Text } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RawLocalParticipant,
@@ -23,6 +23,42 @@ export interface WaitingPageProps {
   audioError?: Error | null;
   isAcquiringLocalTracks?: boolean;
 }
+
+// FIXME dirty
+const replaceLinks = (str: string) => {
+  const regex = /(\[(.*?)\])(\((.*?)\))/gim;
+  let m = regex.exec(str);
+
+  if (!m) {
+    return [str];
+  }
+  try {
+    const parseResults = [];
+    let currentPos = 0;
+    while (m !== null) {
+      // This is necessary to avoid infinite loops with zero-width matches
+      if (m.index === regex.lastIndex) {
+        // eslint-disable-next-line no-plusplus
+        regex.lastIndex++;
+      }
+
+      parseResults.push(str.substring(currentPos, m.index));
+      parseResults.push({
+        linkText: m[2],
+        href: m[4],
+      });
+      currentPos = m.index + m[0].length;
+
+      m = regex.exec(str);
+    }
+    if (currentPos < str.length) {
+      parseResults.push(str.substring(currentPos, str.length));
+    }
+    return parseResults;
+  } catch (error) {
+    return [str];
+  }
+};
 
 function WaitingPage(props: WaitingPageProps) {
   const {
@@ -105,7 +141,8 @@ function WaitingPage(props: WaitingPageProps) {
         w="full"
         maxW="container.md"
         m="auto"
-        h="80%"
+        p="10"
+        h="100%"
       >
         <ParticipantSetup
           participant={localParticipant}
@@ -122,7 +159,22 @@ function WaitingPage(props: WaitingPageProps) {
           {dictionary.join}
         </Button>
         <Flex justifyContent="center" alignItems="center">
-          <Text textAlign="center">{dictionary.cgu}</Text>
+          <Text textAlign="center" fontWeight="bold">
+            {replaceLinks(dictionary.cgu).map((e, i) => {
+              return typeof e === "string" ? (
+                <span key={i}>{e}</span>
+              ) : (
+                <Link
+                  href={e.href}
+                  fontSize="md"
+                  key={i}
+                  color="secondary.base.bg"
+                >
+                  {e.linkText}
+                </Link>
+              );
+            })}
+          </Text>
         </Flex>
       </Grid>
       <SnackbarContainer>
