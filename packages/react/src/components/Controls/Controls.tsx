@@ -1,6 +1,7 @@
 import { RoomControls } from "@amfa-team/theme-service";
 import debounce from "lodash.debounce";
 import React, { useMemo } from "react";
+import type { ReactElement } from "react";
 import type { ILocalParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import {
@@ -13,6 +14,7 @@ interface ControlsProps {
   localParticipant: ILocalParticipant | null;
   onShuffle: () => void;
   onHangUp: () => void;
+  helpButton?: ReactElement;
 }
 
 export default function Controls(props: ControlsProps) {
@@ -52,6 +54,11 @@ export default function Controls(props: ControlsProps) {
       onHangUp={onHangUp}
       onToggleAudio={onToggleAudio}
       onToggleVideo={onToggleVideo}
+      helpButton={props.helpButton}
     />
   );
 }
+
+Controls.defaultProps = {
+  helpButton: null,
+};

@@ -1,6 +1,7 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import { Grid } from "@chakra-ui/react";
 import React from "react";
+import type { ReactElement } from "react";
 import type { IRoom } from "../../entities/Room";
 import Controls from "../Controls/Controls";
 import ParticipantList from "../ParticipantList/ParticipantList";
@@ -11,6 +12,7 @@ interface RoomPageProps {
   onHangUp: () => void;
   isJoining: boolean;
   blameDictionary: BlameDictionary;
+  helpButton?: ReactElement;
 }
 
 export default function RoomPage(props: RoomPageProps) {
@@ -27,10 +29,12 @@ export default function RoomPage(props: RoomPageProps) {
         onShuffle={onShuffle}
         onHangUp={onHangUp}
         localParticipant={room?.localParticipant ?? null}
+        helpButton={props.helpButton}
       />
     </Grid>
   );
 }
 RoomPage.defaultProps = {
   isJoining: false,
+  helpButton: null,
 };

@@ -1,6 +1,7 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import { useToken as useJwtToken } from "@amfa-team/user-service";
 import React, { useEffect, useMemo, useState } from "react";
+import type { ReactElement } from "react";
 import Video from "twilio-video";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
@@ -19,6 +20,7 @@ export interface TwilioAppProps {
   onHangUp: () => void;
   dictionary: RoomDictionary;
   blameDictionary: BlameDictionary;
+  helpButton: ReactElement;
 }
 
 function TwilioAppRaw(props: TwilioAppProps) {
@@ -60,6 +62,7 @@ function TwilioAppRaw(props: TwilioAppProps) {
       roomName={props.roomName}
       onRoomChanged={props.onRoomChanged}
       onHangUp={props.onHangUp}
+      helpButton={props.helpButton}
     />
   );
 }

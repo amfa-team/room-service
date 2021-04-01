@@ -1,5 +1,6 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import React, { useCallback } from "react";
+import type { ReactElement } from "react";
 import { useJoin } from "../../api/useApi";
 import RoomPage from "../../components/RoomPage/RoomPage";
 import type { IRoom } from "../../entities/Room";
@@ -13,6 +14,7 @@ interface TwilioRoomPageProps {
   onRoomChanged: (roomName: string) => void;
   onHangUp: () => void;
   blameDictionary: BlameDictionary;
+  helpButton: ReactElement;
 }
 
 function TwilioRoomPage(props: TwilioRoomPageProps) {
@@ -50,6 +52,7 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
       onHangUp={onHangUp}
       isJoining={isJoining}
       blameDictionary={blameDictionary}
+      helpButton={props.helpButton}
     />
   );
 }
