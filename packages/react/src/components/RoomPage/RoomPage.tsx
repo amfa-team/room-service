@@ -13,10 +13,19 @@ interface RoomPageProps {
   isJoining: boolean;
   blameDictionary: BlameDictionary;
   helpButton?: ReactElement;
+  featuresViewerButton?: any;
 }
 
 export default function RoomPage(props: RoomPageProps) {
-  const { room, onShuffle, onHangUp, isJoining, blameDictionary } = props;
+  const {
+    room,
+    onShuffle,
+    onHangUp,
+    isJoining,
+    blameDictionary,
+    featuresViewerButton,
+    helpButton,
+  } = props;
 
   return (
     <Grid column="1" templateRows="calc(100% - 80px) 80px" h="full">
@@ -29,7 +38,8 @@ export default function RoomPage(props: RoomPageProps) {
         onShuffle={onShuffle}
         onHangUp={onHangUp}
         localParticipant={room?.localParticipant ?? null}
-        helpButton={props.helpButton}
+        helpButton={helpButton}
+        featuresViewerButton={featuresViewerButton}
       />
     </Grid>
   );
@@ -37,4 +47,5 @@ export default function RoomPage(props: RoomPageProps) {
 RoomPage.defaultProps = {
   isJoining: false,
   helpButton: null,
+  featuresViewerButton: null,
 };

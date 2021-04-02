@@ -15,6 +15,7 @@ interface TwilioRoomPageProps {
   onHangUp: () => void;
   blameDictionary: BlameDictionary;
   helpButton: ReactElement;
+  featuresViewerButton: any;
 }
 
 function TwilioRoomPage(props: TwilioRoomPageProps) {
@@ -26,6 +27,8 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
     userJwtToken,
     roomName,
     blameDictionary,
+    helpButton,
+    featuresViewerButton,
   } = props;
   const { data } = useConnectTwilioRoom(token);
   const { join, isJoining } = useJoin(spaceId, true, roomName);
@@ -52,7 +55,8 @@ function TwilioRoomPage(props: TwilioRoomPageProps) {
       onHangUp={onHangUp}
       isJoining={isJoining}
       blameDictionary={blameDictionary}
-      helpButton={props.helpButton}
+      helpButton={helpButton}
+      featuresViewerButton={featuresViewerButton}
     />
   );
 }

@@ -21,6 +21,7 @@ export interface TwilioAppProps {
   dictionary: RoomDictionary;
   blameDictionary: BlameDictionary;
   helpButton: ReactElement;
+  featuresViewerButton: any;
 }
 
 function TwilioAppRaw(props: TwilioAppProps) {
@@ -63,6 +64,7 @@ function TwilioAppRaw(props: TwilioAppProps) {
       onRoomChanged={props.onRoomChanged}
       onHangUp={props.onHangUp}
       helpButton={props.helpButton}
+      featuresViewerButton={props.featuresViewerButton}
     />
   );
 }

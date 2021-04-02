@@ -15,10 +15,17 @@ interface ControlsProps {
   onShuffle: () => void;
   onHangUp: () => void;
   helpButton?: ReactElement;
+  featuresViewerButton?: any;
 }
 
 export default function Controls(props: ControlsProps) {
-  const { localParticipant, onShuffle, onHangUp } = props;
+  const {
+    localParticipant,
+    onShuffle,
+    onHangUp,
+    featuresViewerButton,
+    helpButton,
+  } = props;
   const dictionary = useDictionary("participantList");
   const videoTrack = useParticipantVideoTrack(localParticipant);
   const audioTrack = useParticipantAudioTrack(localParticipant);
@@ -54,11 +61,14 @@ export default function Controls(props: ControlsProps) {
       onHangUp={onHangUp}
       onToggleAudio={onToggleAudio}
       onToggleVideo={onToggleVideo}
-      helpButton={props.helpButton}
+      helpButton={helpButton}
+      // @ts-ignore
+      featuresViewerButton={featuresViewerButton}
     />
   );
 }
 
 Controls.defaultProps = {
   helpButton: null,
+  featuresViewerButton: null,
 };
