@@ -1,3 +1,12 @@
+# @amfa-team/room-service [1.8.0-beta.4](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0-beta.3...@amfa-team/room-service@1.8.0-beta.4) (2021-04-03)
+
+
+### Features
+
+* add link spliting ([3ada62c](https://github.com/amfa-team/room-service/commit/3ada62c5795e9049b132ae2066f882291454c35b))
+* pass down help btn ([e1cf775](https://github.com/amfa-team/room-service/commit/e1cf775dba6ed5f0217f8e8fd02aac1de0ed8e14))
+* upgrade services ([2e2702c](https://github.com/amfa-team/room-service/commit/2e2702cb5d179e81da69c10160fa9bb525c8f3f6))
+
 # @amfa-team/room-service [1.8.0-beta.3](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0-beta.2...@amfa-team/room-service@1.8.0-beta.3) (2021-03-13)
 
 
