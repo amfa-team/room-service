@@ -50,7 +50,12 @@ function RoomFeature(): ReactElement {
   );
 
   return (
-    <div style={{ height: "calc(100% - 250px)" }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateRows: "30px 30px minmax(0, 1fr)",
+      }}
+    >
       <h3>Room Feature</h3>
       <SpaceForm />
       <SpacePage

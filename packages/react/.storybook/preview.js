@@ -1,5 +1,5 @@
 import React from "react";
-import { ModalRoot } from "@amfa-team/theme-service";
+import { SbsThemeProvider } from "@amfa-team/theme-service";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { RecoilRoot } from "recoil";
 import "normalize.css/normalize.css";
@@ -32,8 +32,9 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <RecoilRoot>
-      <ModalRoot />
-      <Story />
+      <SbsThemeProvider>
+        <Story />
+      </SbsThemeProvider>
     </RecoilRoot>
   ),
 ];

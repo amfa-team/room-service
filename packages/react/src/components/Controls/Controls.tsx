@@ -1,56 +1,74 @@
-import classnames from "classnames";
-import React, { useCallback } from "react";
+import { RoomControls } from "@amfa-team/theme-service";
+import debounce from "lodash.debounce";
+import React, { useMemo } from "react";
+import type { ReactElement } from "react";
 import type { ILocalParticipant } from "../../entities/Participant";
 import useIsTrackEnabled from "../../hooks/useIsTrackEnabled";
 import {
   useParticipantAudioTrack,
   useParticipantVideoTrack,
 } from "../../hooks/useParticipantTracks";
-import { CamIcon } from "../ParticipantInfo/Controls/Icons/CamIcon";
-import { MicIcon } from "../ParticipantInfo/Controls/Icons/MicIcon";
-import classes from "./controls.module.css";
+import { useDictionary } from "../../i18n/dictionary";
 
 interface ControlsProps {
   localParticipant: ILocalParticipant | null;
+  onShuffle: () => void;
+  onHangUp: () => void;
+  helpButton?: ReactElement;
+  featuresViewerButton?: any;
 }
 
 export default function Controls(props: ControlsProps) {
-  const { localParticipant } = props;
+  const {
+    localParticipant,
+    onShuffle,
+    onHangUp,
+    featuresViewerButton,
+    helpButton,
+  } = props;
+  const dictionary = useDictionary("participantList");
   const videoTrack = useParticipantVideoTrack(localParticipant);
   const audioTrack = useParticipantAudioTrack(localParticipant);
 
   const isAudioEnabled = useIsTrackEnabled(audioTrack);
-  const hasAudioTrack = audioTrack !== null;
-  const onToggleAudio = useCallback(() => {
-    audioTrack?.enable(!audioTrack.isEnabled);
-  }, [audioTrack]);
+  const hasAudioDevice = audioTrack !== null;
+  const onToggleAudio = useMemo(
+    () =>
+      debounce(() => {
+        audioTrack?.enable(!audioTrack.isEnabled);
+      }, 300),
+    [audioTrack],
+  );
 
   const isVideoEnabled = useIsTrackEnabled(videoTrack);
-  const hasVideoTrack = videoTrack !== null;
-  const onToggleVideo = useCallback(() => {
-    videoTrack?.enable(!videoTrack.isEnabled);
-  }, [videoTrack]);
+  const hasVideoDevice = videoTrack !== null;
+  const onToggleVideo = useMemo(
+    () =>
+      debounce(() => {
+        videoTrack?.enable(!videoTrack.isEnabled);
+      }, 300),
+    [videoTrack],
+  );
 
   return (
-    <div className={classes.container}>
-      <div
-        className={classnames(classes.btn, {
-          [classes.disabled]: !hasAudioTrack,
-          [classes.on]: isAudioEnabled,
-          [classes.off]: !isAudioEnabled,
-        })}
-      >
-        <MicIcon toggle={onToggleAudio} enabled={isAudioEnabled} />
-      </div>
-      <div
-        className={classnames(classes.btn, {
-          [classes.disabled]: !hasVideoTrack,
-          [classes.on]: isVideoEnabled,
-          [classes.off]: !isVideoEnabled,
-        })}
-      >
-        <CamIcon toggle={onToggleVideo} enabled={isVideoEnabled} />
-      </div>
-    </div>
+    <RoomControls
+      shuffleLabel={dictionary.shuffle}
+      hasVideoDevice={hasVideoDevice}
+      isVideoEnabled={isVideoEnabled}
+      hasAudioDevice={hasAudioDevice}
+      isAudioEnabled={isAudioEnabled}
+      onShuffle={onShuffle}
+      onHangUp={onHangUp}
+      onToggleAudio={onToggleAudio}
+      onToggleVideo={onToggleVideo}
+      helpButton={helpButton}
+      // @ts-ignore
+      featuresViewerButton={featuresViewerButton}
+    />
   );
 }
+
+Controls.defaultProps = {
+  helpButton: null,
+  featuresViewerButton: null,
+};

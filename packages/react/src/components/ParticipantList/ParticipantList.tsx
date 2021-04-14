@@ -1,39 +1,12 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
-import classnames from "classnames";
-import { motion } from "framer-motion";
-import debounce from "lodash.debounce";
-import React, { useCallback, useMemo } from "react";
+import { Grid } from "@chakra-ui/react";
+import React from "react";
 import type { IRoom } from "../../entities/Room";
 import useParticipants from "../../hooks/useParticipants";
-import { useDictionary } from "../../i18n/dictionary";
 import Participant from "../Participant/Participant";
-import { SquareDiv } from "../ParticipantInfo/SquareDiv/SquareDiv";
-import styles from "./participantList.module.css";
-
-const containerAnimation = {
-  scale: 1,
-  borderRadius: ["20%", "20%", "50%", "50%", "20%"],
-  transition: {
-    delay: 0.1,
-    when: "beforeChildren",
-    staggerChildren: 0.05,
-  },
-};
-
-const shuffleVariants = {
-  disabled: {
-    opacity: 0.4,
-  },
-  enabled: {
-    opacity: 1,
-  },
-};
-
-const shuffleTapAnimation = { scale: 0.8 };
 
 export interface ParticipantListProps {
   room: IRoom | null;
-  onShuffle: () => void;
   isJoining: boolean;
   blameDictionary: BlameDictionary;
 }
@@ -41,73 +14,50 @@ export interface ParticipantListProps {
 export default function ParticipantList(
   props: ParticipantListProps,
 ): JSX.Element | null {
-  const dictionary = useDictionary("participantList");
-  const { room, isJoining, onShuffle, blameDictionary } = props;
+  const { room, isJoining, blameDictionary } = props;
 
   const localParticipant = room?.localParticipant ?? null;
   const participants = useParticipants(room);
 
-  const debouncedShuffle = useMemo(() => {
-    const fn: () => unknown = debounce(onShuffle, 400, { leading: true });
-    return fn;
-  }, [onShuffle]);
-
-  const onShuffleButtonClicked = useCallback(
-    (e) => {
-      e.stopPropagation();
-      if (!isJoining) {
-        debouncedShuffle();
-      }
-    },
-    [isJoining, debouncedShuffle],
-  );
-
   const loading = room === null || isJoining;
 
   return (
-    <SquareDiv>
-      <motion.div className={styles.container} animate={containerAnimation}>
-        <motion.div
-          className={classnames(styles.shuffleCTA, {
-            [styles.shuffleDisabled]: loading,
-          })}
-          whileTap={loading ? {} : shuffleTapAnimation}
-          onClick={onShuffleButtonClicked}
-          initial="disabled"
-          animate={loading ? "disabled" : "enabled"}
-          variants={shuffleVariants}
-        >
-          <span>{dictionary.shuffle}</span>
-        </motion.div>
+    <Grid
+      maxW="container.lg"
+      templateColumns="50% 50%"
+      templateRows="50% 50%"
+      w="full"
+      h="full"
+      m="auto"
+    >
+      {participants.map((participant) => (
         <Participant
+          key={participant.sid}
+          participant={participant}
           participants={participants}
-          participant={localParticipant}
-          isLocalParticipant
           loading={loading}
           blameDictionary={blameDictionary}
         />
-        {participants.map((participant) => (
+      ))}
+      <Participant
+        participants={participants}
+        participant={localParticipant}
+        isLocalParticipant
+        loading={loading}
+        blameDictionary={blameDictionary}
+      />
+      {["0", "1", "2"]
+        .filter((d) => !Object.keys(participants).includes(d))
+        .map((index) => (
           <Participant
-            key={participant.sid}
-            participant={participant}
+            key={index}
             participants={participants}
+            participant={null}
             loading={loading}
             blameDictionary={blameDictionary}
           />
         ))}
-        {["0", "1", "2"]
-          .filter((d) => !Object.keys(participants).includes(d))
-          .map((index) => (
-            <Participant
-              key={index}
-              participants={participants}
-              participant={null}
-              loading={loading}
-              blameDictionary={blameDictionary}
-            />
-          ))}
-      </motion.div>
-    </SquareDiv>
+    </Grid>
   );
 }
 ParticipantList.defaultProps = {

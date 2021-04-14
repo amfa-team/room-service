@@ -1,6 +1,7 @@
 import type { BlameDictionary } from "@amfa-team/user-service";
 import { useToken as useJwtToken } from "@amfa-team/user-service";
 import React, { useEffect, useMemo, useState } from "react";
+import type { ReactElement } from "react";
 import Video from "twilio-video";
 import type { ApiSettings } from "../api/api";
 import { useSetApiSettings, useToken } from "../api/useApi";
@@ -16,8 +17,11 @@ export interface TwilioAppProps {
   settings: ApiSettings;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
+  onHangUp: () => void;
   dictionary: RoomDictionary;
   blameDictionary: BlameDictionary;
+  helpButton: ReactElement;
+  featuresViewerButton: any;
 }
 
 function TwilioAppRaw(props: TwilioAppProps) {
@@ -43,7 +47,6 @@ function TwilioAppRaw(props: TwilioAppProps) {
   if (!token || props.roomName === null || jwtToken === null) {
     return (
       <TwilioWaitingPage
-        blameDictionary={props.blameDictionary}
         spaceId={props.space._id}
         roomName={props.roomName}
         onRoomChanged={props.onRoomChanged}
@@ -59,6 +62,9 @@ function TwilioAppRaw(props: TwilioAppProps) {
       spaceId={props.space._id}
       roomName={props.roomName}
       onRoomChanged={props.onRoomChanged}
+      onHangUp={props.onHangUp}
+      helpButton={props.helpButton}
+      featuresViewerButton={props.featuresViewerButton}
     />
   );
 }

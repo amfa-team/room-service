@@ -1,3 +1,17 @@
+# @amfa-team/room-service-types [1.2.0-beta.2](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service-types@1.2.0-beta.1...@amfa-team/room-service-types@1.2.0-beta.2) (2021-04-14)
+
+
+### Features
+
+* upgrade deps ([1666320](https://github.com/amfa-team/room-service/commit/16663204158cbd5bd143eec8ed5fd257097058f3))
+
+# @amfa-team/room-service-types [1.2.0-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service-types@1.1.0...@amfa-team/room-service-types@1.2.0-beta.1) (2021-03-12)
+
+
+### Features
+
+* room layout ([981cb69](https://github.com/amfa-team/room-service/commit/981cb69f803d970ad835ab9522ccade6afd22324))
+
 # @amfa-team/room-service-types [1.1.0](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service-types@1.0.0...@amfa-team/room-service-types@1.1.0) (2021-01-31)
 
 

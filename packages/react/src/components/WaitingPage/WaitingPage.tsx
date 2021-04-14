@@ -1,5 +1,4 @@
-import { Button } from "@amfa-team/theme-service";
-import type { BlameDictionary } from "@amfa-team/user-service";
+import { Button, Flex, Grid, Link, Text } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RawLocalParticipant,
@@ -9,11 +8,9 @@ import {
 import type { ILocalAudioTrack, ILocalVideoTrack } from "../../entities/Track";
 import { useMediaErrorMessage } from "../../hooks/useMediaErrorMessage";
 import { useDictionary } from "../../i18n/dictionary";
-import Controls from "../Controls/Controls";
-import Participant from "../Participant/Participant";
+import ParticipantSetup from "../ParticipantSetup/ParticipantSetup";
 import { SnackbarContainer } from "../Snackbar/ScnackbarContainer";
 import { Snackbar } from "../Snackbar/Snackbar";
-import styles from "./waitingPage.module.css";
 
 export interface WaitingPageProps {
   videoTrack: ILocalVideoTrack | null;
@@ -25,8 +22,43 @@ export interface WaitingPageProps {
   videoError?: Error | null;
   audioError?: Error | null;
   isAcquiringLocalTracks?: boolean;
-  blameDictionary: BlameDictionary;
 }
+
+// FIXME dirty
+const replaceLinks = (str: string) => {
+  const regex = /(\[(.*?)\])(\((.*?)\))/gim;
+  let m = regex.exec(str);
+
+  if (!m) {
+    return [str];
+  }
+  try {
+    const parseResults = [];
+    let currentPos = 0;
+    while (m !== null) {
+      // This is necessary to avoid infinite loops with zero-width matches
+      if (m.index === regex.lastIndex) {
+        // eslint-disable-next-line no-plusplus
+        regex.lastIndex++;
+      }
+
+      parseResults.push(str.substring(currentPos, m.index));
+      parseResults.push({
+        linkText: m[2],
+        href: m[4],
+      });
+      currentPos = m.index + m[0].length;
+
+      m = regex.exec(str);
+    }
+    if (currentPos < str.length) {
+      parseResults.push(str.substring(currentPos, str.length));
+    }
+    return parseResults;
+  } catch (error) {
+    return [str];
+  }
+};
 
 function WaitingPage(props: WaitingPageProps) {
   const {
@@ -39,7 +71,6 @@ function WaitingPage(props: WaitingPageProps) {
     videoError = null,
     audioError = null,
     isAcquiringLocalTracks = false,
-    blameDictionary,
   } = props;
   const dictionary = useDictionary("waitingPage");
   const videoErrorMessage = useMediaErrorMessage(
@@ -97,30 +128,55 @@ function WaitingPage(props: WaitingPageProps) {
   }, [join, roomFull]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.video}>
-        <Participant
+    <Flex
+      h="full"
+      w="full"
+      position="relative"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid
+        column="1"
+        templateRows="minmax(0, 1fr) 48px 100px"
+        w="full"
+        maxW="container.md"
+        m="auto"
+        p="10"
+        h="100%"
+      >
+        <ParticipantSetup
           participant={localParticipant}
-          isLocalParticipant
-          loading={localParticipant === null}
-          blameDictionary={blameDictionary}
+          isLoading={localParticipant === null}
         />
-      </div>
-      <div className={styles.controls}>
-        <Controls localParticipant={localParticipant} />
-        <div className={styles.notice}>{dictionary.cgu}</div>
-        <div className={styles.joinContainer}>
-          <Button
-            type="button"
-            className={styles.join}
-            onClick={onJoinClicked}
-            disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
-            loading={isJoining}
-          >
-            {dictionary.join}
-          </Button>
-        </div>
-      </div>
+        <Button
+          colorScheme="secondary"
+          w="full"
+          size="lg"
+          onClick={onJoinClicked}
+          disabled={disabled || audioTrack === null || isAcquiringLocalTracks}
+          isLoading={isJoining}
+        >
+          {dictionary.join}
+        </Button>
+        <Flex justifyContent="center" alignItems="center">
+          <Text textAlign="center" fontWeight="bold">
+            {replaceLinks(dictionary.cgu).map((e, i) => {
+              return typeof e === "string" ? (
+                <span key={i}>{e}</span>
+              ) : (
+                <Link
+                  href={e.href}
+                  fontSize="md"
+                  key={i}
+                  color="secondary.base.bg"
+                >
+                  {e.linkText}
+                </Link>
+              );
+            })}
+          </Text>
+        </Flex>
+      </Grid>
       <SnackbarContainer>
         {roomFull && (
           <Snackbar>
@@ -138,7 +194,7 @@ function WaitingPage(props: WaitingPageProps) {
           </Snackbar>
         )}
       </SnackbarContainer>
-    </div>
+    </Flex>
   );
 }
 

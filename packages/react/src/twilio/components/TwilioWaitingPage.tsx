@@ -1,4 +1,3 @@
-import type { BlameDictionary } from "@amfa-team/user-service";
 import { useConnect, useToken as useJwtToken } from "@amfa-team/user-service";
 import { captureException } from "@sentry/react";
 import React, { useCallback, useEffect, useState } from "react";
@@ -10,13 +9,12 @@ interface TwilioWaitingPageProps {
   spaceId: string;
   roomName: string | null;
   onRoomChanged: (roomName: string) => void;
-  blameDictionary: BlameDictionary;
 }
 
 type Step = "setup" | "connect" | "join" | "ready";
 
 function TwilioWaitingPage(props: TwilioWaitingPageProps) {
-  const { spaceId, roomName, onRoomChanged, blameDictionary } = props;
+  const { spaceId, roomName, onRoomChanged } = props;
   const [step, setStep] = useState<Step>("setup");
   const jwtToken = useJwtToken();
   const { connect } = useConnect();
@@ -125,7 +123,6 @@ function TwilioWaitingPage(props: TwilioWaitingPageProps) {
       isJoining={isJoining || step !== "setup"}
       audioError={audioError}
       videoError={videoError}
-      blameDictionary={blameDictionary}
     />
   );
 }

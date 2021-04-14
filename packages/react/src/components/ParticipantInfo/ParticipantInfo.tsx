@@ -1,3 +1,4 @@
+import { AvailableSeat } from "@amfa-team/theme-service";
 import type { BlameDictionary } from "@amfa-team/user-service";
 import React from "react";
 import type { IParticipant } from "../../entities/Participant";
@@ -40,14 +41,22 @@ function ParticipantInfoInner({
     );
   }
 
+  if (participant === null) {
+    return (
+      <AvailableSeat
+        label={dictionary.availableSeat}
+        onClick={() => {
+          alert("todo");
+        }}
+      />
+    );
+  }
+
   if (isVideoSwitchedOff || !isVideoEnabled) {
     return (
       <div className={styles.contentWrapper}>
         <div className={styles.avatar}>
           <AvatarIcon />
-          {participant === null && (
-            <div className={styles.typo}>{dictionary.availableSeat}</div>
-          )}
           {children}
         </div>
       </div>

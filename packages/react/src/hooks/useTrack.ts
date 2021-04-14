@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import type { ITrackPublication } from "../entities/Publication";
-import type { ITrack } from "../entities/Track";
+import type {
+  ILocalTrackPublication,
+  ITrackPublication,
+} from "../entities/Publication";
+import type { ILocalTrack, IRemoteTrack, ITrack } from "../entities/Track";
 
-export default function useTrack(publication: ITrackPublication | undefined) {
+export default function useTrack<P extends ITrackPublication>(
+  publication: P | undefined,
+) {
   const [track, setTrack] = useState<null | ITrack>(publication?.track ?? null);
 
   useEffect(() => {
@@ -25,5 +30,7 @@ export default function useTrack(publication: ITrackPublication | undefined) {
     };
   }, [publication]);
 
-  return track;
+  return track as P extends ILocalTrackPublication
+    ? ILocalTrack | null
+    : IRemoteTrack | null;
 }
