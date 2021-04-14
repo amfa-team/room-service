@@ -1,3 +1,18 @@
+# @amfa-team/room-service [1.8.0-beta.6](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0-beta.5...@amfa-team/room-service@1.8.0-beta.6) (2021-04-14)
+
+
+### Features
+
+* upgrade deps ([1666320](https://github.com/amfa-team/room-service/commit/16663204158cbd5bd143eec8ed5fd257097058f3))
+
+
+
+
+
+### Dependencies
+
+* **@amfa-team/room-service-types:** upgraded to 1.2.0-beta.2
+
 # @amfa-team/room-service [1.8.0-beta.5](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0-beta.4...@amfa-team/room-service@1.8.0-beta.5) (2021-04-06)
 
 
