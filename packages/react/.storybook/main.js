@@ -37,6 +37,7 @@ module.exports = {
     // https://github.com/storybookjs/storybook/issues/10231#issuecomment-728038867
     config.resolve.alias["@emotion/core"] = toPath("@emotion/react");
     config.resolve.alias["@emotion/react"] = toPath("@emotion/react");
+    config.resolve.alias["emotion-theming"] = toPath("@emotion/react");
 
     // Return the altered config
     return config;
