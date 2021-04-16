@@ -44,13 +44,15 @@ provider:
     shouldStartNameWithService: true
   tracing:
     apiGateway: true
+    lambda: true
 
 package:
   individually: false
 
 functions:
-  join:
+  handler:
     handler: src/handler.join
+    reservedConcurrency: "${env:CONCURRENCY, 100}"
     events:
       - http:
           path: join
@@ -65,9 +67,6 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
-  adminRooms:
-    handler: src/handler.adminRooms
-    events:
       - http:
           path: admin/room
           method: post
@@ -81,9 +80,6 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
-  adminParticipants:
-    handler: src/handler.adminParticipants
-    events:
       - http:
           path: admin/participant
           method: post
@@ -97,9 +93,6 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
-  webhookStatus:
-    handler: src/handler.webhookStatus
-    events:
       - http:
           path: webhook/twilio/status
           method: post

@@ -12,6 +12,7 @@ import {
 } from "./admin/adminController";
 import { cronController } from "./cron/cronHandler";
 import { handleJoin, joinDecoder } from "./join/joinController";
+import { NotFoundError } from "./services/io/exceptions";
 import {
   handleAdminPOST,
   handleHttpErrorResponse,
@@ -25,53 +26,39 @@ import { handleTwilioWebhook } from "./webhook/webhookController";
 
 setup();
 
-export const join: any = AWSLambda.wrapHandler(async function join(
+export const handler: any = AWSLambda.wrapHandler(async function handler(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
-  return handlePublicPOST<"join">(event, context, handleJoin, joinDecoder);
+  switch (event.resource) {
+    case "/join":
+      return handlePublicPOST<"join">(event, context, handleJoin, joinDecoder);
+    case "/webhook/twilio/status":
+      return handlePublicPOST<"webhook/twilio/status">(
+        event,
+        context,
+        handleTwilioWebhook,
+        JsonDecoder.string,
+        false,
+      );
+    case "/admin/room":
+      return handleAdminPOST<"admin/room">(
+        event,
+        context,
+        handleAdminRooms,
+        adminDecoder,
+      );
+    case "/admin/participant":
+      return handleAdminPOST<"admin/participant">(
+        event,
+        context,
+        handleAdminParticipants,
+        adminDecoder,
+      );
+    default:
+      return handleHttpErrorResponse(new NotFoundError(event.resource), event);
+  }
 });
-
-export const webhookStatus: any = AWSLambda.wrapHandler(
-  async function webhookStatus(
-    event: APIGatewayProxyEvent,
-    context: Context,
-  ): Promise<APIGatewayProxyResult> {
-    return handlePublicPOST<"webhook/twilio/status">(
-      event,
-      context,
-      handleTwilioWebhook,
-      JsonDecoder.string,
-      false,
-    );
-  },
-);
-
-export const adminRooms: any = AWSLambda.wrapHandler(async function adminRooms(
-  event: APIGatewayProxyEvent,
-  context: Context,
-): Promise<APIGatewayProxyResult> {
-  return handleAdminPOST<"admin/room">(
-    event,
-    context,
-    handleAdminRooms,
-    adminDecoder,
-  );
-});
-
-export const adminParticipants: any = AWSLambda.wrapHandler(
-  async function adminParticipants(
-    event: APIGatewayProxyEvent,
-    context: Context,
-  ): Promise<APIGatewayProxyResult> {
-    return handleAdminPOST<"admin/participant">(
-      event,
-      context,
-      handleAdminParticipants,
-      adminDecoder,
-    );
-  },
-);
 
 export const cron: any = AWSLambda.wrapHandler(async function cron(
   e: APIGatewayProxyEvent,
