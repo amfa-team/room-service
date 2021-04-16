@@ -3,13 +3,13 @@
 import { logger } from "./logger";
 
 export class InvalidRequestError extends Error {
-  readonly code: 400 | 403;
+  readonly code: 400 | 403 | 404;
 
   reason: string;
 
   constructor(
     message = "invalid request",
-    code: 400 | 403 = 400,
+    code: 400 | 403 | 404 = 400,
     reason: string | null = null,
   ) {
     super(message);
@@ -23,5 +23,13 @@ export class ForbiddenError extends InvalidRequestError {
     super("Forbidden", 403, reason);
 
     logger.error(this, reason, extra);
+  }
+}
+
+export class NotFoundError extends InvalidRequestError {
+  constructor(reason: string) {
+    super("NotFound", 404, reason);
+
+    logger.error(this, reason);
   }
 }
