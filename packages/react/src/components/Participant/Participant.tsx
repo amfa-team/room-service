@@ -84,8 +84,12 @@ function Participant({
     return (
       <AvailableSeat
         label={dictionary.availableSeat}
-        onClick={() => {
-          alert("todo");
+        onClick={async () => {
+          // @ts-ignore
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          return navigator.clipboard.writeText(
+            `${window.location.origin}${window.location.pathname}`,
+          );
         }}
       />
     );
@@ -99,7 +103,7 @@ function Participant({
       isAudioEnabled={isAudioEnabled}
       attachAudioEffect={attachAudioEffect}
       attachVideoEffect={attachVideoEffect}
-      name="TODO"
+      name=""
       isLoading={loading}
       isReconnecting={isParticipantReconnecting}
       reportIcon={
