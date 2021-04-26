@@ -1,3 +1,10 @@
+## @amfa-team/room-service [1.8.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0...@amfa-team/room-service@1.8.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* stuff ([3975c7a](https://github.com/amfa-team/room-service/commit/3975c7a29f94d399f31acbee40c4afe63849d803))
+
 ## @amfa-team/room-service [1.8.1-beta.1](https://github.com/amfa-team/room-service/compare/@amfa-team/room-service@1.8.0...@amfa-team/room-service@1.8.1-beta.1) (2021-04-23)
 
 
