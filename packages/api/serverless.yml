@@ -51,7 +51,7 @@ package:
 
 functions:
   handler:
-    handler: src/handler.join
+    handler: src/handler.handler
     reservedConcurrency: "${env:CONCURRENCY, 100}"
     events:
       - http:
